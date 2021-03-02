@@ -1,0 +1,30 @@
+{
+    "name": "@chez-tomio/components-web",
+    "version": "1.0.0",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "scripts": {
+        "dev": "start-storybook -p 6006",
+        "build": "tsc"
+    },
+    "devDependencies": {
+        "@storybook/addon-actions": "^6.1.17",
+        "@storybook/addon-essentials": "^6.1.17",
+        "@storybook/addon-links": "^6.1.17",
+        "@storybook/node-logger": "^6.1.17",
+        "@storybook/preset-create-react-app": "^3.1.5",
+        "@storybook/react": "^6.1.17",
+        "react": "^17.0.1",
+        "react-dom": "^17.0.1",
+        "react-scripts": "4.0.2",
+        "typescript": "^4.1.3"
+    },
+    "peerDependencies": {
+        "react": "^17.0.1",
+        "react-dom": "^17.0.1"
+    },
+    "dependencies": {
+        "@emotion/react": "^11.1.5",
+        "@emotion/styled": "^11.1.5"
+    }
+}

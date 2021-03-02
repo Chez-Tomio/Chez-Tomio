@@ -1,0 +1,23 @@
+{
+    "name": "root",
+    "private": true,
+    "license": "UNLICENSED",
+    "workspaces": [
+        "apps/*",
+        "libs/*"
+    ],
+    "scripts": {
+        "story": "lerna run story --stream",
+        "prestart": "lerna run libbuild --stream",
+        "build": "lerna run build --stream",
+        "build:components-web": "lerna run build --stream --scope=@chez-tomio/components-web",
+        "dev": "lerna run dev --stream",
+        "dev:resto-website": "lerna run dev --stream --scope=@chez-tomio/resto-website"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^12.0.1",
+        "@commitlint/config-conventional": "^12.0.1",
+        "husky": "^5.1.2",
+        "lerna": "^3.22.1"
+    }
+}

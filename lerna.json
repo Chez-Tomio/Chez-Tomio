@@ -1,0 +1,6 @@
+{
+  "packages": ["apps/*", "libs/*"],
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "version": "independent"
+}
