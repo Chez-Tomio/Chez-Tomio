@@ -1,6 +1,3 @@
 {
-  "conventionalCommits.scopes": [
-    "global-config",
-    "api"
-  ]
+    "conventionalCommits.scopes": ["global-config", "api", "resto-website"]
 }

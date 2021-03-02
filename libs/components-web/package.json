@@ -3,9 +3,13 @@
     "version": "1.0.0",
     "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
+    "license": "UNLICENSED",
     "scripts": {
-        "dev": "start-storybook -p 6006",
-        "build": "tsc"
+        "dev": "concurrently \"yarn dev:storybook\" \"yarn dev:tsc\"",
+        "dev:storybook": "start-storybook -p 5000 --quiet",
+        "dev:tsc": "tsc --watch | awk '{gsub(/\\033c/,\"\") system(\"\")}1'",
+        "build": "tsc",
+        "lint": "eslint \"src/**/*.{tsx,ts}\" --fix"
     },
     "devDependencies": {
         "@storybook/addon-actions": "^6.1.17",
@@ -14,6 +18,7 @@
         "@storybook/node-logger": "^6.1.17",
         "@storybook/preset-create-react-app": "^3.1.5",
         "@storybook/react": "^6.1.17",
+        "concurrently": "^6.0.0",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
         "react-scripts": "4.0.2",
