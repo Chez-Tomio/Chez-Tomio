@@ -8,9 +8,9 @@
     ],
     "scripts": {
         "build": "lerna run build --parallel",
-        "build:components-web": "lerna run build --stream --scope=@chez-tomio/components-web",
         "dev": "lerna run dev --parallel",
         "dev:resto-website": "lerna run dev --stream --scope=@chez-tomio/resto-website",
+        "dev:components-web": "lerna run dev --stream --scope=@chez-tomio/components-web",
         "lint": "lerna run lint --parallel"
     },
     "devDependencies": {

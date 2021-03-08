@@ -1,3 +1,4 @@
 {
-  "hello": "Bonjour"
+    "changeLanguage": "EN",
+    "hello": "Bonjour"
 }
