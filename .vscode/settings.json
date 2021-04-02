@@ -1,20 +1,3 @@
 {
-    "conventionalCommits.scopes": [
-        "global-config",
-        "api",
-        "resto-website",
-        "components-web"
-    ],
-    "sqltools.connections": [
-        {
-            "previewLimit": 50,
-            "server": "localhost",
-            "port": 5432,
-            "driver": "PostgreSQL",
-            "name": "Chez Tomio",
-            "database": "chez-tomio",
-            "username": "postgres",
-            "password": "password"
-        }
-    ]
+    "conventionalCommits.scopes": ["global-config", "resto-website", "components-web"]
 }
