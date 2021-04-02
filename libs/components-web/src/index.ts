@@ -14,6 +14,7 @@ export * from './components/menu/categories/Category';
 export * from './components/menu/specialties/SpecialtiesGrid';
 export * from './components/menu/specialties/Specialty';
 /** Nav */
+export * from './components/nav/NavWrapper';
 export * from './components/nav/Nav';
 export * from './components/nav/NavItem';
 

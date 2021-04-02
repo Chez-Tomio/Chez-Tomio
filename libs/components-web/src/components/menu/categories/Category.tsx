@@ -7,27 +7,23 @@ export interface CategoryProps {
     imageUrl: string;
 }
 
-const categoryStyles = css`
-    font-family: 'Montserrat', sans-serif;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    border-radius: 20px;
-    width: 100%;
-    height: 250px;
-    cursor: pointer;
-    transition: all 0.5s;
-    h3 {
-        transition: all 0.3s;
-    }
-`;
-
 export const Category: React.FC<CategoryProps> = ({ children, imageUrl }) => (
     <div
         css={css`
-            ${categoryStyles}
+            font-family: 'Montserrat', sans-serif;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            border-radius: 20px;
+            width: 100%;
+            height: 250px;
+            cursor: pointer;
+            transition: all 0.5s;
+            h3 {
+                transition: all 0.3s;
+            }
             background: rgba(0, 0, 0, 0.5) url(${imageUrl});
             background-blend-mode: darken;
             background-position: center;
@@ -38,7 +34,7 @@ export const Category: React.FC<CategoryProps> = ({ children, imageUrl }) => (
                 background-position: center;
                 background-size: cover;
                 h3 {
-                    transform: translateY(-5px)
+                    transform: translateY(-5px);
                 }
             }
         `}

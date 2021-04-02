@@ -9,7 +9,7 @@ export interface SpecialtyProps {
     description: string;
 }
 
-const specialtyStyles = css`
+const styles = css`
     font-family: 'Montserrat', sans-serif;
     padding: 20px;
     display: flex;
@@ -31,7 +31,7 @@ const specialtyStyles = css`
 `;
 
 export const Specialty: React.FC<SpecialtyProps> = ({ imageUrl, name, description }) => (
-    <div css={specialtyStyles}>
+    <div css={styles}>
         <img src={imageUrl} alt="specialty-img" />
         <div className="specialty-text-container">
             <h3>{name}</h3>

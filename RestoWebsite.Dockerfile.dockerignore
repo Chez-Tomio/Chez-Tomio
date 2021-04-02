@@ -1,0 +1,3 @@
+apps/*
+!apps/resto-website
+node_modules/*

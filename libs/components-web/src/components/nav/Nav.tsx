@@ -1,13 +1,12 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useGesture } from 'react-use-gesture';
+import { NavWrapper } from '../..';
 
 export interface NavProps {
     stacked?: boolean;
-    isHamburger?: boolean;
-    onUpdate?: (navIsOpen: boolean) => void;
 }
 
 const mobileNavStyles = css`
@@ -40,7 +39,7 @@ const mobileNavStyles = css`
         flex-direction: column;
         width: 100%;
         height: 100%;
-        overflow: scroll;
+        overflow: auto;
         .nav-item {
             color: black;
             .nav-item-li {
@@ -64,22 +63,18 @@ const navStyles = css`
     }
 `;
 
-export const Nav: React.FC<NavProps> = ({ children, stacked, isHamburger, onUpdate }) => {
-    const [isOpen, setOpen] = useState(false);
-
-    useEffect(() => {
-        onUpdate && onUpdate(isOpen);
-    }, [isOpen]);
+export const Nav: React.FC<NavProps> = ({ children, stacked }) => {
+    const { isHamburger, isOpen, setIsOpen } = useContext(NavWrapper.Context);
 
     if (typeof window !== 'undefined') {
         useGesture(
             {
                 onDrag: ({ movement: [mx] }) => {
                     if (isHamburger && mx < -5) {
-                        setOpen(true);
+                        setIsOpen(true);
                     }
                     if (isHamburger && mx > 5) {
-                        setOpen(false);
+                        setIsOpen(false);
                     }
                 },
             },
@@ -100,7 +95,7 @@ export const Nav: React.FC<NavProps> = ({ children, stacked, isHamburger, onUpda
                         cursor: pointer;
                     `}
                     onClick={() => {
-                        setOpen(true);
+                        setIsOpen(true);
                     }}
                 >
                     <path
@@ -124,7 +119,7 @@ export const Nav: React.FC<NavProps> = ({ children, stacked, isHamburger, onUpda
                         left: 0;
                     `}
                     onClick={() => {
-                        setOpen(false);
+                        setIsOpen(false);
                     }}
                 />
 
@@ -136,20 +131,12 @@ export const Nav: React.FC<NavProps> = ({ children, stacked, isHamburger, onUpda
                     `}
                 >
                     <ul>{children}</ul>
-                    {/* <Animated
-                        animationIn="fadeInUp"
-                        animationOut="fadeOutDown"
-                        animationInDuration={1000}
-                        animationOutDuration={1000}
-                        isVisible={isOpen}
-                    > */}
-                    <svg className="close" viewBox="0 0 16 16" onClick={() => setOpen(false)}>
+                    <svg className="close" viewBox="0 0 16 16" onClick={() => setIsOpen(false)}>
                         <path
                             fill="currentColor"
                             d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
                         />
                     </svg>
-                    {/* </Animated> */}
                 </nav>
             </div>
         );

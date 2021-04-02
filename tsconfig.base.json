@@ -1,7 +1,11 @@
 {
-    "exclude": ["node_modules", "dist"],
     "compilerOptions": {
         "skipLibCheck": true,
-        "moduleResolution": "node"
+        "moduleResolution": "node",
+        "allowJs": true,
+        "module": "ESNext",
+        "esModuleInterop": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true
     }
 }

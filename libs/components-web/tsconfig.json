@@ -1,16 +1,12 @@
 {
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
-        "allowJs": true,
         "skipLibCheck": true,
         "allowSyntheticDefaultImports": true,
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
         "resolveJsonModule": true,
         "isolatedModules": true,
         "outDir": "dist",
         "declaration": true,
-        "module": "ESNext",
         "target": "ES2019",
         "lib": ["dom", "esnext"],
         "jsx": "react-jsx",

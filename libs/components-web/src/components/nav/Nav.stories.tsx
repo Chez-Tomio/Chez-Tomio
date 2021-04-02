@@ -3,6 +3,7 @@ import React from 'react';
 
 import { Nav, NavProps } from './Nav';
 import { NavItem } from './NavItem';
+import { NavWrapper } from './NavWrapper';
 
 export default {
     title: 'Components/Nav/Nav',
@@ -10,14 +11,16 @@ export default {
 } as Meta;
 
 const Template: Story<NavProps> = (args) => (
-    <Nav {...args}>
-        <NavItem href="">Home</NavItem>
-        <NavItem href="">Page 1</NavItem>
-        <NavItem href="">Page 2</NavItem>
-        <NavItem href="">Page 3</NavItem>
-        <NavItem href="">Page 4</NavItem>
-        <NavItem href="">Page 5</NavItem>
-    </Nav>
+    <NavWrapper>
+        <Nav {...args}>
+            <NavItem href="">Home</NavItem>
+            <NavItem href="">Page 1</NavItem>
+            <NavItem href="">Page 2</NavItem>
+            <NavItem href="">Page 3</NavItem>
+            <NavItem href="">Page 4</NavItem>
+            <NavItem href="">Page 5</NavItem>
+        </Nav>
+    </NavWrapper>
 );
 
 export const Normal = Template.bind({});
