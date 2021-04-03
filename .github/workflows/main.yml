@@ -22,3 +22,5 @@ jobs:
               run: scp -o StrictHostKeyChecking=no -i ./chez-tomio-vps01.key ./resto-website.image administrator@${{secrets.SERVER_IP}}:/home/administrator/
             - name: Install image
               run: ssh -i ./chez-tomio-vps01.key administrator@${{secrets.SERVER_IP}} 'docker load -i ./resto-website.image; rm ./resto-website.image'
+            - name: Reload container
+              run: cd /home/administrator/docker/chez-tomio && docker-compose down && docker-compose up -d
