@@ -5,7 +5,7 @@ on:
 
 jobs:
     resto-website:
-        runs-on: self-hosted
+        runs-on: ubuntu-latest
         steps:
             - name: Set up checkout
               uses: actions/checkout@v1
