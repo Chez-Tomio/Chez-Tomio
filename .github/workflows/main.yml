@@ -21,8 +21,8 @@ jobs:
             - name: Upload image
               run: scp -o StrictHostKeyChecking=no -i ./chez-tomio-vps01.key ./resto-website.image administrator@${{secrets.SERVER_IP}}:/home/administrator/
             - name: Stop container
-              run: ssh -o StrictHostKeyChecking=no -i ./chez-tomio-vps01.key administrator@${{secrets.SERVER_IP}} 'docker-compose down -f /home/administrator/docker/chez-tomio/docker-compose.yml'
+              run: ssh -o StrictHostKeyChecking=no -i ./chez-tomio-vps01.key administrator@${{secrets.SERVER_IP}} 'cd /home/administrator/docker/chez-tomio && docker-compose down'
             - name: Install image
-              run: ssh -o StrictHostKeyChecking=no -i ./chez-tomio-vps01.key administrator@${{secrets.SERVER_IP}} 'docker rmi resto-website && docker load -i ./resto-website.image; rm ./resto-website.image'
+              run: ssh -o StrictHostKeyChecking=no -i ./chez-tomio-vps01.key administrator@${{secrets.SERVER_IP}} 'docker rmi resto-website && docker load -i ./resto-website.image && rm ./resto-website.image'
             - name: Start container
-              run: ssh -o StrictHostKeyChecking=no -i ./chez-tomio-vps01.key administrator@${{secrets.SERVER_IP}} 'docker-compose up -d -f /home/administrator/docker/chez-tomio/docker-compose.yml'
+              run: ssh -o StrictHostKeyChecking=no -i ./chez-tomio-vps01.key administrator@${{secrets.SERVER_IP}} 'cd /home/administrator/docker/chez-tomio && docker-compose up -d'
