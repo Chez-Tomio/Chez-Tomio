@@ -11,7 +11,7 @@
         "dev": "lerna run dev --parallel",
         "dev:resto-website": "lerna run dev --stream --scope=@chez-tomio/resto-website",
         "dev:components-web": "lerna run dev --stream --scope=@chez-tomio/components-web",
-        "build": "lerna run build --parallel",
+        "build": "lerna run build --stream",
         "build:resto-website": "lerna run build --stream --scope=@chez-tomio/resto-website",
         "build:components-web": "lerna run build --stream --scope=@chez-tomio/components-web"
     },
