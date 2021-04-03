@@ -1,0 +1,30 @@
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    resto-website:
+        runs-on: self-hosted
+        steps:
+            - name: Set up checkout
+              uses: actions/checkout@v1
+            - name: Set up QEMU
+              uses: docker/setup-qemu-action@v1
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v1
+            - name: Build image
+              uses: docker/build-push-action@v2
+              with:
+                  context: .
+                  push: false
+                  file: RestoWebsite.Dockerfile
+                  tags: resto-website
+            - name: Save image
+              run: docker save -o resto-website.image resto-website
+            - name: Setup SSH key
+              run: echo ${{ secrets.PRIVATE_KEY }} > ./chez-tomio-vps01.key
+            - name: Upload image
+              run: scp -i ./chez-tomio-vps01.key ./resto-website.image administrator@cheztomio.com:/home/administrator/
+            - name: Install image
+              run: ssh -i ./chez-tomio-vps01.key administrator@cheztomio.com 'docker load -i ./resto-website.image; rm ./resto-website.image'
