@@ -19,6 +19,6 @@ jobs:
               env:
                   SSH_KEY: ${{secrets.PRIVATE_KEY}}
             - name: Upload image
-              run: scp -i ./chez-tomio-vps01.key ./resto-website.image administrator@${{secrets.SERVER_IP}}:/home/administrator/
+              run: scp -o StrictHostKeyChecking=no -i ./chez-tomio-vps01.key ./resto-website.image administrator@${{secrets.SERVER_IP}}:/home/administrator/
             - name: Install image
               run: ssh -i ./chez-tomio-vps01.key administrator@${{secrets.SERVER_IP}} 'docker load -i ./resto-website.image; rm ./resto-website.image'
