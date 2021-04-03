@@ -20,7 +20,9 @@ jobs:
                   SSH_KEY: ${{secrets.PRIVATE_KEY}}
             - name: Upload image
               run: scp -o StrictHostKeyChecking=no -i ./chez-tomio-vps01.key ./resto-website.image administrator@${{secrets.SERVER_IP}}:/home/administrator/
+            - name: Stop container
+              run: ssh -o StrictHostKeyChecking=no -i ./chez-tomio-vps01.key administrator@${{secrets.SERVER_IP}} 'docker-compose down -f /home/administrator/docker/chez-tomio/docker-compose.yml'
             - name: Install image
-              run: ssh -o StrictHostKeyChecking=no -i ./chez-tomio-vps01.key administrator@${{secrets.SERVER_IP}} 'docker load -i ./resto-website.image; rm ./resto-website.image'
-            - name: Reload container
-              run: cd /home/administrator/docker/chez-tomio && docker-compose down && docker-compose up -d
+              run: ssh -o StrictHostKeyChecking=no -i ./chez-tomio-vps01.key administrator@${{secrets.SERVER_IP}} 'docker rmi resto-website && docker load -i ./resto-website.image; rm ./resto-website.image'
+            - name: Start container
+              run: ssh -o StrictHostKeyChecking=no -i ./chez-tomio-vps01.key administrator@${{secrets.SERVER_IP}} 'docker-compose up -d -f /home/administrator/docker/chez-tomio/docker-compose.yml'
