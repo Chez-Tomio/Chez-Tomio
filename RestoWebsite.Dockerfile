@@ -1,23 +1,29 @@
-FROM node:15
+FROM node:alpine
+
+RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
+COPY lerna.json .
 COPY package.json .
+COPY yarn.lock .
 COPY libs/components-web/package.json libs/components-web/package.json
 COPY apps/resto-website/package.json apps/resto-website/package.json
 
-RUN yarn
+RUN yarn install --frozen
 
 RUN yarn lerna bootstrap
 
 COPY . .
 
-RUN yarn lerna build:components-web
+RUN yarn run build:components-web
 
-RUN yarn lerna build:resto-website
+RUN rm -r libs/components-web/src
 
-# ENV PORT=
+RUN yarn run build:resto-website
 
-# EXPOSE 2903
+RUN rm -r apps/resto-website/pages
 
-# CMD [ "yarn", "start" ]
+ENV NODE_ENV production
+
+CMD [ "yarn", "lerna", "run", "start", "--stream", "--scope=@chez-tomio/resto-website" ]
