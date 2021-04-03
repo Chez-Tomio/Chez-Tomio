@@ -18,7 +18,10 @@ jobs:
             - name: Save image
               run: docker save -o resto-website.image resto-website
             - name: Setup SSH key
-              run: echo ${{ secrets.PRIVATE_KEY }} > ./chez-tomio-vps01.key
+              run: 'echo "$SSH_KEY" > ./chez-tomio-vps01.key'
+              shell: bash
+              env:
+                  SSH_KEY: ${{secrets.PRIVATE_KEY}}
             - name: Upload image
               run: scp -i ./chez-tomio-vps01.key ./resto-website.image administrator@cheztomio.com:/home/administrator/
             - name: Install image
