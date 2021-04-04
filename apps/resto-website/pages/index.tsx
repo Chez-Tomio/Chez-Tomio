@@ -41,7 +41,7 @@ export default function Home() {
                     <Button>Nous contacter!</Button>
                     {!loading && session ? (
                         <h1>
-                            Bienvenue {session.user.email}{' '}
+                            Bienvenue {session.user.email}
                             <Button onClick={() => signOut()}>Déconnexion</Button>
                         </h1>
                     ) : (

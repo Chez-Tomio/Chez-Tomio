@@ -10,4 +10,7 @@ export default NextAuth({
         }),
     ],
     database: `${process.env.MONGO_URI}-auth`,
+    pages: {
+        signIn: '/auth/signin',
+    },
 });
