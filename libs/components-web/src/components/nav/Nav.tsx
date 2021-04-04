@@ -40,6 +40,11 @@ const mobileNavStyles = css`
         width: 100%;
         height: 100%;
         overflow: auto;
+        a {
+            text-decoration: none;
+            color: #fff;
+            outline: none;
+        }
         .nav-item {
             color: black;
             .nav-item-li {

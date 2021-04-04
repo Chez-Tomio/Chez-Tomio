@@ -13,8 +13,10 @@ import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
+import { useSession, signIn, signOut } from 'next-auth/client';
 
 export default function Home() {
+    const [session, loading] = useSession();
     const { t } = useTranslation('common');
 
     return (
@@ -37,6 +39,16 @@ export default function Home() {
                 >
                     <Button primary={true}>Voir le menu</Button>
                     <Button>Nous contacter!</Button>
+                    {!loading && session ? (
+                        <h1>
+                            Bienvenue {session.user.email}{' '}
+                            <Button onClick={() => signOut()}>Déconnexion</Button>
+                        </h1>
+                    ) : (
+                        <h1>
+                            <Button onClick={() => signIn()}>Connexion</Button>
+                        </h1>
+                    )}
                 </div>
             </ImageSection>
 

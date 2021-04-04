@@ -22,10 +22,12 @@ const headerStyles = css`
     }
 `;
 
-const headerSpaceStyles = css`
-    flex: 1;
-`;
-
 export const Header: React.FC = ({ children }) => <header css={headerStyles}>{children}</header>;
 
-export const HeaderSpace: React.FC = () => <div css={headerSpaceStyles} />;
+export const HeaderSpace: React.FC = () => (
+    <div
+        css={css`
+            flex: 1;
+        `}
+    />
+);

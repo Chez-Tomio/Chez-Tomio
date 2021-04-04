@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { appWithTranslation, useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { Provider } from 'next-auth/client';
 import React from 'react';
 
 import Logo from '../public/logo.svg';
@@ -24,7 +25,7 @@ function App({ Component: Page, pageProps }: AppProps) {
     const { t } = useTranslation('common');
 
     return (
-        <>
+        <Provider session={pageProps.session}>
             <GlobalStyles />
             <NavWrapper>
                 <main>
@@ -36,16 +37,36 @@ function App({ Component: Page, pageProps }: AppProps) {
                         />
                         <HeaderSpace />
                         <Nav>
-                            <NavItem href="">Accueil</NavItem>
-                            <NavItem href="">Menu</NavItem>
-                            <NavItem href="">À propos</NavItem>
-                            <NavItem href="">Galerie</NavItem>
-                            <NavItem href="">Contactez-nous</NavItem>
-                            <NavItem href="" border={true}>
-                                <Link href="/" locale={router.locale === 'en' ? 'fr' : 'en'}>
-                                    <span>{t('changeLanguage')}</span>
-                                </Link>
-                            </NavItem>
+                            <Link href="">
+                                <div>
+                                    <NavItem>Accueil</NavItem>
+                                </div>
+                            </Link>
+                            <Link href="">
+                                <div>
+                                    <NavItem>Menu</NavItem>
+                                </div>
+                            </Link>
+                            <Link href="">
+                                <div>
+                                    <NavItem>À propos</NavItem>
+                                </div>
+                            </Link>
+                            <Link href="">
+                                <div>
+                                    <NavItem>Galerie</NavItem>
+                                </div>
+                            </Link>
+                            <Link href="">
+                                <div>
+                                    <NavItem>Contactez-nous</NavItem>
+                                </div>
+                            </Link>
+                            <Link href="/" locale={router.locale === 'fr' ? 'en' : 'fr'}>
+                                <div>
+                                    <NavItem border={true}>{t('changeLanguage')}</NavItem>
+                                </div>
+                            </Link>
                         </Nav>
                     </Header>
 
@@ -57,7 +78,7 @@ function App({ Component: Page, pageProps }: AppProps) {
                     />
                 </main>
             </NavWrapper>
-        </>
+        </Provider>
     );
 }
 

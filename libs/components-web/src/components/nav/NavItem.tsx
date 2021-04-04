@@ -4,17 +4,14 @@ import { css, jsx } from '@emotion/react';
 import React from 'react';
 
 export interface NavItemProps {
-    href: string;
     border?: boolean;
 }
 
 const navItemStyles = css`
     font-family: 'Montserrat', sans-serif;
-    text-decoration: none;
     display: inline-block;
-    color: #fff;
-    outline: none;
     font-weight: 500;
+    width: 100%;
     &:hover {
         .nav-item-li {
             .nav-item-text::after {
@@ -46,8 +43,8 @@ const navItemStyles = css`
     }
 `;
 
-export const NavItem: React.FC<NavItemProps> = ({ children, href, border }) => (
-    <a className="nav-item" href={href} css={navItemStyles}>
+export const NavItem: React.FC<NavItemProps> = ({ children, border }) => (
+    <div className="nav-item" css={navItemStyles}>
         <li
             className="nav-item-li"
             css={css`
@@ -57,5 +54,5 @@ export const NavItem: React.FC<NavItemProps> = ({ children, href, border }) => (
         >
             <span className="nav-item-text">{children}</span>
         </li>
-    </a>
+    </div>
 );
