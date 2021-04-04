@@ -29,16 +29,25 @@ function App({ Component: Page, pageProps }: AppProps) {
         <Provider session={pageProps.session}>
             <GlobalStyles />
             <NavWrapper>
-                <main>
+                <main
+                    css={css`
+                        min-height: 100vh;
+                        display: flex;
+                        flex-direction: column;
+                    `}
+                >
                     <Header>
-                        <Logo
-                            css={css`
-                                height: 85%;
-                            `}
-                        />
+                        <Link href="/">
+                            <Logo
+                                css={css`
+                                    height: 85%;
+                                    cursor: pointer;
+                                `}
+                            />
+                        </Link>
                         <HeaderSpace />
                         <Nav>
-                            <Link href="">
+                            <Link href="/">
                                 <div>
                                     <NavItem>Accueil</NavItem>
                                 </div>

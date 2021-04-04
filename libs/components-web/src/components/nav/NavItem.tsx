@@ -29,7 +29,7 @@ const navItemStyles = css`
         .nav-item-text {
             display: inline-block;
             &:active {
-                font-weight: 700;
+                text-shadow: 0 0 1px white;
             }
             &::after {
                 content: '';

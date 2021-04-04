@@ -42,11 +42,19 @@ export default function Home() {
                     {!loading && session ? (
                         <h1>
                             Bienvenue {session.user.email}
-                            <Button onClick={() => signOut()}>Déconnexion</Button>
+                            <Button
+                                onClick={() =>
+                                    signOut({
+                                        callbackUrl: `http://localhost:3000/api/auth/logout`,
+                                    })
+                                }
+                            >
+                                Déconnexion
+                            </Button>
                         </h1>
                     ) : (
                         <h1>
-                            <Button onClick={() => signIn()}>Connexion</Button>
+                            <Button onClick={() => signIn('cognito')}>Connexion</Button>
                         </h1>
                     )}
                 </div>
