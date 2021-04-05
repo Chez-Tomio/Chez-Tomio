@@ -10,14 +10,33 @@ import {
 import { css, jsx } from '@emotion/react';
 import Head from 'next/head';
 import Image from 'next/image';
+import { signIn, signOut, useSession } from 'next-auth/client';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
-import { useSession, signIn, signOut } from 'next-auth/client';
 
 export default function Home() {
     const [session, loading] = useSession();
     const { t } = useTranslation('common');
+
+    // {!loading && session ? (
+    //     <h1>
+    //         Bienvenue {session.user.email}
+    //         <Button
+    //             onClick={() =>
+    //                 signOut({
+    //                     callbackUrl: `http://localhost:3000/api/auth/logout`,
+    //                 })
+    //             }
+    //         >
+    //             Déconnexion
+    //         </Button>
+    //     </h1>
+    // ) : (
+    //     <h1>
+    //         <Button onClick={() => signIn('cognito')}>Connexion</Button>
+    //     </h1>
+    // )}
 
     return (
         <>
@@ -39,24 +58,6 @@ export default function Home() {
                 >
                     <Button primary={true}>Voir le menu</Button>
                     <Button>Nous contacter!</Button>
-                    {!loading && session ? (
-                        <h1>
-                            Bienvenue {session.user.email}
-                            <Button
-                                onClick={() =>
-                                    signOut({
-                                        callbackUrl: `http://localhost:3000/api/auth/logout`,
-                                    })
-                                }
-                            >
-                                Déconnexion
-                            </Button>
-                        </h1>
-                    ) : (
-                        <h1>
-                            <Button onClick={() => signIn('cognito')}>Connexion</Button>
-                        </h1>
-                    )}
                 </div>
             </ImageSection>
 
@@ -139,12 +140,6 @@ export default function Home() {
                     />
                 </SpecialtiesGrid>
             </WhiteSection>
-
-            <ImageSection imageUrl="/sample-image-2.jpg">
-                <h2>Venez manger avec nous!</h2>
-                <h4>On vous servira avec grand plaisir! On espère vous voir bientôt!</h4>
-                <Button primary={true}>Nous contacter!</Button>
-            </ImageSection>
         </>
     );
 }

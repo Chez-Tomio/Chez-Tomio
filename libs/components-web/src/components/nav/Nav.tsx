@@ -1,8 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext } from 'react';
 import { useGesture } from 'react-use-gesture';
+
 import { NavWrapper } from '../..';
 
 export interface NavProps {

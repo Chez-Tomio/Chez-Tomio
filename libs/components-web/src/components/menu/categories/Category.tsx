@@ -21,13 +21,14 @@ export const Category: React.FC<CategoryProps> = ({ children, imageUrl }) => (
             height: 250px;
             cursor: pointer;
             transition: all 0.5s;
-            h3 {
-                transition: all 0.3s;
-            }
+            color: white;
             background: rgba(0, 0, 0, 0.5) url(${imageUrl});
             background-blend-mode: darken;
             background-position: center;
             background-size: cover;
+            h3 {
+                transition: all 0.3s;
+            }
             &:hover {
                 background: rgba(0, 0, 0, 0.2) url(${imageUrl});
                 background-blend-mode: darken;

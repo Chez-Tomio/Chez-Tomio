@@ -1,10 +1,12 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import {
+    Button,
     Footer,
     GlobalStyles,
     Header,
     HeaderSpace,
+    ImageSection,
     Nav,
     NavItem,
     NavWrapper,
@@ -13,10 +15,10 @@ import { css, jsx } from '@emotion/react';
 import type { AppProps } from 'next/app';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { Provider } from 'next-auth/client';
+import { signIn, signOut, useSession } from 'next-auth/client';
 import { appWithTranslation, useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { Provider } from 'next-auth/client';
-import { useSession, signIn, signOut } from 'next-auth/client';
 
 import Logo from '../public/logo.svg';
 
@@ -42,6 +44,7 @@ function App({ Component: Page, pageProps }: AppProps) {
                                 css={css`
                                     height: 85%;
                                     cursor: pointer;
+                                    border-radius: 5px;
                                 `}
                             />
                         </Link>
@@ -52,22 +55,22 @@ function App({ Component: Page, pageProps }: AppProps) {
                                     <NavItem>Accueil</NavItem>
                                 </div>
                             </Link>
-                            <Link href="">
+                            <Link href="/menu/categories">
                                 <div>
                                     <NavItem>Menu</NavItem>
                                 </div>
                             </Link>
-                            <Link href="">
+                            <Link href="/a-propos">
                                 <div>
                                     <NavItem>À propos</NavItem>
                                 </div>
                             </Link>
-                            <Link href="">
+                            <Link href="/galerie">
                                 <div>
                                     <NavItem>Galerie</NavItem>
                                 </div>
                             </Link>
-                            <Link href="">
+                            <Link href="/contact">
                                 <div>
                                     <NavItem>Contactez-nous</NavItem>
                                 </div>
@@ -83,15 +86,16 @@ function App({ Component: Page, pageProps }: AppProps) {
                                     `}
                                 >
                                     {!loading && session ? (
-                                        <h1>
-                                            Bienvenue {session.user.email}
-                                            {/* <Button onClick={() => signOut()}>Déconnexion</Button> */}
-                                        </h1>
+                                        <span>Hey</span>
                                     ) : (
+                                        // <h1>
+                                        //     Bienvenue {session.user.email}
+                                        //     {/* <Button onClick={() => signOut()}>Déconnexion</Button> */}
+                                        // </h1>
                                         <svg
                                             fill="currentColor"
                                             viewBox="0 0 16 16"
-                                            onClick={() => signIn()}
+                                            onClick={() => signIn('cognito')}
                                             css={css`
                                                 height: 35px;
                                                 transition: 0.2s;
@@ -115,6 +119,14 @@ function App({ Component: Page, pageProps }: AppProps) {
                     </Header>
 
                     <Page {...pageProps} />
+
+                    <ImageSection imageUrl="/sample-image-2.jpg">
+                        <h2>Venez manger avec nous!</h2>
+                        <h4>On vous servira avec grand plaisir! On espère vous voir bientôt!</h4>
+                        <Link href="/contact">
+                            <Button primary={true}>Nous contacter!</Button>
+                        </Link>
+                    </ImageSection>
 
                     <Footer
                         leftText="Copyright © 2021 Chez Tomio"

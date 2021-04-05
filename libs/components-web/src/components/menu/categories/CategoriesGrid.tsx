@@ -9,6 +9,7 @@ const categoriesGridStyles = css`
     display: grid;
     grid-gap: 20px;
     grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    width: 100%;
 `;
 
 export const CategoriesGrid: React.FC = ({ children }) => (
