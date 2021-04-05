@@ -1,15 +1,17 @@
 import { Document, Model, model, models, Schema } from 'mongoose';
 
 import { ILocalizedString, LocalizedStringSchema } from '../utils';
-import { IProduct, Product } from './product';
+import { DocumentTimestamps } from '../utils';
+import { Product } from './product';
 
 export type ICategory = {
     image: Buffer;
     title: ILocalizedString;
-    products: IProduct['_id'][];
-} & Document;
+    products: Document['_id'][];
+    archived: boolean;
+} & DocumentTimestamps;
 
-const CategorySchema = new Schema(
+export const CategorySchema = new Schema(
     {
         image: Buffer,
         title: LocalizedStringSchema(true),
@@ -19,8 +21,13 @@ const CategorySchema = new Schema(
                 ref: Product.modelName,
             },
         ],
+        archived: {
+            type: Boolean,
+            default: false,
+        },
     },
     { timestamps: true },
 );
 
-export const Category: Model<ICategory> = models.Category ?? model('Category', CategorySchema);
+export const Category: Model<ICategory & Document> =
+    models.Category ?? model('Category', CategorySchema, 'categories');

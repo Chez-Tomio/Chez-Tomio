@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { Document, Model, model, models, Schema } from 'mongoose';
 
+import { DocumentTimestamps } from '../utils';
 import { ILocalizedString, IntegerSchema, LocalizedStringSchema } from '../utils';
 
 interface IBuyable {
@@ -21,7 +22,7 @@ export type IProduct = Omit<IBuyable, 'price'> & {
         choices: IBuyable[];
     }[];
     archived: boolean;
-} & Document;
+} & DocumentTimestamps;
 
 const BuyableSchema = {
     image: Buffer,
@@ -33,9 +34,9 @@ const BuyableSchema = {
     },
 };
 
-const ProductSchema = new Schema(
+export const ProductSchema = new Schema(
     {
-        ..._.omit(BuyableSchema, 'price'),
+        ..._.omit(BuyableSchema, ['price']),
         basePrice: {
             type: Number,
             required: true,
@@ -73,4 +74,5 @@ ProductSchema.virtual('minimumPrice').get(function () {
     );
 });
 
-export const Product: Model<IProduct> = models.Product ?? model('Product', ProductSchema);
+export const Product: Model<IProduct & Document> =
+    models.Product ?? model('Product', ProductSchema, 'products');

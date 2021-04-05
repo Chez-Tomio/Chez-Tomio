@@ -9,7 +9,7 @@ export default NextAuth({
             domain: process.env.COGNITO_DOMAIN,
         }),
     ],
-    database: `${process.env.MONGO_URI}-auth`,
+    database: `${process.env.MONGO_URI}`,
     pages: {
         signIn: '/auth/signin',
     },

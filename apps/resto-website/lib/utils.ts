@@ -3,6 +3,11 @@ export interface ILocalizedString {
     en: string;
 }
 
+export interface DocumentTimestamps {
+    createdAt: Date;
+    updatedAt: Date;
+}
+
 export const LocalizedStringSchema = (required: boolean) => ({
     fr: {
         type: String,
