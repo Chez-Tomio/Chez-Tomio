@@ -12,8 +12,7 @@ import React from 'react';
 export default function Menu() {
     const { t } = useTranslation('common');
     const router = useRouter();
-
-    console.log(router.query);
+    const { category } = router.query;
 
     return (
         <>
@@ -23,7 +22,7 @@ export default function Menu() {
             </Head>
 
             <ImageSection imageUrl="/sample-image.jpg" size="half">
-                <h1>Menu</h1>
+                <h1>{category}</h1>
                 <h4>Cuisine fusion asiatique!</h4>
             </ImageSection>
 

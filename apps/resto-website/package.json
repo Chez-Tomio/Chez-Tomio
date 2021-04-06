@@ -12,6 +12,7 @@
     "dependencies": {
         "@chez-tomio/components-web": "*",
         "@emotion/react": "^11.1.5",
+        "@svgr/webpack": "^5.5.0",
         "@types/next-auth": "^3.13.0",
         "lodash": "^4.17.21",
         "mongoose": "^5.12.3",
