@@ -2,7 +2,7 @@
 /** @jsx jsx */
 import { Button } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, GetStaticProps } from 'next';
 import { providers as getProviders, signIn } from 'next-auth/client';
 import { AppProvider, DefaultProviders } from 'next-auth/providers';
 import { useTranslation } from 'next-i18next';
@@ -50,12 +50,12 @@ export default function SignIn({
     );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ locale, ...context }) => {
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
     const providers = await getProviders();
     return {
         props: {
             providers,
-            ...(await serverSideTranslations(locale, ['common'])),
+            ...(await serverSideTranslations(locale!, ['common'])),
         },
     };
 };

@@ -12,13 +12,12 @@ import {
     NavWrapper,
 } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
-import type { AppProps } from 'next/app';
+import { AppProps } from 'next/app';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Provider } from 'next-auth/client';
 import { signIn, signOut, useSession } from 'next-auth/client';
 import { appWithTranslation, useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import Logo from '../public/logo.svg';
 
@@ -137,11 +136,5 @@ function App({ Component: Page, pageProps }: AppProps) {
         </Provider>
     );
 }
-
-export const getStaticProps = async ({ locale }: { locale: string }) => ({
-    props: {
-        ...(await serverSideTranslations(locale, ['common'])),
-    },
-});
 
 export default appWithTranslation(App);

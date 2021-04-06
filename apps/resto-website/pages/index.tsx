@@ -8,6 +8,7 @@ import {
     WhiteSection,
 } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
+import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { signIn, signOut, useSession } from 'next-auth/client';
@@ -144,8 +145,8 @@ export default function Home() {
     );
 }
 
-export const getStaticProps = async ({ locale }: { locale: string }) => ({
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['common'])),
+        ...(await serverSideTranslations(locale!, ['common'])),
     },
 });

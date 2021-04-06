@@ -2,13 +2,18 @@
 /** @jsx jsx */
 import { Button, ImageSection, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 
 export default function Menu() {
     const { t } = useTranslation('common');
+    const router = useRouter();
+
+    console.log(router.query);
 
     return (
         <>
@@ -29,8 +34,8 @@ export default function Menu() {
     );
 }
 
-export const getStaticProps = async ({ locale }: { locale: string }) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['common'])),
+        ...(await serverSideTranslations(locale!, ['common'])),
     },
 });

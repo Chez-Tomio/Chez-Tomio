@@ -2,6 +2,7 @@
 /** @jsx jsx */
 import { Button, ImageSection, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
+import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -29,8 +30,8 @@ export default function Galerie() {
     );
 }
 
-export const getStaticProps = async ({ locale }: { locale: string }) => ({
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['common'])),
+        ...(await serverSideTranslations(locale!, ['common'])),
     },
 });
