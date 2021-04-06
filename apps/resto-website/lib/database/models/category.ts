@@ -12,6 +12,8 @@ export type ICategory = PartialDeep<{
     archived: boolean;
 }>;
 
+export type ICategoryDocument = ICategory & Document & DocumentTimestamps;
+
 export const CategorySchema = new Schema(
     {
         image: Buffer,
@@ -30,5 +32,5 @@ export const CategorySchema = new Schema(
     { timestamps: true },
 );
 
-export const Category: Model<ICategory & Document & DocumentTimestamps> =
+export const Category: Model<ICategoryDocument> =
     models.Category ?? model('Category', CategorySchema, 'categories');
