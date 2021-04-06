@@ -23,8 +23,8 @@ export default function SignIn({
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                flex: 1;
                 min-height: 500px;
+                flex: 1;
             `}
         >
             <div
