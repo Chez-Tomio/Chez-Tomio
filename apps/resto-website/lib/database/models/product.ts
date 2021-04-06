@@ -27,6 +27,8 @@ export type IProduct = PartialDeep<
     }
 >;
 
+export type IProductDocument = IProduct & Document & DocumentTimestamps;
+
 const BuyablePartialSchema = {
     image: String,
     title: LocalizedStringSchema(true),
@@ -80,5 +82,5 @@ ProductSchema.virtual('minimumPrice').get(function () {
     );
 });
 
-export const Product: Model<IProduct & Document & DocumentTimestamps> =
+export const Product: Model<IProductDocument> =
     models.Product ?? model('Product', ProductSchema, 'products');

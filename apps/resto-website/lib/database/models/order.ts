@@ -4,13 +4,18 @@ import { PartialDeep } from 'type-fest';
 
 import { DocumentTimestamps } from '../utils';
 import { IProduct, ProductSchema } from './product';
-import { User } from './user';
+import { IUserDocument, User } from './user';
+
+const PaymentStatusPossibilities = ['unpayed', 'payed', 'refunded'] as const;
 
 export type IOrder = PartialDeep<{
     products: Omit<IProduct, 'archived' | 'isSpecialty' | 'minimumPrice'>[];
     contactPhoneNumber: string;
-    user: Document['_id'];
+    user: IUserDocument['_id'];
+    paymentStatus: typeof PaymentStatusPossibilities[number];
 }>;
+
+export type IOrderDocument = IOrder & Document & DocumentTimestamps;
 
 export const OrderSchema = new Schema(
     {
@@ -23,9 +28,13 @@ export const OrderSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: User.modelName,
         },
+        paymentStatus: {
+            type: String,
+            enum: PaymentStatusPossibilities,
+            required: true,
+        },
     },
     { timestamps: true },
 );
 
-export const Order: Model<IOrder & Document & DocumentTimestamps> =
-    models.Order ?? model('Order', OrderSchema, 'orders');
+export const Order: Model<IOrderDocument> = models.Order ?? model('Order', OrderSchema, 'orders');

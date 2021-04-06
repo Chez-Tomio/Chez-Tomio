@@ -15,6 +15,8 @@ export type IUser = PartialDeep<{
     isAdmin: boolean;
 }>;
 
+export type IUserDocument = IUser & Document & DocumentTimestamps;
+
 export const UserSchema = new Schema(
     {
         name: {
@@ -29,5 +31,4 @@ export const UserSchema = new Schema(
     { timestamps: true },
 );
 
-export const User: Model<IUser & Document & DocumentTimestamps> =
-    models.User ?? model('User', UserSchema, 'users');
+export const User: Model<IUserDocument> = models.User ?? model('User', UserSchema, 'users');
