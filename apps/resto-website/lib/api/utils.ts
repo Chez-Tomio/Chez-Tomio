@@ -1,10 +1,11 @@
 import { ValidationError } from 'class-validator';
 import { STATUS_CODES } from 'http';
+import sanitize from 'mongo-sanitize';
 import { LeanDocument } from 'mongoose';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/client';
 
-import { IUserDocument, User } from '../database/mongo';
+import { connectToDatabase, IUserDocument, User } from '../database/mongo';
 
 export const getUser = async (
     req: NextApiRequest,
@@ -26,11 +27,13 @@ export const sendError = (res: NextApiResponse, errorCode: number, details?: any
         details,
     });
 
-export const handleServerError = (endpoint: NextApiHandler) => async (
+export const apiEndpointWrapper = (endpoint: NextApiHandler) => async (
     req: NextApiRequest,
     res: NextApiResponse,
 ) => {
     try {
+        sanitize(req.body);
+        await connectToDatabase();
         return await endpoint(req, res);
     } catch (error) {
         console.error(error);

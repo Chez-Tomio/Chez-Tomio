@@ -16,8 +16,8 @@ import _ from 'lodash';
 import sanitize from 'mongo-sanitize';
 import Stripe from 'stripe';
 
-import { areValidationErrors, getUser, handleServerError, sendError } from '../../lib/api/utils';
-import { connectToDatabase, IOrder, Order, Product } from '../../lib/database/mongo';
+import { apiEndpointWrapper, areValidationErrors, getUser, sendError } from '../../lib/api/utils';
+import { IOrder, Order, Product } from '../../lib/database/mongo';
 import { localizedStringToString } from '../../lib/database/utils';
 import { Unboxed } from '../../lib/types/utils';
 import { emptyStringToUndefined } from '../../lib/utils';
@@ -68,19 +68,15 @@ class CheckoutDTO {
     products: ProductDTO[];
 }
 
-export default handleServerError(async (req, res) => {
-    await connectToDatabase();
-
+export default apiEndpointWrapper(async (req, res) => {
     if (req.method !== 'POST') return sendError(res, 405);
-
-    sanitize(req.body);
 
     const checkoutDTO = plainToClass(CheckoutDTO, req.body, { excludeExtraneousValues: true });
 
     try {
         await validateOrReject(checkoutDTO);
     } catch (e) {
-        if (areValidationErrors(e)) return sendError(res, 400, e);
+        if (areValidationErrors(e)) return sendError(res, 400);
         else throw e;
     }
 
@@ -157,5 +153,5 @@ export default handleServerError(async (req, res) => {
         },
     });
 
-    return res.status(200).json({ sessionId: session.id });
+    return res.json({ sessionId: session.id });
 });

@@ -1,22 +1,22 @@
+import sanitize from 'mongo-sanitize';
 import mongoose from 'mongoose';
 
-import { handleServerError, isUserAdmin, sendError } from '../../../lib/api/utils';
-import { connectToDatabase, Product } from '../../../lib/database/mongo';
+import { apiEndpointWrapper, isUserAdmin, sendError } from '../../../lib/api/utils';
+import { Product } from '../../../lib/database/mongo';
 
-export default handleServerError(async (req, res) => {
-    await connectToDatabase();
-
+export default apiEndpointWrapper(async (req, res) => {
     if (!(await isUserAdmin(req))) return sendError(res, 403);
 
     switch (req.method) {
         case 'GET': {
-            return res.status(200).send(await Product.find().lean());
+            return res.send(await Product.find());
         }
         case 'POST': {
             try {
+                sanitize(req.body);
                 const product = new Product(req.body);
                 await product.save();
-                return res.status(200).send(product);
+                return res.send(product);
             } catch (e) {
                 if (
                     e instanceof mongoose.Error.CastError ||

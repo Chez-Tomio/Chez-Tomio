@@ -1,13 +1,12 @@
 import { isMongoId } from 'class-validator';
 import mongoose from 'mongoose';
 
-import { handleServerError, isUserAdmin, sendError } from '../../../lib/api/utils';
+import { apiEndpointWrapper, isUserAdmin, sendError } from '../../../lib/api/utils';
 import { Category, connectToDatabase } from '../../../lib/database/mongo';
 
-export default handleServerError(async (req, res) => {
-    await connectToDatabase();
-
+export default apiEndpointWrapper(async (req, res) => {
     if (req.method !== 'PUT') return sendError(res, 405);
+
     if (!(await isUserAdmin(req))) return sendError(res, 403);
 
     const { categoryId } = req.query as { categoryId: string };
@@ -23,7 +22,7 @@ export default handleServerError(async (req, res) => {
 
         if (!category) return sendError(res, 404);
 
-        return res.status(200).json(category);
+        return res.json(category);
     } catch (e) {
         if (e instanceof mongoose.Error.CastError) return sendError(res, 400);
         throw e;
