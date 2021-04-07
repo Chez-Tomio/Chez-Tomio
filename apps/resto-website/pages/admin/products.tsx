@@ -11,11 +11,17 @@ import Popup from 'reactjs-popup';
 
 import { CategoriesForm } from '../../lib/components/admin/products/CategoriesForm';
 import { Category } from '../../lib/components/admin/products/Category';
-import { ICategory } from '../../lib/database/models/category';
+import { ICategory } from '../../lib/database/mongo';
 
 export default function Admin({ categories: initialCategories }: { categories: ICategory[] }) {
     const [isAddingCategory, setIsAddingCategory] = useState(false);
     const [categories, setCategories] = useState(initialCategories);
+
+    function updateCategory(index: number, newCategoryData: ICategory) {
+        categories[index] = newCategoryData;
+        setCategories([...categories]);
+        // PUT category to database
+    }
 
     function addCategory(newCategoryData: ICategory) {
         setIsAddingCategory(false);
@@ -44,7 +50,7 @@ export default function Admin({ categories: initialCategories }: { categories: I
                 <h2
                     css={css`
                         font-size: 2.4rem;
-                        margin-bottom: 20px;
+                        padding: 10px;
                     `}
                 >
                     Products
@@ -70,6 +76,7 @@ export default function Admin({ categories: initialCategories }: { categories: I
                         font-weight: bold;
                         padding: 5px;
                         cursor: pointer;
+                        margin-bottom: 30px;
                     `}
                     onClick={() => setIsAddingCategory(true)}
                 >
@@ -93,6 +100,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
         ...(await serverSideTranslations(locale!, ['common'])),
         categories: [
             {
+                _id: '3424',
                 title: { fr: '', en: '' },
                 image: '',
                 products: [

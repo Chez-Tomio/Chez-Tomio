@@ -5,7 +5,7 @@ import { useState } from 'react';
 import React from 'react';
 import Popup from 'reactjs-popup';
 
-import { IProduct } from '../../../database/models/product';
+import { IProduct } from '../../../database/mongo';
 import { ProductsForm } from './ProductsForm';
 
 interface ProductRowProps {
@@ -71,7 +71,15 @@ export const ProductRow: React.FC<ProductRowProps> = ({ product, onSubmitProduct
                     />
                 </td>
                 <td>
-                    <button type="button" onClick={() => setIsEditingProduct(true)}>
+                    <button
+                        type="button"
+                        onClick={() => setIsEditingProduct(true)}
+                        css={css`
+                            font-weight: bold;
+                            padding: 3px;
+                            cursor: pointer;
+                        `}
+                    >
                         Edit
                     </button>
                 </td>

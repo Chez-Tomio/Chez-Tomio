@@ -1,16 +1,14 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
-import { useState } from 'react';
 import React, { useState } from 'react';
 import Popup from 'reactjs-popup';
 
-import { CategoriesForm } from '../../lib/components/admin/products/CategoriesForm';
-import { Category } from '../../lib/components/admin/products/Category';
-import { ProductRow } from '../../lib/components/admin/products/ProductRow';
-import { ProductsForm } from '../../lib/components/admin/products/ProductsForm';
-import { ICategory } from '../../lib/database/models/category';
-import { IProduct } from '../../lib/database/models/product';
+import { ICategory } from '../../../database/mongo';
+import { IProduct } from '../../../database/mongo';
+import { CategoriesForm } from './CategoriesForm';
+import { ProductRow } from './ProductRow';
+import { ProductsForm } from './ProductsForm';
 
 interface CategoryProps {
     category: ICategory;
@@ -21,13 +19,8 @@ export const Category: React.FC<CategoryProps> = ({ category, onSubmitCategory }
     const [isEditingCategory, setIsEditingCategory] = useState(false);
 
     const [isAddingProduct, setIsAddingProduct] = useState(false);
-    const [products, setProducts] = useState(category.products);
-
-    function updateCategory(newCategoryData: ICategory) {
-        categories[index] = newCategoryData;
-        setCategories([...categories]);
-        // POST category to database
-    }
+    //@ts-expect-error
+    const [products, setProducts] = useState(category.products as IProduct[]);
 
     function updateProduct(index: number, newProductData: IProduct) {
         products[index] = newProductData;
@@ -36,18 +29,76 @@ export const Category: React.FC<CategoryProps> = ({ category, onSubmitCategory }
     }
 
     function addProduct(newProductData: IProduct) {
-        setIsAddingProduct(false);
         products.push(newProductData);
         setProducts([...products]);
-        console.log(newProductData);
+        onSubmitCategory(category);
+        setIsAddingProduct(false);
         // POST product to database
     }
 
     return (
-        <>
-            <h3>
-                {category.title.fr} / {category.title.en}
-            </h3>
+        <div
+            css={css`
+                margin-bottom: 50px;
+            `}
+        >
+            <Popup
+                open={isEditingCategory}
+                closeOnDocumentClick
+                onClose={() => setIsEditingCategory(false)}
+                contentStyle={{ overflowY: 'scroll', margin: '30px auto' }}
+            >
+                <CategoriesForm
+                    initialValues={category}
+                    onSubmitCategory={(values) => {
+                        setIsEditingCategory(false);
+                        onSubmitCategory(values);
+                    }}
+                ></CategoriesForm>
+            </Popup>
+            {category.image && (
+                <img
+                    src={category.image}
+                    css={css`
+                        height: 70px;
+                    `}
+                />
+            )}
+            <div
+                css={css`
+                    display: flex;
+                    align-items: center;
+                `}
+            >
+                {category.archived && (
+                    <div
+                        css={css`
+                            background-color: gray;
+                            color: white;
+                            padding: 5px;
+                            font-size: 0.6rem;
+                            margin: 0 10px;
+                        `}
+                    >
+                        Archived
+                    </div>
+                )}
+                <h3>
+                    {category.title.fr} / {category.title.en}
+                </h3>
+                <button
+                    css={css`
+                        font-weight: bold;
+                        padding: 3px;
+                        cursor: pointer;
+                        margin-left: 15px;
+                    `}
+                    onClick={() => setIsEditingCategory(true)}
+                >
+                    Edit {category.title.fr}
+                </button>
+            </div>
+
             <table
                 css={css`
                     width: 100%;
@@ -72,7 +123,7 @@ export const Category: React.FC<CategoryProps> = ({ category, onSubmitCategory }
                     </tr>
                 </thead>
                 <tbody>
-                    {category.products.map((p, i) => (
+                    {products.map((p, i) => (
                         <ProductRow
                             key={p._id}
                             product={p}
@@ -111,6 +162,6 @@ export const Category: React.FC<CategoryProps> = ({ category, onSubmitCategory }
             >
                 Add Product
             </button>
-        </>
+        </div>
     );
 };

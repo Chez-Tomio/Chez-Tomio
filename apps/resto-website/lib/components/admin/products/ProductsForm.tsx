@@ -5,7 +5,7 @@ import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
 
-import { IProduct } from '../../../database/models/product';
+import { IProduct } from '../../../database/mongo';
 import { ImageUpload } from '../../formik/ImageUpload';
 import { ExtrasFieldArray } from './ExtrasFieldArray';
 
