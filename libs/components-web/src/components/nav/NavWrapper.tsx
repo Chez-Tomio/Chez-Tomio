@@ -4,7 +4,7 @@ import { css, jsx } from '@emotion/react';
 import React from 'react';
 
 export class NavWrapper extends React.Component<
-    {},
+    Record<string, unknown>,
     {
         isOpen: boolean;
         isHamburger: boolean;
@@ -13,6 +13,7 @@ export class NavWrapper extends React.Component<
     public static Context = React.createContext({
         isHamburger: false,
         isOpen: false,
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         setIsOpen: (_: boolean) => {},
     });
 

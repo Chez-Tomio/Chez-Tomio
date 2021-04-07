@@ -11,10 +11,7 @@ import Popup from 'reactjs-popup';
 
 import { CategoriesForm } from '../../lib/components/admin/products/CategoriesForm';
 import { Category } from '../../lib/components/admin/products/Category';
-import { ProductRow } from '../../lib/components/admin/products/ProductRow';
-import { ProductsForm } from '../../lib/components/admin/products/ProductsForm';
 import { ICategory } from '../../lib/database/models/category';
-import { IProduct } from '../../lib/database/models/product';
 
 export default function Admin({ categories: initialCategories }: { categories: ICategory[] }) {
     const [isAddingCategory, setIsAddingCategory] = useState(false);

@@ -1,4 +1,3 @@
-import sanitize from 'mongo-sanitize';
 import mongoose from 'mongoose';
 
 import { apiEndpointWrapper, isUserAdmin, sendError } from '../../../lib/api/utils';
@@ -13,7 +12,6 @@ export default apiEndpointWrapper(async (req, res) => {
         }
         case 'POST': {
             try {
-                sanitize(req.body);
                 const product = new Product(req.body);
                 await product.save();
                 return res.send(product);

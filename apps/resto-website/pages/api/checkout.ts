@@ -13,7 +13,6 @@ import {
     validateOrReject,
 } from 'class-validator';
 import _ from 'lodash';
-import sanitize from 'mongo-sanitize';
 import Stripe from 'stripe';
 
 import { apiEndpointWrapper, areValidationErrors, getUser, sendError } from '../../lib/api/utils';

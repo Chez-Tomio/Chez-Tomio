@@ -2,7 +2,7 @@ import { isMongoId } from 'class-validator';
 import mongoose from 'mongoose';
 
 import { apiEndpointWrapper, isUserAdmin, sendError } from '../../../lib/api/utils';
-import { Category, connectToDatabase } from '../../../lib/database/mongo';
+import { Category } from '../../../lib/database/mongo';
 
 export default apiEndpointWrapper(async (req, res) => {
     if (req.method !== 'PUT') return sendError(res, 405);
