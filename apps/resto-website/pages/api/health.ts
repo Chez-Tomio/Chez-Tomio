@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
 
-import { handleServerError } from '../../lib/api/utils';
-import { connectToDatabase } from '../../lib/database/mongo';
+import { apiEndpointWrapper, sendError } from '../../lib/api/utils';
 
-export default handleServerError(async (req, res) => {
-    await connectToDatabase();
+export default apiEndpointWrapper(async (req, res) => {
+    if (req.method !== 'GET') return sendError(res, 405);
 
     const data = {
         database: {
