@@ -5,12 +5,12 @@ import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
 
-import { ICategory } from '../../../database/models/category';
+import { ICategory } from '../../../database/mongo';
 import { ImageUpload } from '../../formik/ImageUpload';
 
 export interface CategoriesFormProps {
     initialValues: Omit<ICategory, 'products'>;
-    onSubmitCategory: (newCategory: Omit<ICategory, 'products'>) => void;
+    onSubmitCategory: (newCategory: ICategory) => void;
 }
 
 export const CategoriesForm: React.FC<CategoriesFormProps> = ({
@@ -39,7 +39,7 @@ export const CategoriesForm: React.FC<CategoriesFormProps> = ({
             //     return errors;
             // }}
             onSubmit={(values, { setSubmitting }) => {
-                onSubmitCategory(values);
+                onSubmitCategory({ ...values, products: [] } as ICategory);
                 setSubmitting(false);
             }}
         >
