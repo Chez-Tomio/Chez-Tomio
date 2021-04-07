@@ -10,10 +10,10 @@ import { ProductsForm } from './ProductsForm';
 
 interface ProductRowProps {
     product: IProduct;
-    onUpdateProduct: (newProduct: IProduct) => void;
+    onSubmitProduct: (newProduct: IProduct) => void;
 }
 
-export const ProductRow: React.FC<ProductRowProps> = ({ product, onUpdateProduct }) => {
+export const ProductRow: React.FC<ProductRowProps> = ({ product, onSubmitProduct }) => {
     const [isEditingProduct, setIsEditingProduct] = useState(false);
 
     return (
@@ -26,48 +26,47 @@ export const ProductRow: React.FC<ProductRowProps> = ({ product, onUpdateProduct
             >
                 <ProductsForm
                     initialValues={product}
-                    onUpdateProduct={(values) => {
+                    onSubmitProduct={(values) => {
                         setIsEditingProduct(false);
-                        onUpdateProduct(values);
+                        onSubmitProduct(values);
                     }}
                 ></ProductsForm>
             </Popup>
             <tr>
-                <td>{product.title ? product.title.fr + ' / ' + product.title.en : ''}</td>
                 <td>
-                    {product.description
-                        ? product.description.fr + ' / ' + product.description.en
-                        : ''}
+                    {product.title.fr} / {product.title.en}
+                </td>
+                <td>
+                    {product.description.fr} / {product.description.en}
                 </td>
                 <td>
                     <img
-                        src={product.image ?? ''}
+                        src={product.image}
                         alt="product-image"
                         css={css`
                             height: 70px;
                         `}
                     />
                 </td>
-                <td>${product.basePrice ?? ''}</td>
-                <td>${product.minimumPrice ?? ''}</td>
+                <td>${product.basePrice}</td>
                 <td>
                     <input
                         type="checkbox"
                         css={css`
                             pointer-events: none;
                         `}
-                        checked={product.isSpecialty ?? false}
+                        checked={product.isSpecialty}
                         readOnly={true}
                     />
                 </td>
-                <td>{product.extras ? product.extras.map((e) => e.title.fr).join(', ') : ''}</td>
+                <td>{product.extras.map((e) => e.title.fr).join(', ')}</td>
                 <td>
                     <input
                         type="checkbox"
                         css={css`
                             pointer-events: none;
                         `}
-                        checked={product.archived ?? false}
+                        checked={product.archived}
                         readOnly={true}
                     />
                 </td>

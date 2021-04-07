@@ -5,7 +5,6 @@ import { Document, DocumentTimestamps } from '../utils';
 import { ILocalizedString, LocalizedStringSchema } from '../utils';
 
 interface IBuyable {
-    _id?: Types.ObjectId;
     title: ILocalizedString;
     description: Partial<ILocalizedString>;
     price: number;
@@ -19,7 +18,10 @@ export type IProduct = Omit<IBuyable, 'price'> & {
     extras: IBuyable[];
 };
 
-export type IProductDocument = IProduct & Document & DocumentTimestamps;
+export type IProductDocument = Omit<IProduct, 'extras'> & {
+    extras: (IBuyable & { _id: Types.ObjectId })[];
+} & Document &
+    DocumentTimestamps;
 
 const BuyablePartialSchema = {
     title: LocalizedStringSchema(true),

@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
-import { NextApiRequest, NextApiResponse } from 'next';
 
+import { handleServerError } from '../../lib/api/utils';
 import { connectToDatabase } from '../../lib/database/mongo';
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default handleServerError(async (req, res) => {
     await connectToDatabase();
 
     const data = {
@@ -15,4 +15,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     };
 
     res.json(data);
-};
+});

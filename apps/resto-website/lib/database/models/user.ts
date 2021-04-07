@@ -9,7 +9,6 @@ import { Model, model, models, Schema, Types } from 'mongoose';
 import { Document, DocumentTimestamps } from '../utils';
 
 export type IUser = {
-    _id?: Types.ObjectId;
     name: string;
     email: string;
     isAdmin?: boolean;

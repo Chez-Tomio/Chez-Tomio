@@ -20,7 +20,6 @@ export const ImageUpload: React.FC<FieldProps> = ({ field, form }) => {
                     const file = e.currentTarget.files[0];
                     const reader = new FileReader();
                     reader.onloadend = () => {
-                        console.log(reader.result);
                         form.setFieldValue(field.name, reader.result);
                     };
                     reader.readAsDataURL(file);

@@ -14,10 +14,9 @@ import {
 } from 'class-validator';
 import _ from 'lodash';
 import sanitize from 'mongo-sanitize';
-import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 
-import { areValidationErrors, getUser, sendError } from '../../lib/api/utils';
+import { areValidationErrors, getUser, handleServerError, sendError } from '../../lib/api/utils';
 import { connectToDatabase, IOrder, Order, Product } from '../../lib/database/mongo';
 import { localizedStringToString } from '../../lib/database/utils';
 import { Unboxed } from '../../lib/types/utils';
@@ -69,7 +68,7 @@ class CheckoutDTO {
     products: ProductDTO[];
 }
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default handleServerError(async (req, res) => {
     await connectToDatabase();
 
     if (req.method !== 'POST') return sendError(res, 405);
@@ -95,18 +94,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     for (const productDTO of checkoutDTO.products) {
-        const product = await Product.findOne({ _id: productDTO.id, archived: false }).exec();
+        const product = await Product.findOne({ _id: productDTO.id, archived: false }).lean();
 
         if (!product) return sendError(res, 404);
 
-        const orderProduct = _.chain(product.toObject())
+        const orderProduct = _.chain(product)
             .omit('_id', '__v', 'createdAt', 'updatedAt', 'archived', 'isSpecialty', 'minimumPrice')
             .set('extras', [])
             .value() as Unboxed<IOrder['products']>;
 
         for (const extraDTO of productDTO.extras) {
             const extra = product.extras.find((e) => {
-                return e._id?.toString() === extraDTO.id;
+                return e._id.toString() === extraDTO.id;
             });
 
             if (!extra) return sendError(res, 404);
@@ -159,4 +158,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     return res.status(200).json({ sessionId: session.id });
-};
+});

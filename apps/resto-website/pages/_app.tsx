@@ -16,7 +16,7 @@ import { useRouter } from 'next/router';
 import { Provider } from 'next-auth/client';
 import { appWithTranslation, useTranslation } from 'next-i18next';
 
-import { LoginButton } from '../lib/components/LoginButton';
+import { LoginButton } from '../lib/components/app/LoginButton';
 import Logo from '../public/logo.svg';
 
 function App({ Component: Page, pageProps }: AppProps) {

@@ -5,16 +5,18 @@ import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
 
-import { IProduct } from '../../../database/models/product';
+import { ICategory } from '../../../database/models/category';
 import { ImageUpload } from '../../formik/ImageUpload';
-import { ExtrasFieldArray } from './ExtrasFieldArray';
 
-export interface ProductsFormProps {
-    initialValues: IProduct;
-    onSubmitProduct: (newProduct: IProduct) => void;
+export interface CategoriesFormProps {
+    initialValues: Omit<ICategory, 'products'>;
+    onSubmitCategory: (newCategory: Omit<ICategory, 'products'>) => void;
 }
 
-export const ProductsForm: React.FC<ProductsFormProps> = ({ initialValues, onSubmitProduct }) => {
+export const CategoriesForm: React.FC<CategoriesFormProps> = ({
+    initialValues,
+    onSubmitCategory,
+}) => {
     return (
         <Formik
             initialValues={initialValues}
@@ -37,7 +39,7 @@ export const ProductsForm: React.FC<ProductsFormProps> = ({ initialValues, onSub
             //     return errors;
             // }}
             onSubmit={(values, { setSubmitting }) => {
-                onSubmitProduct(values);
+                onSubmitCategory(values);
                 setSubmitting(false);
             }}
         >
@@ -69,50 +71,8 @@ export const ProductsForm: React.FC<ProductsFormProps> = ({ initialValues, onSub
                     </div>
 
                     <div className="item">
-                        <label htmlFor="description">Description</label>
-                        <Field
-                            name="description.fr"
-                            placeholder="Description French"
-                            as="textarea"
-                            rows={3}
-                            css={css`
-                                resize: none;
-                            `}
-                        />
-                        <Field
-                            name="description.en"
-                            placeholder="Description English"
-                            as="textarea"
-                            rows={3}
-                            css={css`
-                                resize: none;
-                            `}
-                        />
-                    </div>
-
-                    <div className="item">
                         <label htmlFor="image">Image</label>
                         <Field name="image" type="file" component={ImageUpload} />
-                    </div>
-
-                    <div className="item">
-                        <label htmlFor="basePrice">Base Price</label>
-                        <Field name="basePrice" type="number" />
-                    </div>
-
-                    <div className="item">
-                        <label htmlFor="isSpecialty">Specialty</label>
-                        <Field
-                            name="isSpecialty"
-                            type="checkbox"
-                            css={css`
-                                width: fit-content !important;
-                            `}
-                        />
-                    </div>
-
-                    <div className="item">
-                        <ExtrasFieldArray values={values}></ExtrasFieldArray>
                     </div>
 
                     <div className="item">

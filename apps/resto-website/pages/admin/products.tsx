@@ -9,28 +9,23 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React, { useState } from 'react';
 import Popup from 'reactjs-popup';
 
+import { CategoriesForm } from '../../lib/components/admin/products/CategoriesForm';
+import { Category } from '../../lib/components/admin/products/Category';
 import { ProductRow } from '../../lib/components/admin/products/ProductRow';
 import { ProductsForm } from '../../lib/components/admin/products/ProductsForm';
+import { ICategory } from '../../lib/database/models/category';
 import { IProduct } from '../../lib/database/models/product';
 
-export default function Admin({ products: initialProducts }: { products: IProduct[] }) {
-    const [isAddingProduct, setIsAddingProduct] = useState(false);
-    const [products, setProducts] = useState(initialProducts);
+export default function Admin({ categories: initialCategories }: { categories: ICategory[] }) {
+    const [isAddingCategory, setIsAddingCategory] = useState(false);
+    const [categories, setCategories] = useState(initialCategories);
 
-    function updateProduct(index: number, newProductData: IProduct) {
-        products[index] = newProductData;
-        setProducts([...products]);
-        // Save in database
-
-        // PUT product to database
-    }
-
-    function addProduct(newProductData: IProduct) {
-        setIsAddingProduct(false);
-        products.push(newProductData);
-        setProducts([...products]);
-        console.log(newProductData);
-        // POST product to database (Unspecified fields are not in newProductData)
+    function addCategory(newCategoryData: ICategory) {
+        setIsAddingCategory(false);
+        categories.push(newCategoryData);
+        setCategories([...categories]);
+        console.log(newCategoryData);
+        // POST category to database
     }
 
     return (
@@ -52,71 +47,45 @@ export default function Admin({ products: initialProducts }: { products: IProduc
                 <h2
                     css={css`
                         font-size: 2.4rem;
+                        margin-bottom: 20px;
                     `}
                 >
                     Products
                 </h2>
 
-                <h3>Category 1</h3>
-                <table
-                    css={css`
-                        width: 100%;
-                        border-collapse: collapse;
-                        th,
-                        td {
-                            border: 1px #000 solid;
-                            padding: 5px;
-                        }
-                    `}
-                >
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Image</th>
-                            <th>Base Price</th>
-                            <th>Minimum Price</th>
-                            <th>Speciality</th>
-                            <th>Extras</th>
-                            <th>Archived</th>
-                            <th>Edit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {products.map((p, i) => (
-                            <ProductRow
-                                key={p._id}
-                                product={p}
-                                onUpdateProduct={(newProduct) => updateProduct(i, newProduct)}
-                            />
-                        ))}
-                    </tbody>
-                </table>
-                <button
-                    css={css`
-                        font-weight: bold;
-                        padding: 5px;
-                    `}
-                >
-                    Add Category
-                </button>
                 <Popup
-                    open={isAddingProduct}
+                    open={isAddingCategory}
                     closeOnDocumentClick
-                    onClose={() => setIsAddingProduct(false)}
+                    onClose={() => setIsAddingCategory(false)}
                     contentStyle={{ overflowY: 'scroll', margin: '30px auto' }}
                 >
-                    <ProductsForm initialValues={{}} onUpdateProduct={addProduct}></ProductsForm>
+                    <CategoriesForm
+                        initialValues={{
+                            title: { fr: '', en: '' },
+                            image: '',
+                            archived: false,
+                        }}
+                        onSubmitCategory={addCategory}
+                    ></CategoriesForm>
                 </Popup>
                 <button
                     css={css`
                         font-weight: bold;
                         padding: 5px;
+                        cursor: pointer;
                     `}
-                    onClick={() => setIsAddingProduct(true)}
+                    onClick={() => setIsAddingCategory(true)}
                 >
-                    Add Product
+                    Add Category
                 </button>
+
+                {categories.map((c, i) => (
+                    <Category
+                        key={c._id}
+                        category={c}
+                        onSubmitCategory={(newCategory) => updateCategory(i, newCategory)}
+                    ></Category>
+                ))}
             </div>
         </>
     );
@@ -124,17 +93,23 @@ export default function Admin({ products: initialProducts }: { products: IProduc
 
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['common'])),
-        products: [
+        ...(await serverSideTranslations(locale!, ['common'])),
+        categories: [
             {
-                _id: '41231',
                 title: { fr: '', en: '' },
-                description: { fr: '', en: '' },
                 image: '',
-                basePrice: 0,
-                minimumPrice: 0,
-                isSpecialty: false,
-                extras: [],
+                products: [
+                    {
+                        _id: '41231',
+                        title: { fr: '', en: '' },
+                        description: { fr: '', en: '' },
+                        image: '',
+                        basePrice: 0,
+                        isSpecialty: false,
+                        extras: [],
+                        archived: false,
+                    },
+                ],
                 archived: false,
             },
         ],
