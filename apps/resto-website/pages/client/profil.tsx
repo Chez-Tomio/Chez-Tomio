@@ -36,7 +36,7 @@ export default function Profil() {
                             primary={true}
                             onClick={() =>
                                 signOut({
-                                    callbackUrl: `http://localhost:3000/api/auth/logout`,
+                                    callbackUrl: `${process.env.SITE_BASE_URL}/api/auth/logout`,
                                 })
                             }
                         >
