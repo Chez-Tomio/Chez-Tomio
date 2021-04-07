@@ -1,36 +1,27 @@
 import _ from 'lodash';
-import { Document, Model, model, models, Schema } from 'mongoose';
-import { PartialDeep } from 'type-fest';
+import { Model, model, models, Schema, Types } from 'mongoose';
 
-import { DocumentTimestamps } from '../utils';
-import { ILocalizedString, IntegerSchema, LocalizedStringSchema } from '../utils';
+import { Document, DocumentTimestamps } from '../utils';
+import { ILocalizedString, LocalizedStringSchema } from '../utils';
 
 interface IBuyable {
-    image: string;
+    _id?: Types.ObjectId;
     title: ILocalizedString;
     description: Partial<ILocalizedString>;
     price: number;
 }
 
-export type IProduct = PartialDeep<
-    Omit<IBuyable, 'price'> & {
-        basePrice: number;
-        minimumPrice: number;
-        isSpecialty: boolean;
-        extras: (IBuyable & Document)[];
-        customizationCategories: {
-            title: ILocalizedString;
-            minimumChoicesAmount: number;
-            choices: (IBuyable & Document)[];
-        }[];
-        archived: boolean;
-    }
->;
+export type IProduct = Omit<IBuyable, 'price'> & {
+    basePrice: number;
+    isSpecialty: boolean;
+    image?: string;
+    archived: boolean;
+    extras: IBuyable[];
+};
 
 export type IProductDocument = IProduct & Document & DocumentTimestamps;
 
 const BuyablePartialSchema = {
-    image: String,
     title: LocalizedStringSchema(true),
     description: LocalizedStringSchema(false),
     price: {
@@ -38,9 +29,6 @@ const BuyablePartialSchema = {
         required: true,
     },
 };
-
-const ExtraSchema = new Schema({ ...BuyablePartialSchema });
-const CustomizationChoiceSchema = new Schema({ ...BuyablePartialSchema });
 
 export const ProductSchema = new Schema(
     {
@@ -53,12 +41,7 @@ export const ProductSchema = new Schema(
             type: Boolean,
             default: false,
         },
-        extras: [ExtraSchema],
-        customizationCategories: {
-            title: LocalizedStringSchema(true),
-            minimumChoicesAmount: IntegerSchema,
-            choices: [CustomizationChoiceSchema],
-        },
+        extras: [{ ...BuyablePartialSchema }],
         archived: {
             type: Boolean,
             default: false,
@@ -66,21 +49,6 @@ export const ProductSchema = new Schema(
     },
     { timestamps: true },
 );
-
-ProductSchema.virtual('minimumPrice').get(function () {
-    const product = this as Omit<IProduct, 'minimumPrice'>;
-    return (
-        (product.basePrice ?? 0) +
-        _.sumBy(product.customizationCategories, (configuration) =>
-            _.chain(configuration!.choices)
-                .map('price')
-                .sort()
-                .take(configuration!.minimumChoicesAmount)
-                .sum()
-                .value(),
-        )
-    );
-});
 
 export const Product: Model<IProductDocument> =
     models.Product ?? model('Product', ProductSchema, 'products');

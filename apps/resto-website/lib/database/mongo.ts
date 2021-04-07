@@ -8,11 +8,11 @@ export async function connectToDatabase() {
         });
 }
 
-export type { ICategory } from './models/category';
+export type { ICategory, ICategoryDocument } from './models/category';
 export { Category } from './models/category';
-export type { IOrder } from './models/order';
+export type { IOrder, IOrderDocument } from './models/order';
 export { Order } from './models/order';
-export type { IProduct } from './models/product';
+export type { IProduct, IProductDocument } from './models/product';
 export { Product } from './models/product';
-export type { IUser } from './models/user';
+export type { IUser, IUserDocument } from './models/user';
 export { User } from './models/user';

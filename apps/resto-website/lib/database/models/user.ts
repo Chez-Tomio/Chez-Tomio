@@ -4,16 +4,16 @@
  *** It's purpose is to query and add metadata to existing NextAuth users
  */
 
-import { Document, Model, model, models, Schema } from 'mongoose';
-import { PartialDeep } from 'type-fest';
+import { Model, model, models, Schema, Types } from 'mongoose';
 
-import { DocumentTimestamps } from '../utils';
+import { Document, DocumentTimestamps } from '../utils';
 
-export type IUser = PartialDeep<{
+export type IUser = {
+    _id?: Types.ObjectId;
     name: string;
     email: string;
-    isAdmin: boolean;
-}>;
+    isAdmin?: boolean;
+};
 
 export type IUserDocument = IUser & Document & DocumentTimestamps;
 

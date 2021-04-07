@@ -1,19 +1,21 @@
 import _ from 'lodash';
-import { Document, Model, model, models, Schema } from 'mongoose';
-import { PartialDeep } from 'type-fest';
+import { Model, model, models, Schema, Types } from 'mongoose';
 
-import { DocumentTimestamps } from '../utils';
+import { Document, DocumentTimestamps } from '../utils';
 import { IProduct, ProductSchema } from './product';
-import { IUserDocument, User } from './user';
+import { User } from './user';
 
 const PaymentStatusPossibilities = ['unpayed', 'payed', 'refunded'] as const;
 
-export type IOrder = PartialDeep<{
-    products: Omit<IProduct, 'archived' | 'isSpecialty' | 'minimumPrice'>[];
+export type IOrder = {
+    _id?: Types.ObjectId;
+    products: (Omit<IProduct, 'archived' | 'isSpecialty' | 'minimumPrice' | 'image'> & {
+        id: string;
+    })[];
     contactPhoneNumber: string;
-    user: IUserDocument['_id'];
+    user?: Types.ObjectId;
     paymentStatus: typeof PaymentStatusPossibilities[number];
-}>;
+};
 
 export type IOrderDocument = IOrder & Document & DocumentTimestamps;
 

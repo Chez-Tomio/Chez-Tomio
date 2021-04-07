@@ -1,3 +1,9 @@
+import mongoose from 'mongoose';
+
+export interface Document extends mongoose.Document {
+    _id: mongoose.Types.ObjectId;
+}
+
 export interface ILocalizedString {
     fr: string;
     en: string;
@@ -27,3 +33,6 @@ export const IntegerSchema = {
         message: '{VALUE} is not an integer value',
     },
 };
+
+export const localizedStringToString = (localizedString: Partial<ILocalizedString>): string =>
+    [localizedString.fr, localizedString.en].filter((s) => s && s.trim() !== '').join(' / ');

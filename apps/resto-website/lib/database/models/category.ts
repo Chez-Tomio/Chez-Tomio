@@ -1,14 +1,15 @@
-import { Document, Model, model, models, Schema } from 'mongoose';
+import { Model, model, models, Schema, Types } from 'mongoose';
 import { PartialDeep } from 'type-fest';
 
 import { ILocalizedString, LocalizedStringSchema } from '../utils';
-import { DocumentTimestamps } from '../utils';
+import { Document, DocumentTimestamps } from '../utils';
 import { Product } from './product';
 
 export type ICategory = PartialDeep<{
-    image: Buffer;
+    _id?: Types.ObjectId;
+    image: string;
     title: ILocalizedString;
-    products: Document['_id'][];
+    products: Types.ObjectId[];
     archived: boolean;
 }>;
 
@@ -16,7 +17,10 @@ export type ICategoryDocument = ICategory & Document & DocumentTimestamps;
 
 export const CategorySchema = new Schema(
     {
-        image: Buffer,
+        image: {
+            type: String,
+            required: true,
+        },
         title: LocalizedStringSchema(true),
         products: [
             {
