@@ -9,7 +9,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 
-export default function Profil() {
+export default function Profil({ SITE_BASE_URL }: { SITE_BASE_URL: string }) {
     const { t } = useTranslation('common');
     const [session, loading] = useSession();
 
@@ -36,7 +36,7 @@ export default function Profil() {
                             primary={true}
                             onClick={() =>
                                 signOut({
-                                    callbackUrl: `${process.env.SITE_BASE_URL}/api/auth/logout`,
+                                    callbackUrl: `${SITE_BASE_URL}/api/auth/logout`,
                                 })
                             }
                         >
@@ -66,5 +66,6 @@ export default function Profil() {
 export const getStaticProps = async ({ locale }: { locale: string }) => ({
     props: {
         ...(await serverSideTranslations(locale, ['common'])),
+        SITE_BASE_URL: process.env.SITE_BASE_URL,
     },
 });

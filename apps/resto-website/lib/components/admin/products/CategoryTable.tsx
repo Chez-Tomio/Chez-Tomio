@@ -4,36 +4,64 @@ import { css, jsx } from '@emotion/react';
 import React, { useState } from 'react';
 import Popup from 'reactjs-popup';
 
-import { ICategory } from '../../../database/mongo';
-import { IProduct } from '../../../database/mongo';
+import { ISerializedCategoryWithProducts, ISerializedProduct } from '../../../database/mongo';
 import { CategoriesForm } from './CategoriesForm';
 import { ProductRow } from './ProductRow';
 import { ProductsForm } from './ProductsForm';
 
 interface CategoryProps {
-    category: ICategory;
-    onSubmitCategory: (newCategory: ICategory) => void;
+    category: ISerializedCategoryWithProducts;
+    onUpdateCategory: (newCategory: ISerializedCategoryWithProducts) => void | Promise<void>;
+    onDeleteCategory: (product: ISerializedCategoryWithProducts) => void | Promise<void>;
+    onUpdateProduct: (newProduct: ISerializedProduct) => void | Promise<void>;
+    onAddProduct: (
+        newProduct: ISerializedProduct,
+        category: ISerializedCategoryWithProducts,
+    ) => void | Promise<void>;
+    onDeleteProduct: (product: ISerializedProduct) => void | Promise<void>;
 }
 
-export const Category: React.FC<CategoryProps> = ({ category, onSubmitCategory }) => {
+export const CategoryTable: React.FC<CategoryProps> = ({
+    category,
+    onUpdateCategory,
+    onDeleteCategory,
+    onUpdateProduct,
+    onAddProduct,
+    onDeleteProduct,
+}) => {
     const [isEditingCategory, setIsEditingCategory] = useState(false);
-
     const [isAddingProduct, setIsAddingProduct] = useState(false);
-    //@ts-expect-error
-    const [products, setProducts] = useState(category.products as IProduct[]);
+    const [products, setProducts] = useState(category.products);
 
-    function updateProduct(index: number, newProductData: IProduct) {
-        products[index] = newProductData;
+    async function updateProduct(index: number, newProduct: ISerializedProduct) {
+        await onUpdateProduct(newProduct);
+        products[index] = newProduct;
         setProducts([...products]);
-        // PUT product to database
     }
 
-    function addProduct(newProductData: IProduct) {
-        products.push(newProductData);
+    async function addProduct(newProduct: ISerializedProduct) {
+        await onAddProduct(newProduct, category);
+        products.push(newProduct);
         setProducts([...products]);
-        onSubmitCategory(category);
         setIsAddingProduct(false);
-        // POST product to database
+    }
+
+    async function deleteProduct(product: ISerializedProduct) {
+        if (
+            confirm(`Are you sure you want to delete ${product.title.fr}?`) &&
+            confirm('This action is irreversible!')
+        ) {
+            await onDeleteProduct(product);
+            setProducts(products.filter((c) => c._id !== product._id));
+        }
+    }
+
+    async function deleteCategory() {
+        if (
+            confirm(`Are you sure you want to delete ${category.title.fr}?`) &&
+            confirm('This action is irreversible!')
+        )
+            await onDeleteCategory(category);
     }
 
     return (
@@ -52,7 +80,7 @@ export const Category: React.FC<CategoryProps> = ({ category, onSubmitCategory }
                     initialValues={category}
                     onSubmitCategory={(values) => {
                         setIsEditingCategory(false);
-                        onSubmitCategory(values);
+                        onUpdateCategory(values);
                     }}
                 ></CategoriesForm>
             </Popup>
@@ -97,6 +125,19 @@ export const Category: React.FC<CategoryProps> = ({ category, onSubmitCategory }
                 >
                     Edit {category.title.fr}
                 </button>
+                <button
+                    css={css`
+                        font-weight: bold;
+                        padding: 3px;
+                        cursor: pointer;
+                        margin-left: 15px;
+                        background-color: red;
+                        color: white;
+                    `}
+                    onClick={() => deleteCategory()}
+                >
+                    Delete {category.title.fr}
+                </button>
             </div>
 
             <table
@@ -127,7 +168,8 @@ export const Category: React.FC<CategoryProps> = ({ category, onSubmitCategory }
                         <ProductRow
                             key={p._id}
                             product={p}
-                            onSubmitProduct={(newProduct) => updateProduct(i, newProduct)}
+                            onUpdateProduct={(newProduct) => updateProduct(i, newProduct)}
+                            onDeleteProduct={() => deleteProduct(p)}
                         />
                     ))}
                 </tbody>
@@ -155,7 +197,6 @@ export const Category: React.FC<CategoryProps> = ({ category, onSubmitCategory }
                 css={css`
                     font-weight: bold;
                     padding: 5px;
-                    float: right;
                     cursor: pointer;
                 `}
                 onClick={() => setIsAddingProduct(true)}

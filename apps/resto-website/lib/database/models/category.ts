@@ -1,8 +1,8 @@
-import { Model, model, models, Schema, Types } from 'mongoose';
+import { LeanDocument, Model, model, models, Schema, Types } from 'mongoose';
 
 import { ILocalizedString, LocalizedStringSchema } from '../utils';
 import { Document, DocumentTimestamps } from '../utils';
-import { Product } from './product';
+import { ISerializedProduct, Product } from './product';
 
 export type ICategory = {
     image: string;
@@ -12,6 +12,14 @@ export type ICategory = {
 };
 
 export type ICategoryDocument = ICategory & Document & DocumentTimestamps;
+
+export type ISerializedCategoryWithProducts = Omit<
+    LeanDocument<ICategoryDocument>,
+    '_id' | 'products'
+> & {
+    _id: string;
+    products: ISerializedProduct[];
+};
 
 export const CategorySchema = new Schema(
     {

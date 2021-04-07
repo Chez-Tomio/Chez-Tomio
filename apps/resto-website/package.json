@@ -25,6 +25,7 @@
         "next-i18next": "^8.0.6",
         "react": "17.0.1",
         "react-dom": "17.0.1",
+        "react-toast-notifications": "^2.4.3",
         "reactjs-popup": "^2.0.4",
         "stripe": "^8.142.0",
         "yup": "^0.32.9"

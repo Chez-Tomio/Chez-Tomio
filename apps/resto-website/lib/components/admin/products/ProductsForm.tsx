@@ -5,13 +5,14 @@ import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
 
-import { IProduct } from '../../../database/mongo';
+import { ISerializedProduct } from '../../../database/mongo';
+import { DocumentTimestamps } from '../../../database/utils';
 import { ImageUpload } from '../../formik/ImageUpload';
 import { ExtrasFieldArray } from './ExtrasFieldArray';
 
 export interface ProductsFormProps {
-    initialValues: IProduct;
-    onSubmitProduct: (newProduct: IProduct) => void;
+    initialValues: Omit<ISerializedProduct, '_id' | keyof DocumentTimestamps>;
+    onSubmitProduct: (newProduct: ISerializedProduct) => void;
 }
 
 export const ProductsForm: React.FC<ProductsFormProps> = ({ initialValues, onSubmitProduct }) => {
@@ -37,7 +38,12 @@ export const ProductsForm: React.FC<ProductsFormProps> = ({ initialValues, onSub
             //     return errors;
             // }}
             onSubmit={(values, { setSubmitting }) => {
-                onSubmitProduct(values);
+                onSubmitProduct({
+                    _id: undefined as unknown,
+                    createdAt: undefined as unknown,
+                    updatedAt: undefined as unknown,
+                    ...values,
+                } as ISerializedProduct);
                 setSubmitting(false);
             }}
         >

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Model, model, models, Schema, Types } from 'mongoose';
+import { LeanDocument, Model, model, models, Schema, Types } from 'mongoose';
 
 import { Document, DocumentTimestamps } from '../utils';
 import { ILocalizedString, LocalizedStringSchema } from '../utils';
@@ -23,6 +23,11 @@ export type IProductDocument = Omit<IProduct, 'extras'> & {
 } & Document &
     DocumentTimestamps;
 
+export type ISerializedProduct = Omit<LeanDocument<IProductDocument>, '_id' | 'extras'> & {
+    _id: string;
+    extras: (IBuyable & { _id: string })[];
+};
+
 const BuyablePartialSchema = {
     title: LocalizedStringSchema(true),
     description: LocalizedStringSchema(false),
@@ -34,6 +39,7 @@ const BuyablePartialSchema = {
 
 export const ProductSchema = new Schema(
     {
+        image: String,
         ..._.omit(BuyablePartialSchema, ['price']),
         basePrice: {
             type: Number,

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import mongoose from 'mongoose';
 
 import { apiEndpointWrapper, isUserAdmin, sendError } from '../../../lib/api/utils';
@@ -13,7 +14,7 @@ export default apiEndpointWrapper(async (req, res) => {
         case 'POST': {
             try {
                 const product = new Product(req.body);
-                await product.save();
+                console.log(await product.save());
                 return res.send(product);
             } catch (e) {
                 if (

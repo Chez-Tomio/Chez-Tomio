@@ -8,11 +8,15 @@ export async function connectToDatabase() {
         });
 }
 
-export type { ICategory, ICategoryDocument } from './models/category';
+export type {
+    ICategory,
+    ICategoryDocument,
+    ISerializedCategoryWithProducts,
+} from './models/category';
 export { Category } from './models/category';
 export type { IOrder, IOrderDocument } from './models/order';
 export { Order } from './models/order';
-export type { IProduct, IProductDocument } from './models/product';
+export type { IProduct, IProductDocument, ISerializedProduct } from './models/product';
 export { Product } from './models/product';
 export type { IUser, IUserDocument } from './models/user';
 export { User } from './models/user';

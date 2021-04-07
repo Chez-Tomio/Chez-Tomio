@@ -5,15 +5,20 @@ import { useState } from 'react';
 import React from 'react';
 import Popup from 'reactjs-popup';
 
-import { IProduct } from '../../../database/mongo';
+import { ISerializedProduct } from '../../../database/mongo';
 import { ProductsForm } from './ProductsForm';
 
 interface ProductRowProps {
-    product: IProduct;
-    onSubmitProduct: (newProduct: IProduct) => void;
+    product: ISerializedProduct;
+    onUpdateProduct: (newProduct: ISerializedProduct) => void;
+    onDeleteProduct: (product: ISerializedProduct) => void;
 }
 
-export const ProductRow: React.FC<ProductRowProps> = ({ product, onSubmitProduct }) => {
+export const ProductRow: React.FC<ProductRowProps> = ({
+    product,
+    onUpdateProduct,
+    onDeleteProduct,
+}) => {
     const [isEditingProduct, setIsEditingProduct] = useState(false);
 
     return (
@@ -28,7 +33,7 @@ export const ProductRow: React.FC<ProductRowProps> = ({ product, onSubmitProduct
                     initialValues={product}
                     onSubmitProduct={(values) => {
                         setIsEditingProduct(false);
-                        onSubmitProduct(values);
+                        onUpdateProduct(values);
                     }}
                 ></ProductsForm>
             </Popup>
@@ -81,6 +86,23 @@ export const ProductRow: React.FC<ProductRowProps> = ({ product, onSubmitProduct
                         `}
                     >
                         Edit
+                    </button>
+                    <button
+                        css={css`
+                            font-weight: bold;
+                            padding: 3px;
+                            cursor: pointer;
+                            margin-left: 15px;
+                            background-color: red;
+                            color: white;
+                        `}
+                        onClick={() =>
+                            confirm(`Are you sure you want to delete ${product.title.fr}?`) &&
+                            confirm('This action is irreversible!') &&
+                            onDeleteProduct(product)
+                        }
+                    >
+                        Delete {product.title.fr}
                     </button>
                 </td>
             </tr>

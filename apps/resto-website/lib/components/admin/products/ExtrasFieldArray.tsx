@@ -4,8 +4,6 @@ import { css, jsx } from '@emotion/react';
 import { ErrorMessage, Field, FieldArray } from 'formik';
 import React from 'react';
 
-import { ImageUpload } from '../../formik/ImageUpload';
-
 export interface ExtrasFieldArrayProps {
     values: any;
 }
@@ -13,7 +11,7 @@ export interface ExtrasFieldArrayProps {
 export const ExtrasFieldArray: React.FC<ExtrasFieldArrayProps> = ({ values }) => {
     return (
         <FieldArray name="extras">
-            {({ insert, remove, push }) => (
+            {({ remove, push }) => (
                 <div>
                     {values.extras &&
                         values.extras.length > 0 &&

@@ -5,12 +5,16 @@ import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
 
-import { ICategory } from '../../../database/mongo';
+import { ISerializedCategoryWithProducts } from '../../../database/mongo';
+import { DocumentTimestamps } from '../../../database/utils';
 import { ImageUpload } from '../../formik/ImageUpload';
 
 export interface CategoriesFormProps {
-    initialValues: Omit<ICategory, 'products'>;
-    onSubmitCategory: (newCategory: ICategory) => void;
+    initialValues: Omit<
+        ISerializedCategoryWithProducts,
+        '_id' | 'products' | keyof DocumentTimestamps
+    >;
+    onSubmitCategory: (newCategory: ISerializedCategoryWithProducts) => void;
 }
 
 export const CategoriesForm: React.FC<CategoriesFormProps> = ({
@@ -39,7 +43,13 @@ export const CategoriesForm: React.FC<CategoriesFormProps> = ({
             //     return errors;
             // }}
             onSubmit={(values, { setSubmitting }) => {
-                onSubmitCategory({ ...values, products: [] } as ICategory);
+                onSubmitCategory({
+                    products: [],
+                    _id: undefined as unknown,
+                    createdAt: undefined as unknown,
+                    updatedAt: undefined as unknown,
+                    ...values,
+                } as ISerializedCategoryWithProducts);
                 setSubmitting(false);
             }}
         >
