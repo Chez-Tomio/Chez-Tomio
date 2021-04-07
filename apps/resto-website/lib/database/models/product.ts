@@ -14,6 +14,7 @@ interface IBuyable {
 
 export type IProduct = PartialDeep<
     Omit<IBuyable, 'price'> & {
+        _id: string;
         basePrice: number;
         minimumPrice: number;
         isSpecialty: boolean;
