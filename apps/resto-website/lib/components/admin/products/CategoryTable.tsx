@@ -47,21 +47,12 @@ export const CategoryTable: React.FC<CategoryProps> = ({
     }
 
     async function deleteProduct(product: ISerializedProduct) {
-        if (
-            confirm(`Are you sure you want to delete ${product.title.fr}?`) &&
-            confirm('This action is irreversible!')
-        ) {
-            await onDeleteProduct(product);
-            setProducts(products.filter((c) => c._id !== product._id));
-        }
+        await onDeleteProduct(product);
+        setProducts(products.filter((c) => c._id !== product._id));
     }
 
     async function deleteCategory() {
-        if (
-            confirm(`Are you sure you want to delete ${category.title.fr}?`) &&
-            confirm('This action is irreversible!')
-        )
-            await onDeleteCategory(category);
+        await onDeleteCategory(category);
     }
 
     return (
