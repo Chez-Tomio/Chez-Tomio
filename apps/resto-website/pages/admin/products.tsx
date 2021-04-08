@@ -41,7 +41,7 @@ export default function Admin({
                 body: JSON.stringify(newCategory),
             });
             if (!response.ok) throw await response.json();
-            addToast(`The category "${newCategory.title.en}" was successfully updated`, {
+            addToast(`The category "${newCategory.title.fr}" was successfully updated`, {
                 appearance: 'success',
                 autoDismiss: true,
             });
@@ -67,7 +67,10 @@ export default function Admin({
                 body: JSON.stringify(newCategory),
             });
             if (!response.ok) throw await response.json();
-            alert(`The category "${newCategory.title.en}" was successfully created`);
+            addToast(`The category "${newCategory.title.fr}" was successfully created`, {
+                appearance: 'success',
+                autoDismiss: true,
+            });
         } catch (error) {
             console.error(error);
             alert(`An error occured while while creating the category "${newCategory.title.fr}"`);
@@ -84,7 +87,10 @@ export default function Admin({
                 method: 'DELETE',
             });
             if (!response.ok) throw await response.json();
-            alert(`The category "${category.title.en}" was successfully deleted`);
+            addToast(`The category "${category.title.fr}" was successfully deleted`, {
+                appearance: 'success',
+                autoDismiss: true,
+            });
         } catch (error) {
             console.error(error);
             alert(`An error occured while while deleting the category "${category.title.fr}"`);
@@ -103,7 +109,10 @@ export default function Admin({
                 body: JSON.stringify(newProduct),
             });
             if (!response.ok) throw await response.json();
-            alert(`The product "${newProduct.title.en}" was successfully updated`);
+            addToast(`The product "${newProduct.title.fr}" was successfully updated`, {
+                appearance: 'success',
+                autoDismiss: true,
+            });
         } catch (error) {
             console.error(error);
             alert(`An error occured while while updating the product "${newProduct.title.fr}"`);
@@ -140,10 +149,13 @@ export default function Admin({
                 });
                 if (!response.ok) throw await response.json();
             }
-            alert(`The product "${newProduct.title.en}" was successfully created`);
+            addToast(`The product "${newProduct.title.fr}" was successfully created`, {
+                appearance: 'success',
+                autoDismiss: true,
+            });
         } catch (error) {
             console.error(error);
-            alert(`An error occured while while creating the product "${newProduct.title.en}"`);
+            alert(`An error occured while while creating the product "${newProduct.title.fr}"`);
             alert('This page is gonna be reloaded in order to try to fix this issue');
             window.location.reload();
         }
@@ -155,7 +167,10 @@ export default function Admin({
                 method: 'DELETE',
             });
             if (!response.ok) throw await response.json();
-            alert(`The product "${product.title.en}" was successfully deleted`);
+            addToast(`The product "${product.title.fr}" was successfully deleted`, {
+                appearance: 'success',
+                autoDismiss: true,
+            });
         } catch (error) {
             console.error(error);
             alert(`An error occured while while deleting the product "${product.title.fr}"`);

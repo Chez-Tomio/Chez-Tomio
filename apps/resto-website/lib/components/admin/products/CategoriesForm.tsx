@@ -1,13 +1,22 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
-import { Field, Form, Formik } from 'formik';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
 
 import { ISerializedCategoryWithProducts } from '../../../database/mongo';
 import { DocumentTimestamps } from '../../../database/utils';
 import { ImageUpload } from '../../formik/ImageUpload';
+
+const CategoriesFormSchema = Yup.object().shape({
+    title: Yup.object().shape({
+        fr: Yup.string().required('Required'),
+        en: Yup.string().required('Required'),
+    }),
+    image: Yup.string().required('Required'),
+    archived: Yup.boolean(),
+});
 
 export interface CategoriesFormProps {
     initialValues: Omit<
@@ -24,24 +33,7 @@ export const CategoriesForm: React.FC<CategoriesFormProps> = ({
     return (
         <Formik
             initialValues={initialValues}
-            // validate={(values) => {
-            //     const errors = {};
-
-            //     if (!values.title) {
-            //         errors.title = 'Required';
-            //     }
-            //     // if (!values.email) {
-            //     //     errors.email = 'Required';
-            //     // } else if (
-            //     //     !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
-            //     //         values.email,
-            //     //     )
-            //     // ) {
-            //     //     errors.email = 'Invalid email address';
-            //     // }
-
-            //     return errors;
-            // }}
+            validationSchema={CategoriesFormSchema}
             onSubmit={(values, { setSubmitting }) => {
                 onSubmitCategory({
                     products: [],
@@ -68,7 +60,12 @@ export const CategoriesForm: React.FC<CategoriesFormProps> = ({
                                 width: 100%;
                             }
                             label {
-                                font-size: 0.8rem;
+                                font-size: 0.9rem;
+                            }
+                            .error {
+                                color: red;
+                                font-size: 0.7rem;
+                                margin-bottom: 15px;
                             }
                         }
                     `}
@@ -77,12 +74,15 @@ export const CategoriesForm: React.FC<CategoriesFormProps> = ({
                     <div className="item">
                         <label htmlFor="title">Title</label>
                         <Field name="title.fr" placeholder="Title French" />
+                        <ErrorMessage name="title.fr" component="span" className="error" />
                         <Field name="title.en" placeholder="Title English" />
+                        <ErrorMessage name="title.en" component="span" className="error" />
                     </div>
 
                     <div className="item">
                         <label htmlFor="image">Image</label>
                         <Field name="image" type="file" component={ImageUpload} />
+                        <ErrorMessage name="image" component="span" className="error" />
                     </div>
 
                     <div className="item">
@@ -94,6 +94,7 @@ export const CategoriesForm: React.FC<CategoriesFormProps> = ({
                                 width: fit-content !important;
                             `}
                         />
+                        <ErrorMessage name="archived" component="span" className="error" />
                     </div>
 
                     <button

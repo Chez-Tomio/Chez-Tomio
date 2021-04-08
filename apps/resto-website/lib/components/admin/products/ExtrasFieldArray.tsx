@@ -1,14 +1,18 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
-import { ErrorMessage, Field, FieldArray } from 'formik';
+import { ErrorMessage, Field, FieldArray, FormikErrors } from 'formik';
 import React from 'react';
 
+import { ISerializedProduct } from '../../../database/mongo';
+import { DocumentTimestamps } from '../../../database/utils';
+
 export interface ExtrasFieldArrayProps {
-    values: any;
+    values: Omit<ISerializedProduct, '_id' | keyof DocumentTimestamps>;
+    errors: FormikErrors<Omit<ISerializedProduct, '_id' | keyof DocumentTimestamps>>;
 }
 
-export const ExtrasFieldArray: React.FC<ExtrasFieldArrayProps> = ({ values }) => {
+export const ExtrasFieldArray: React.FC<ExtrasFieldArrayProps> = ({ values, errors }) => {
     return (
         <FieldArray name="extras">
             {({ remove, push }) => (
@@ -26,27 +30,24 @@ export const ExtrasFieldArray: React.FC<ExtrasFieldArrayProps> = ({ values }) =>
                             >
                                 <h5>Extra</h5>
                                 <div>
-                                    <label htmlFor={`extras.${index}.title`}>Title</label>
-                                    <Field
-                                        name={`extras.${index}.title.fr`}
-                                        placeholder="Title French"
-                                    />
-                                    <Field
-                                        name={`extras.${index}.title.en`}
-                                        placeholder="Title English"
-                                    />
+                                    <label htmlFor={`extra.title`}>Title</label>
+                                    <Field name={`extra.title.fr`} placeholder="Title French" />
                                     <ErrorMessage
-                                        name={`extras.${index}.title`}
-                                        component="div"
-                                        className="field-error"
+                                        name={`extra.title.fr`}
+                                        component="span"
+                                        className="error"
+                                    />
+                                    <Field name={`extra.title.en`} placeholder="Title English" />
+                                    <ErrorMessage
+                                        name={`extra.title.en`}
+                                        component="span"
+                                        className="error"
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor={`extras.${index}.description`}>
-                                        Description
-                                    </label>
+                                    <label htmlFor={`extra.description`}>Description</label>
                                     <Field
-                                        name={`extras.${index}.description.fr`}
+                                        name={`extra.description.fr`}
                                         placeholder="Description French"
                                         as="textarea"
                                         rows={3}
@@ -54,8 +55,13 @@ export const ExtrasFieldArray: React.FC<ExtrasFieldArrayProps> = ({ values }) =>
                                             resize: none;
                                         `}
                                     />
+                                    <ErrorMessage
+                                        name={`extra.description.fr`}
+                                        component="span"
+                                        className="error"
+                                    />
                                     <Field
-                                        name={`extras.${index}.description.en`}
+                                        name={`extra.description.en`}
                                         placeholder="Description English"
                                         as="textarea"
                                         rows={3}
@@ -64,18 +70,18 @@ export const ExtrasFieldArray: React.FC<ExtrasFieldArrayProps> = ({ values }) =>
                                         `}
                                     />
                                     <ErrorMessage
-                                        name={`extras.${index}.description`}
-                                        component="div"
-                                        className="field-error"
+                                        name={`extra.description.en`}
+                                        component="span"
+                                        className="error"
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor={`extras.${index}.price`}>Price</label>
-                                    <Field name={`extras.${index}.price`} type="number" />
+                                    <label htmlFor={`extra.price`}>Price</label>
+                                    <Field name={`extra.price`} type="number" />
                                     <ErrorMessage
-                                        name={`extras.${index}.price`}
-                                        component="div"
-                                        className="field-error"
+                                        name={`extra.price`}
+                                        component="span"
+                                        className="error"
                                     />
                                 </div>
                                 <div>

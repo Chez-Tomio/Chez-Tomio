@@ -35,7 +35,29 @@ export const ProductRow: React.FC<ProductRowProps> = ({
                         setIsEditingProduct(false);
                         onUpdateProduct(values);
                     }}
-                ></ProductsForm>
+                >
+                    <button
+                        css={css`
+                            font-weight: bold;
+                            padding: 3px;
+                            cursor: pointer;
+                            margin-top: 15px;
+                            background-color: red;
+                            color: white;
+                        `}
+                        onClick={() => {
+                            if (
+                                confirm(`Are you sure you want to delete ${product.title.fr}?`) &&
+                                confirm('This action is irreversible!')
+                            ) {
+                                setIsEditingProduct(false);
+                                onDeleteProduct(product);
+                            }
+                        }}
+                    >
+                        Delete
+                    </button>
+                </ProductsForm>
             </Popup>
             <tr>
                 <td>
@@ -76,34 +98,24 @@ export const ProductRow: React.FC<ProductRowProps> = ({
                     />
                 </td>
                 <td>
-                    <button
-                        type="button"
-                        onClick={() => setIsEditingProduct(true)}
+                    <div
                         css={css`
-                            font-weight: bold;
-                            padding: 3px;
-                            cursor: pointer;
+                            display: flex;
+                            flex-direction: column;
                         `}
                     >
-                        Edit
-                    </button>
-                    <button
-                        css={css`
-                            font-weight: bold;
-                            padding: 3px;
-                            cursor: pointer;
-                            margin-left: 15px;
-                            background-color: red;
-                            color: white;
-                        `}
-                        onClick={() =>
-                            confirm(`Are you sure you want to delete ${product.title.fr}?`) &&
-                            confirm('This action is irreversible!') &&
-                            onDeleteProduct(product)
-                        }
-                    >
-                        Delete {product.title.fr}
-                    </button>
+                        <button
+                            type="button"
+                            onClick={() => setIsEditingProduct(true)}
+                            css={css`
+                                font-weight: bold;
+                                padding: 3px;
+                                cursor: pointer;
+                            `}
+                        >
+                            Edit {product.title.fr}
+                        </button>
+                    </div>
                 </td>
             </tr>
         </>
