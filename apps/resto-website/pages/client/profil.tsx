@@ -2,6 +2,7 @@
 /** @jsx jsx */
 import { Button, ImageSection, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
+import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/client';
@@ -63,9 +64,9 @@ export default function Profil({ SITE_BASE_URL }: { SITE_BASE_URL: string }) {
     );
 }
 
-export const getStaticProps = async ({ locale }: { locale: string }) => ({
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['common'])),
+        ...(await serverSideTranslations(locale!, ['common'])),
         SITE_BASE_URL: process.env.SITE_BASE_URL,
     },
 });

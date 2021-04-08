@@ -1,8 +1,7 @@
-import _ from 'lodash';
 import mongoose from 'mongoose';
 
 import { apiEndpointWrapper, isUserAdmin, sendError } from '../../../lib/api/utils';
-import { Product } from '../../../lib/database/mongo';
+import { Category, Product } from '../../../lib/database/mongo';
 
 export default apiEndpointWrapper(async (req, res) => {
     if (!(await isUserAdmin(req))) return sendError(res, 403);
@@ -13,8 +12,23 @@ export default apiEndpointWrapper(async (req, res) => {
         }
         case 'POST': {
             try {
-                const product = new Product(req.body);
-                console.log(await product.save());
+                const { categoryId, ...productData } = req.body;
+
+                const product = new Product(productData);
+
+                const category = await Category.findByIdAndUpdate(
+                    categoryId,
+                    {
+                        $push: {
+                            products: product._id,
+                        },
+                    },
+                    { new: true },
+                );
+                if (!category) return sendError(res, 404);
+
+                await product.save();
+
                 return res.send(product);
             } catch (e) {
                 if (

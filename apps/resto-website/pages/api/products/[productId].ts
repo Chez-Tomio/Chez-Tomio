@@ -2,7 +2,7 @@ import { isMongoId } from 'class-validator';
 import mongoose from 'mongoose';
 
 import { apiEndpointWrapper, isUserAdmin, sendError } from '../../../lib/api/utils';
-import { Product } from '../../../lib/database/mongo';
+import { Category, Product } from '../../../lib/database/mongo';
 
 export default apiEndpointWrapper(async (req, res) => {
     if (!(await isUserAdmin(req))) return sendError(res, 403);
@@ -36,10 +36,16 @@ export default apiEndpointWrapper(async (req, res) => {
 
             if (!product) return sendError(res, 404);
 
+            await Category.updateMany(
+                {
+                    products: product._id,
+                },
+                { $pull: { products: product._id } },
+            );
+
             return res.json(product);
         }
         default: {
-            return sendError(res, 405);
         }
     }
 });

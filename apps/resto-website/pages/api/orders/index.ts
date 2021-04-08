@@ -42,7 +42,12 @@ export default apiEndpointWrapper(async (req, res) => {
     const { perPage, pageNumber } = paginateQueryDTO;
 
     const totalNumberOfPages = Math.ceil((await Order.count()) / perPage);
-    const orders = await Order.find({}, {}, { skip: perPage * pageNumber, limit: pageNumber });
+
+    const orders = await Order.find(
+        {},
+        {},
+        { sort: '-createdAt', skip: perPage * pageNumber, limit: perPage },
+    ).populate('user');
 
     return res.send({ totalNumberOfPages, orders });
 });

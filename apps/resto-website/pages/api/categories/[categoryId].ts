@@ -1,8 +1,9 @@
 import { isMongoId } from 'class-validator';
 import mongoose from 'mongoose';
+import slug from 'slug';
 
 import { apiEndpointWrapper, isUserAdmin, sendError } from '../../../lib/api/utils';
-import { Category } from '../../../lib/database/mongo';
+import { Category, Product } from '../../../lib/database/mongo';
 
 export default apiEndpointWrapper(async (req, res) => {
     if (!(await isUserAdmin(req))) return sendError(res, 403);
@@ -15,7 +16,7 @@ export default apiEndpointWrapper(async (req, res) => {
             try {
                 const category = await Category.findByIdAndUpdate(
                     categoryId,
-                    { $set: req.body },
+                    { $set: { ...req.body, slug: slug(req.body.title.fr) } },
                     { new: true },
                 );
 
@@ -35,6 +36,8 @@ export default apiEndpointWrapper(async (req, res) => {
             const category = await Category.findByIdAndDelete(categoryId);
 
             if (!category) return sendError(res, 404);
+
+            for (const productId of category.products) await Product.findByIdAndDelete(productId);
 
             return res.json(category);
         }

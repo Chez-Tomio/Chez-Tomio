@@ -3,7 +3,7 @@ import { LeanDocument, Model, model, models, Schema, Types } from 'mongoose';
 
 import { Document, DocumentTimestamps } from '../utils';
 import { IProductDocument, ProductSchema } from './product';
-import { User } from './user';
+import { ISerializedUser, User } from './user';
 
 const PaymentStatusPossibilities = ['unpayed', 'payed', 'refunded'] as const;
 
@@ -19,9 +19,18 @@ export type IOrder = {
 
 export type IOrderDocument = IOrder & Document & DocumentTimestamps;
 
+export type ISerializedOrderWithUser = Omit<LeanDocument<IOrderDocument>, '_id' | 'user'> & {
+    _id: string;
+    user?: ISerializedUser;
+};
+
 export const OrderSchema = new Schema(
     {
         products: [_.omit(ProductSchema, ['archived', 'isSpecialty', 'minimumPrice'])],
+        total: {
+            type: Number,
+            required: true,
+        },
         contactPhoneNumber: {
             type: String,
             required: true,

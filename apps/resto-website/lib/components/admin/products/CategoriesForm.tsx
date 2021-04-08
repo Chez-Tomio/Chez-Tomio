@@ -21,7 +21,7 @@ const CategoriesFormSchema = Yup.object().shape({
 export interface CategoriesFormProps {
     initialValues: Omit<
         ISerializedCategoryWithProducts,
-        '_id' | 'products' | keyof DocumentTimestamps
+        '_id' | 'products' | 'slug' | keyof DocumentTimestamps
     >;
     onSubmitCategory: (newCategory: ISerializedCategoryWithProducts) => void;
 }
@@ -38,6 +38,7 @@ export const CategoriesForm: React.FC<CategoriesFormProps> = ({
                 onSubmitCategory({
                     products: [],
                     _id: undefined as unknown,
+                    slug: undefined as unknown,
                     createdAt: undefined as unknown,
                     updatedAt: undefined as unknown,
                     ...values,

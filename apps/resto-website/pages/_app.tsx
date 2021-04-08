@@ -74,7 +74,10 @@ function App({ Component: Page, pageProps }: AppProps) {
                                     </div>
                                 </Link>
 
-                                <Link href="" locale={router.locale === 'fr' ? 'en' : 'fr'}>
+                                <Link
+                                    href={router.asPath}
+                                    locale={router.locale === 'fr' ? 'en' : 'fr'}
+                                >
                                     <div>
                                         <NavItem border={true}>{t('changeLanguage')}</NavItem>
                                     </div>

@@ -4,7 +4,7 @@
  *** It's purpose is to query and add metadata to existing NextAuth users
  */
 
-import { Model, model, models, Schema, Types } from 'mongoose';
+import { LeanDocument, Model, model, models, Schema } from 'mongoose';
 
 import { Document, DocumentTimestamps } from '../utils';
 
@@ -15,6 +15,8 @@ export type IUser = {
 };
 
 export type IUserDocument = IUser & Document & DocumentTimestamps;
+
+export type ISerializedUser = Omit<LeanDocument<IUserDocument>, '_id'> & { _id: string };
 
 export const UserSchema = new Schema(
     {

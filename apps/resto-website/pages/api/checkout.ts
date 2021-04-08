@@ -16,7 +16,7 @@ import _ from 'lodash';
 import Stripe from 'stripe';
 
 import { apiEndpointWrapper, areValidationErrors, getUser, sendError } from '../../lib/api/utils';
-import { IOrder, Order, Product } from '../../lib/database/mongo';
+import { Category, IOrder, Order, Product } from '../../lib/database/mongo';
 import { localizedStringToString } from '../../lib/database/utils';
 import { Unboxed } from '../../lib/types/utils';
 import { emptyStringToUndefined } from '../../lib/utils';
@@ -86,12 +86,17 @@ export default apiEndpointWrapper(async (req, res) => {
         user: user?._id,
         paymentStatus: 'unpayed',
         products: [],
+        total: 0,
     });
 
     for (const productDTO of checkoutDTO.products) {
         const product = await Product.findOne({ _id: productDTO.id, archived: false }).lean();
+        const category = await Category.findOne({
+            products: product?._id,
+            archived: false,
+        });
 
-        if (!product) return sendError(res, 404);
+        if (!product || !category) return sendError(res, 404);
 
         const orderProduct = _.chain(product)
             .omit('_id', '__v', 'createdAt', 'updatedAt', 'archived', 'isSpecialty', 'minimumPrice')

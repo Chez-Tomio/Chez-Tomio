@@ -1,17 +1,17 @@
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React from 'react';
 
-import { Product, ProductProps } from './Product';
+import { ProductProps, ProductTile } from './ProductTile';
 
 export default {
     title: 'Components/Menu/Products/Product',
-    component: Product,
+    component: ProductTile,
     parameters: {
         backgrounds: { default: 'white' },
     },
 } as Meta;
 
-export const Template: Story<ProductProps> = (args) => <Product {...args}>Product</Product>;
+export const Template: Story<ProductProps> = (args) => <ProductTile {...args}>Product</ProductTile>;
 Template.args = {
     imageUrl: '/sample-image.jpg',
 };

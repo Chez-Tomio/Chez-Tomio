@@ -20,8 +20,9 @@ import {
     ISerializedCategoryWithProducts,
     ISerializedProduct,
 } from '../../lib/database/mongo';
+import Link from 'next/link';
 
-export default function Admin({
+export default function AdminProducts({
     categories: initialCategories,
 }: {
     categories: ISerializedCategoryWithProducts[];
@@ -31,9 +32,6 @@ export default function Admin({
     const { addToast } = useToasts();
 
     async function updateCategory(index: number, newCategory: ISerializedCategoryWithProducts) {
-        categories[index] = newCategory;
-        setCategories([...categories]);
-
         try {
             const response = await fetch(`/api/categories/${newCategory._id}`, {
                 method: 'PATCH',
@@ -53,13 +51,11 @@ export default function Admin({
             alert('This page is gonna be reloaded in order to try to fix this issue');
             window.location.reload();
         }
+        categories[index] = newCategory;
+        setCategories([...categories]);
     }
 
     async function addCategory(newCategory: ISerializedCategoryWithProducts) {
-        setIsAddingCategory(false);
-        categories.push(newCategory);
-        setCategories([...categories]);
-
         try {
             const response = await fetch('/api/categories', {
                 method: 'POST',
@@ -69,6 +65,7 @@ export default function Admin({
                 body: JSON.stringify(newCategory),
             });
             if (!response.ok) throw await response.json();
+            newCategory._id = (await response.json())._id;
             addToast(`The category "${newCategory.title.fr}" was successfully created`, {
                 appearance: 'success',
                 autoDismiss: true,
@@ -79,6 +76,9 @@ export default function Admin({
             alert('This page is gonna be reloaded in order to try to fix this issue');
             window.location.reload();
         }
+        setIsAddingCategory(false);
+        categories.push(newCategory);
+        setCategories([...categories]);
     }
 
     async function deleteCategory(category: ISerializedCategoryWithProducts) {
@@ -128,29 +128,16 @@ export default function Admin({
         category: ISerializedCategoryWithProducts,
     ) {
         try {
-            {
-                const response = await fetch('/api/products', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(newProduct),
-                });
-                if (!response.ok) throw await response.json();
-                newProduct._id = (await response.json())._id;
-            }
-            {
-                const response = await fetch(`/api/categories/${category._id}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        products: [...category.products.map((p) => p._id), newProduct._id],
-                    }),
-                });
-                if (!response.ok) throw await response.json();
-            }
+            const response = await fetch('/api/products', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ categoryId: category._id, ...newProduct }),
+            });
+            if (!response.ok) throw await response.json();
+            newProduct._id = (await response.json())._id;
+
             addToast(`The product "${newProduct.title.fr}" was successfully created`, {
                 appearance: 'success',
                 autoDismiss: true,
@@ -195,8 +182,20 @@ export default function Admin({
                     color: black;
                     height: 100%;
                     flex: 1;
+                    padding: 20px;
                 `}
             >
+                <div
+                    css={css`
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                    `}
+                >
+                    <Link href="/admin/products">-> Products</Link>
+                    <Link href="/admin/orders">-> Orders</Link>
+                </div>
+
                 <h2
                     css={css`
                         font-size: 2.4rem;

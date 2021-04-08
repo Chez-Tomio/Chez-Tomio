@@ -11,12 +11,13 @@ export async function connectToDatabase() {
 export type {
     ICategory,
     ICategoryDocument,
+    ISerializedCategory,
     ISerializedCategoryWithProducts,
 } from './models/category';
 export { Category } from './models/category';
-export type { IOrder, IOrderDocument } from './models/order';
+export type { IOrder, IOrderDocument, ISerializedOrderWithUser } from './models/order';
 export { Order } from './models/order';
 export type { IProduct, IProductDocument, ISerializedProduct } from './models/product';
 export { Product } from './models/product';
-export type { IUser, IUserDocument } from './models/user';
+export type { ISerializedUser, IUser, IUserDocument } from './models/user';
 export { User } from './models/user';

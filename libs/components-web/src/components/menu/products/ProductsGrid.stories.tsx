@@ -1,8 +1,8 @@
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React from 'react';
 
-import { Product } from './Product';
 import { ProductsGrid } from './ProductsGrid';
+import { ProductTile } from './ProductTile';
 
 export default {
     title: 'Components/Menu/Products/ProductsGrid',
@@ -14,11 +14,23 @@ export default {
 
 export const Template: Story = (args) => (
     <ProductsGrid {...args}>
-        <Product imageUrl="/sample-image.jpg">Product</Product>
-        <Product imageUrl="/sample-image.jpg">Product</Product>
-        <Product imageUrl="/sample-image.jpg">Product</Product>
-        <Product imageUrl="/sample-image.jpg">Product</Product>
-        <Product imageUrl="/sample-image.jpg">Product</Product>
-        <Product imageUrl="/sample-image.jpg">Product</Product>
+        <ProductTile imageUrl="/sample-image.jpg" onClickAdd={() => console.log('Ok')}>
+            Product
+        </ProductTile>
+        <ProductTile imageUrl="/sample-image.jpg" onClickAdd={() => console.log('Ok')}>
+            Product
+        </ProductTile>
+        <ProductTile imageUrl="/sample-image.jpg" onClickAdd={() => console.log('Ok')}>
+            Product
+        </ProductTile>
+        <ProductTile imageUrl="/sample-image.jpg" onClickAdd={() => console.log('Ok')}>
+            Product
+        </ProductTile>
+        <ProductTile imageUrl="/sample-image.jpg" onClickAdd={() => console.log('Ok')}>
+            Product
+        </ProductTile>
+        <ProductTile imageUrl="/sample-image.jpg" onClickAdd={() => console.log('Ok')}>
+            Product
+        </ProductTile>
     </ProductsGrid>
 );

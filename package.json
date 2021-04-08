@@ -2,10 +2,18 @@
     "name": "root",
     "private": true,
     "license": "UNLICENSED",
-    "workspaces": [
-        "apps/*",
-        "libs/*"
-    ],
+    "workspaces": {
+        "packages": [
+            "apps/*",
+            "libs/*"
+        ],
+        "nohoist": [
+            "**/react-native",
+            "**/react-native/**",
+            "**/react-native-unimodules",
+            "**/react-native-unimodules/**"
+        ]
+    },
     "scripts": {
         "lint": "lerna run lint --parallel",
         "dev": "lerna run dev --parallel",

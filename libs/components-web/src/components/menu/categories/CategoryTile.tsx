@@ -7,7 +7,7 @@ export interface CategoryProps {
     imageUrl: string;
 }
 
-export const Category: React.FC<CategoryProps> = ({ children, imageUrl }) => (
+export const CategoryTile: React.FC<CategoryProps> = ({ children, imageUrl }) => (
     <div
         css={css`
             font-family: 'Montserrat', sans-serif;
