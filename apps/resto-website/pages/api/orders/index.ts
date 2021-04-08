@@ -24,9 +24,9 @@ class PaginateQueryDTO {
 }
 
 export default apiEndpointWrapper(async (req, res) => {
-    if (req.method !== 'GET') return sendError(res, 405);
-
     if (!(await isUserAdmin(req))) return sendError(res, 403);
+
+    if (req.method !== 'GET') return sendError(res, 405);
 
     const paginateQueryDTO = plainToClass(PaginateQueryDTO, req.query, {
         excludeExtraneousValues: true,

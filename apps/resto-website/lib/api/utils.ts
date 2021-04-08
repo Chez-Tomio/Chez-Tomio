@@ -1,5 +1,5 @@
 import { ValidationError } from 'class-validator';
-import { STATUS_CODES } from 'http';
+import { IncomingMessage, STATUS_CODES } from 'http';
 import sanitize from 'mongo-sanitize';
 import { LeanDocument } from 'mongoose';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
@@ -8,7 +8,7 @@ import { getSession } from 'next-auth/client';
 import { connectToDatabase, IUserDocument, User } from '../database/mongo';
 
 export const getUser = async (
-    req: NextApiRequest,
+    req: IncomingMessage,
 ): Promise<LeanDocument<IUserDocument> | undefined> => {
     const session = await getSession({ req });
     if (!session || !session.user.email) return undefined;
@@ -16,7 +16,7 @@ export const getUser = async (
     return user?.toObject() ?? undefined;
 };
 
-export const isUserAdmin = async (req: NextApiRequest): Promise<boolean> => {
+export const isUserAdmin = async (req: IncomingMessage): Promise<boolean> => {
     const user = await getUser(req);
     return user?.isAdmin ?? false;
 };

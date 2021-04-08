@@ -3,6 +3,7 @@
 import 'reactjs-popup/dist/index.css';
 
 import { css, jsx } from '@emotion/react';
+import { STATUS_CODES } from 'http';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -10,6 +11,7 @@ import React, { useState } from 'react';
 import { useToasts } from 'react-toast-notifications';
 import Popup from 'reactjs-popup';
 
+import { isUserAdmin } from '../../lib/api/utils';
 import { CategoriesForm } from '../../lib/components/admin/products/CategoriesForm';
 import { CategoryTable } from '../../lib/components/admin/products/CategoryTable';
 import {
@@ -232,8 +234,16 @@ export default function Admin({
     );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+export const getServerSideProps: GetServerSideProps = async ({ locale, req, res }) => {
     await connectToDatabase();
+
+    const isAdmin = await isUserAdmin(req);
+    if (!isAdmin) {
+        res.statusCode = 403;
+        res.end(STATUS_CODES[res.statusCode]);
+        return { props: {} };
+    }
+
     return {
         props: {
             ...(await serverSideTranslations(locale!, ['common'])),
