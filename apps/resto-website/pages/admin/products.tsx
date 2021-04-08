@@ -181,6 +181,11 @@ export default function Admin({
 
     return (
         <>
+            <Head>
+                <title>Admin Products - Chez Tomio</title>
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+
             <div
                 css={css`
                     background-color: white;
@@ -190,11 +195,6 @@ export default function Admin({
                     flex: 1;
                 `}
             >
-                <Head>
-                    <title>Admin Products - Chez Tomio</title>
-                    <link rel="icon" href="/favicon.ico" />
-                </Head>
-
                 <h2
                     css={css`
                         font-size: 2.4rem;
