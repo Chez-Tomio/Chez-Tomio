@@ -57,7 +57,11 @@ export default function Menu({ category }: { category?: ISerializedCategoryWithP
                         `}
                     >
                         <Masonry
-                            breakpointCols={3}
+                            breakpointCols={{
+                                default: 3,
+                                1200: 2,
+                                800: 1,
+                            }}
                             className="my-masonry-grid"
                             columnClassName="my-masonry-grid_column"
                         >
