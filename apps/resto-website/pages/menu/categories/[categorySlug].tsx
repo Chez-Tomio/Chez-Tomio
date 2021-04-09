@@ -24,7 +24,10 @@ export default function Menu({ category }: { category?: ISerializedCategoryWithP
     const router = useRouter();
 
     function addToCart(product: ISerializedProduct) {
-        console.log(product);
+        console.log(product._id);
+        const productsArray = [];
+        localStorage.setItem('cartProducts', JSON.stringify(productsArray));
+        // const data = JSON.parse(localStorage.getItem('cartProducts'));
     }
 
     if (!category) return <ErrorPage statusCode={404} />;
