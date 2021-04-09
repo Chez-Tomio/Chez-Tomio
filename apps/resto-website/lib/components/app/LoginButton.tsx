@@ -13,7 +13,7 @@ export const LoginButton: React.FC = () => {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                padding: 10px;
+                margin-left: 15px;
             `}
         >
             {!loading && session ? (
