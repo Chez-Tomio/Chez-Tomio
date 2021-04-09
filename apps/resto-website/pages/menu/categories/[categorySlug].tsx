@@ -16,11 +16,16 @@ import {
     Category,
     connectToDatabase,
     ISerializedCategoryWithProducts,
+    ISerializedProduct,
 } from '../../../lib/database/mongo';
 
 export default function Menu({ category }: { category?: ISerializedCategoryWithProducts }) {
     const { t } = useTranslation('common');
     const router = useRouter();
+
+    function addToCart(product: ISerializedProduct) {
+        console.log(product);
+    }
 
     if (!category) return <ErrorPage statusCode={404} />;
 
@@ -63,7 +68,7 @@ export default function Menu({ category }: { category?: ISerializedCategoryWithP
                                     title={p.title[router.locale ?? 'fr']}
                                     description={p.description[router.locale ?? 'fr']}
                                     price={p.basePrice}
-                                    onClickAdd={() => console.log('Ok')}
+                                    onClickAdd={() => addToCart(p)}
                                 >
                                     Product
                                 </ProductTile>
