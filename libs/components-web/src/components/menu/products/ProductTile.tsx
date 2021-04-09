@@ -14,6 +14,7 @@ export interface ProductProps {
 const productStyles = css`
     font-family: 'Montserrat', sans-serif;
     position: relative;
+    margin: 20px;
 
     .tile {
         height: 150px;
@@ -27,11 +28,9 @@ const productStyles = css`
         z-index: 2;
         position: relative;
         background-color: white;
+        margin-bottom: 0px;
         .content {
             padding: 20px;
-            .title {
-                transition: all 0.3s;
-            }
             .price {
                 font-weight: 400;
                 font-size: 2.5rem;
@@ -52,18 +51,24 @@ const productStyles = css`
         }
     }
     .description {
-        height: 120px;
+        max-height: 0;
         border-bottom-left-radius: 20px;
         border-bottom-right-radius: 20px;
         background-color: #f0f0f0;
-        position: absolute;
-        bottom: 0;
+        position: relative;
+        bottom: 20px;
         left: 0;
-        transition: 0.3s;
+        transition: 0.5s;
+        display: flex;
+        align-items: flex-end;
+        overflow: hidden;
+        .content {
+            margin: 30px 20px 10px 20px;
+        }
     }
     &:hover {
         .description {
-            transform: translateY(100px);
+            max-height: 200px;
         }
     }
 `;
@@ -86,7 +91,6 @@ export const ProductTile: React.FC<ProductProps> = ({
                     width: 40%;
                 `}
             ></div>
-            {/* <img src={imageUrl} alt="" /> */}
             <div className="content">
                 <h3 className="title">{title}</h3>
                 <h1 className="price">${price}</h1>
@@ -109,7 +113,7 @@ export const ProductTile: React.FC<ProductProps> = ({
                 height: 100%;
             `}
         >
-            {description}
+            <div className="content">{description}</div>
         </div>
     </div>
 );

@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
-import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
+import Masonry from 'react-masonry-css';
 
 import {
     Category,
@@ -32,31 +32,44 @@ export default function Menu({ category }: { category?: ISerializedCategoryWithP
             </Head>
 
             <ImageSection imageUrl="/sample-image.jpg" size="half">
-                <h1>{category.title[router.locale ?? 'fr']}</h1>
+                <h1>Menu</h1>
                 <h4>Cuisine fusion asiatique!</h4>
             </ImageSection>
 
             <WhiteSection>
-                <h2>Products</h2>
-                <div>
-                    <ProductTile
-                        imageUrl="/sample-image.jpg"
-                        title="Test"
-                        description="Test"
-                        price={1}
-                        onClickAdd={() => console.log('Ok')}
+                <div
+                    css={css`
+                        width: 100%;
+                    `}
+                >
+                    <h2>{category.title[router.locale ?? 'fr']}</h2>
+                    <div
+                        css={css`
+                            width: 100%;
+                            .my-masonry-grid {
+                                display: flex;
+                            }
+                        `}
                     >
-                        Product
-                    </ProductTile>
-                    <ProductTile
-                        imageUrl="/sample-image.jpg"
-                        title="Test"
-                        description="Test"
-                        price={1}
-                        onClickAdd={() => console.log('Ok')}
-                    >
-                        Product
-                    </ProductTile>
+                        <Masonry
+                            breakpointCols={3}
+                            className="my-masonry-grid"
+                            columnClassName="my-masonry-grid_column"
+                        >
+                            {category?.products.map((p) => (
+                                <ProductTile
+                                    key={p._id}
+                                    imageUrl={p.image ?? ''}
+                                    title={p.title[router.locale ?? 'fr']}
+                                    description={p.description[router.locale ?? 'fr']}
+                                    price={p.basePrice}
+                                    onClickAdd={() => console.log('Ok')}
+                                >
+                                    Product
+                                </ProductTile>
+                            ))}
+                        </Masonry>
+                    </div>
                 </div>
             </WhiteSection>
 

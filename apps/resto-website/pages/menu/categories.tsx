@@ -37,15 +37,21 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
             <WhiteSection>
                 <h2>Categories</h2>
                 <CategoriesGrid>
-                    {categories.map((c) => (
-                        <Link href={`/menu/categories/${c.slug}`} key={c._id}>
-                            <div>
-                                <CategoryTile imageUrl="/sample-image.jpg">
-                                    {c.title[router.locale ?? 'fr']}
-                                </CategoryTile>
-                            </div>
-                        </Link>
-                    ))}
+                    <div
+                        css={css`
+                            width: 100%;
+                        `}
+                    >
+                        {categories.map((c) => (
+                            <Link href={`/menu/categories/${c.slug}`} key={c._id}>
+                                <div>
+                                    <CategoryTile imageUrl="/sample-image.jpg">
+                                        {c.title[router.locale ?? 'fr']}
+                                    </CategoryTile>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
                 </CategoriesGrid>
             </WhiteSection>
 
