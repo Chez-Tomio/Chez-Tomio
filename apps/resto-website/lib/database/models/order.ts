@@ -15,6 +15,7 @@ export type IOrder = {
     contactPhoneNumber: string;
     user?: Types.ObjectId;
     paymentStatus: typeof PaymentStatusPossibilities[number];
+    completed: boolean;
 };
 
 export type IOrderDocument = IOrder & Document & DocumentTimestamps;
@@ -27,10 +28,6 @@ export type ISerializedOrderWithUser = Omit<LeanDocument<IOrderDocument>, '_id' 
 export const OrderSchema = new Schema(
     {
         products: [_.omit(ProductSchema, ['archived', 'isSpecialty', 'minimumPrice'])],
-        total: {
-            type: Number,
-            required: true,
-        },
         contactPhoneNumber: {
             type: String,
             required: true,
@@ -43,6 +40,10 @@ export const OrderSchema = new Schema(
             type: String,
             enum: PaymentStatusPossibilities,
             required: true,
+        },
+        completed: {
+            type: Boolean,
+            default: false,
         },
     },
     { timestamps: true },

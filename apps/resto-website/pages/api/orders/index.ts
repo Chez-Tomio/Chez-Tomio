@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import { Expose, plainToClass, Transform } from 'class-transformer';
 import { IsInt, Min, validateOrReject } from 'class-validator';
 
@@ -46,7 +48,7 @@ export default apiEndpointWrapper(async (req, res) => {
     const orders = await Order.find(
         {},
         {},
-        { sort: '-createdAt', skip: perPage * pageNumber, limit: perPage },
+        { sort: { createdAt: 'desc' }, skip: perPage * pageNumber, limit: perPage },
     ).populate('user');
 
     return res.send({ totalNumberOfPages, orders });

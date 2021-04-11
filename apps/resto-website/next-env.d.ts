@@ -6,6 +6,7 @@ declare global {
         interface ProcessEnv {
             MONGO_URI: string;
             SITE_BASE_URL: string;
+            ORDER_RECEIVER_APP_TOKEN: string;
             STRIPE_PUBLIC_KEY: string;
             STRIPE_PRIVATE_KEY: string;
             COGNITO_CLIENT_ID: string;
