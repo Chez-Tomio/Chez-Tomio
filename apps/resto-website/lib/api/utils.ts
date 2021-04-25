@@ -4,6 +4,7 @@ import sanitize from 'mongo-sanitize';
 import { LeanDocument } from 'mongoose';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/client';
+import safeCompare from 'safe-compare';
 
 import { connectToDatabase, IUserDocument, User } from '../database/mongo';
 
@@ -19,6 +20,12 @@ export const getUser = async (
 export const isUserAdmin = async (req: IncomingMessage): Promise<boolean> => {
     const user = await getUser(req);
     return user?.isAdmin ?? false;
+};
+
+export const isRequesterOrderReceiverApp = (req: IncomingMessage): boolean => {
+    const correactBearerHeader = `Bearer ${process.env.ORDER_RECEIVER_APP_TOKEN}`;
+
+    return safeCompare(correactBearerHeader, req.headers['authorization'] ?? '');
 };
 
 export const sendError = (res: NextApiResponse, errorCode: number, details?: any) =>

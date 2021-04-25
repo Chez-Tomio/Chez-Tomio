@@ -46,6 +46,7 @@ export default apiEndpointWrapper(async (req, res) => {
             return res.json(product);
         }
         default: {
+            return sendError(res, 405);
         }
     }
 });

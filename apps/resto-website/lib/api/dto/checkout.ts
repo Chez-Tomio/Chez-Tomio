@@ -2,6 +2,7 @@ import 'reflect-metadata';
 
 import { Expose, Type } from 'class-transformer';
 import {
+    ArrayMinSize,
     ArrayUnique,
     IsArray,
     IsInt,
@@ -51,5 +52,6 @@ export class CheckoutDTO {
     @Type(() => ProductDTO)
     @IsArray()
     @ValidateNested({ each: true })
+    @ArrayMinSize(1)
     products: ProductDTO[];
 }

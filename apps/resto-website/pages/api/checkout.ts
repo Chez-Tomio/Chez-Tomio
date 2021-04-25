@@ -6,6 +6,7 @@ import _ from 'lodash';
 import Stripe from 'stripe';
 
 import { CheckoutDTO } from '../../lib/api/dto/checkout';
+import { apiEvents } from '../../lib/api/events';
 import { apiEndpointWrapper, areValidationErrors, getUser, sendError } from '../../lib/api/utils';
 import { Category, IOrder, Order, Product } from '../../lib/database/mongo';
 import { localizedStringToString } from '../../lib/database/utils';
@@ -35,7 +36,6 @@ export default apiEndpointWrapper(async (req, res) => {
         user: user?._id,
         paymentStatus: 'unpayed',
         products: [],
-        total: 0,
     });
 
     for (const productDTO of checkoutDTO.products) {
@@ -65,7 +65,7 @@ export default apiEndpointWrapper(async (req, res) => {
         _.times(productDTO.count, () => order.products.push(_.cloneDeep(orderProduct)));
     }
 
-    order.save();
+    await order.save();
 
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
@@ -105,6 +105,9 @@ export default apiEndpointWrapper(async (req, res) => {
             orderId: order._id.toString(),
         },
     });
+
+    apiEvents.emit('newOrder', order._id.toString());
+    console.log('MUST BE REMOVED');
 
     return res.json({ sessionId: session.id });
 });
