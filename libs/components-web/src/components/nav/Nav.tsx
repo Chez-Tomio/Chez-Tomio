@@ -62,7 +62,7 @@ const navStyles = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 100;
     ul {
         list-style: none;
         display: flex;
@@ -76,10 +76,10 @@ export const Nav: React.FC<NavProps> = ({ children, stacked }) => {
         useGesture(
             {
                 onDrag: ({ movement: [mx] }) => {
-                    if (isHamburger && mx < -5) {
+                    if (isHamburger && mx < -20) {
                         setIsOpen(true);
                     }
-                    if (isHamburger && mx > 5) {
+                    if (isHamburger && mx > 20) {
                         setIsOpen(false);
                     }
                 },
@@ -152,6 +152,7 @@ export const Nav: React.FC<NavProps> = ({ children, stacked }) => {
                 <ul
                     css={css`
                         flex-direction: ${stacked ? 'column' : ''};
+                        width: 100%;
                     `}
                 >
                     {children}

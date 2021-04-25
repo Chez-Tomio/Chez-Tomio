@@ -1,6 +1,5 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { Button, ImageSection, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { STATUS_CODES } from 'http';
 import { GetServerSideProps } from 'next';
@@ -11,7 +10,7 @@ import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 
 import { isUserAdmin } from '../../lib/api/utils';
-import { Category, connectToDatabase, ISerializedOrderWithUser } from '../../lib/database/mongo';
+import { connectToDatabase, ISerializedOrderWithUser } from '../../lib/database/mongo';
 
 export default function AdminOrders() {
     const [perPage, setPerPage] = useState(3);
@@ -67,7 +66,6 @@ export default function AdminOrders() {
                     `}
                 >
                     <Link href="/admin/products">-&gt; Products</Link>
-                    <Link href="/admin/orders">-&gt; Orders</Link>
                 </div>
 
                 <h2

@@ -1,5 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
+import '../lib/styles/popup.css';
+
 import {
     Footer,
     GlobalStyles,

@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { Button, ImageSection, ProductTile, WhiteSection } from '@chez-tomio/components-web';
+import { Button, ImageSection, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { GetServerSideProps } from 'next';
 import ErrorPage from 'next/error';
@@ -12,22 +12,39 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 import Masonry from 'react-masonry-css';
 
+import { ProductDTO } from '../../../lib/api/dto/checkout';
+import { MenuProduct } from '../../../lib/components/menu/MenuProduct';
 import {
     Category,
     connectToDatabase,
     ISerializedCategoryWithProducts,
-    ISerializedProduct,
 } from '../../../lib/database/mongo';
 
 export default function Menu({ category }: { category?: ISerializedCategoryWithProducts }) {
     const { t } = useTranslation('common');
     const router = useRouter();
 
-    function addToCart(product: ISerializedProduct) {
-        console.log(product._id);
-        const productsArray = [];
+    function addToCart(data: ProductDTO) {
+        let productsArray: ProductDTO[] = [];
+        const localStorageProducts = localStorage.getItem('cartProducts');
+        if (localStorageProducts) {
+            const data = JSON.parse(localStorageProducts);
+            productsArray = data;
+        }
+
+        // If product is already in cart just add more to count
+        let productIsInCart = false;
+        productsArray.forEach((p, i) => {
+            if (p.id === data.id) {
+                productIsInCart = true;
+                p.count += data.count;
+            }
+        });
+        if (!productIsInCart) {
+            productsArray.push(data);
+        }
+
         localStorage.setItem('cartProducts', JSON.stringify(productsArray));
-        // const data = JSON.parse(localStorage.getItem('cartProducts'));
     }
 
     if (!category) return <ErrorPage statusCode={404} />;
@@ -69,16 +86,11 @@ export default function Menu({ category }: { category?: ISerializedCategoryWithP
                             columnClassName="my-masonry-grid_column"
                         >
                             {category?.products.map((p) => (
-                                <ProductTile
+                                <MenuProduct
                                     key={p._id}
-                                    imageUrl={p.image ?? ''}
-                                    title={p.title[router.locale ?? 'fr']}
-                                    description={p.description[router.locale ?? 'fr']}
-                                    price={p.basePrice}
-                                    onClickAdd={() => addToCart(p)}
-                                >
-                                    Product
-                                </ProductTile>
+                                    product={p}
+                                    onAddToCart={(formData) => addToCart(formData)}
+                                />
                             ))}
                         </Masonry>
                     </div>
@@ -95,7 +107,6 @@ export default function Menu({ category }: { category?: ISerializedCategoryWithP
         </>
     );
 }
-
 export const getServerSideProps: GetServerSideProps = async ({ locale, query }) => {
     await connectToDatabase();
 

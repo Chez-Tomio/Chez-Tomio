@@ -17,12 +17,14 @@ export const ImageUpload: React.FC<FieldProps> = ({ field, form }) => {
                 type="file"
                 accept="image/*"
                 onChange={(e) => {
-                    const file = e.currentTarget.files[0];
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                        form.setFieldValue(field.name, reader.result);
-                    };
-                    reader.readAsDataURL(file);
+                    const file = e.currentTarget.files && e.currentTarget.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                            form.setFieldValue(field.name, reader.result);
+                        };
+                        reader.readAsDataURL(file);
+                    }
                 }}
             />
         </>

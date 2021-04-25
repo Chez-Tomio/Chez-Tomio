@@ -82,7 +82,7 @@ export const CategoriesForm: React.FC<CategoriesFormProps> = ({
 
                     <div className="item">
                         <label htmlFor="image">Image</label>
-                        <Field name="image" type="file" component={ImageUpload} />
+                        <Field name="image" component={ImageUpload} />
                         <ErrorMessage name="image" component="span" className="error" />
                     </div>
 

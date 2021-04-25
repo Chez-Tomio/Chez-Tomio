@@ -18,7 +18,9 @@ const Template: Story<NavProps> = (args) => (
             <NavItem>Page 2</NavItem>
             <NavItem>Page 3</NavItem>
             <NavItem>Page 4</NavItem>
-            <NavItem>Page 5</NavItem>
+            <NavItem>
+                <div>Page 5</div>
+            </NavItem>
         </Nav>
     </NavWrapper>
 );

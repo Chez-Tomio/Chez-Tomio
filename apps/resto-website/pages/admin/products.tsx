@@ -1,11 +1,10 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import 'reactjs-popup/dist/index.css';
-
 import { css, jsx } from '@emotion/react';
 import { STATUS_CODES } from 'http';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React, { useState } from 'react';
 import { useToasts } from 'react-toast-notifications';
@@ -20,7 +19,6 @@ import {
     ISerializedCategoryWithProducts,
     ISerializedProduct,
 } from '../../lib/database/mongo';
-import Link from 'next/link';
 
 export default function AdminProducts({
     categories: initialCategories,
@@ -192,8 +190,7 @@ export default function AdminProducts({
                         justify-content: center;
                     `}
                 >
-                    <Link href="/admin/products">-> Products</Link>
-                    <Link href="/admin/orders">-> Orders</Link>
+                    <Link href="/admin/orders">-&gt; Orders</Link>
                 </div>
 
                 <h2
@@ -209,7 +206,6 @@ export default function AdminProducts({
                     open={isAddingCategory}
                     closeOnDocumentClick
                     onClose={() => setIsAddingCategory(false)}
-                    contentStyle={{ overflowY: 'scroll', margin: '30px auto' }}
                 >
                     <CategoriesForm
                         initialValues={{

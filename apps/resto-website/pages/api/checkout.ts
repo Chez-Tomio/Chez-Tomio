@@ -1,20 +1,11 @@
 import 'reflect-metadata';
 
-import { Expose, plainToClass, Type } from 'class-transformer';
-import {
-    ArrayUnique,
-    IsArray,
-    IsInt,
-    IsMongoId,
-    IsPhoneNumber,
-    Max,
-    Min,
-    ValidateNested,
-    validateOrReject,
-} from 'class-validator';
+import { plainToClass } from 'class-transformer';
+import { validateOrReject } from 'class-validator';
 import _ from 'lodash';
 import Stripe from 'stripe';
 
+import { CheckoutDTO } from '../../lib/api/dto/checkout';
 import { apiEndpointWrapper, areValidationErrors, getUser, sendError } from '../../lib/api/utils';
 import { Category, IOrder, Order, Product } from '../../lib/database/mongo';
 import { localizedStringToString } from '../../lib/database/utils';
@@ -24,48 +15,6 @@ import { emptyStringToUndefined } from '../../lib/utils';
 const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY, {
     apiVersion: '2020-08-27',
 });
-
-class ExtraDTO {
-    @Expose()
-    @IsMongoId()
-    id: string;
-
-    @Expose()
-    @IsInt()
-    @Min(1)
-    @Max(3)
-    count: number;
-}
-
-class ProductDTO {
-    @Expose()
-    @IsMongoId()
-    id: string;
-
-    @Expose()
-    @IsInt()
-    @Min(1)
-    count: number;
-
-    @Expose()
-    @Type(() => ExtraDTO)
-    @IsArray()
-    @ValidateNested({ each: true })
-    @ArrayUnique((o: ExtraDTO) => o.id)
-    extras: ExtraDTO[];
-}
-
-class CheckoutDTO {
-    @Expose()
-    @IsPhoneNumber()
-    contactPhoneNumber: string;
-
-    @Expose()
-    @Type(() => ProductDTO)
-    @IsArray()
-    @ValidateNested({ each: true })
-    products: ProductDTO[];
-}
 
 export default apiEndpointWrapper(async (req, res) => {
     if (req.method !== 'POST') return sendError(res, 405);

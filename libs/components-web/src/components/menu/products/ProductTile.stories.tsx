@@ -11,7 +11,18 @@ export default {
     },
 } as Meta;
 
-export const Template: Story<ProductProps> = (args) => <ProductTile {...args}>Product</ProductTile>;
+export const Template: Story<ProductProps> = (args) => (
+    <>
+        <div style={{ height: 20 }}></div>
+        <ProductTile {...args}>Product</ProductTile>
+    </>
+);
 Template.args = {
     imageUrl: '/sample-image.jpg',
+    title: 'Title',
+    description: 'Description',
+    price: 2.35,
+    onClickAdd: () => {
+        console.log('Added product');
+    },
 };

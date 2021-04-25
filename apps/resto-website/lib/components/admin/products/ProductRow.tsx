@@ -27,7 +27,6 @@ export const ProductRow: React.FC<ProductRowProps> = ({
                 open={isEditingProduct}
                 closeOnDocumentClick
                 onClose={() => setIsEditingProduct(false)}
-                contentStyle={{ overflowY: 'scroll', margin: '30px auto' }}
             >
                 <ProductsForm
                     initialValues={product}

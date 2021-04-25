@@ -62,6 +62,7 @@ const productStyles = css`
         display: flex;
         align-items: flex-end;
         overflow: hidden;
+        color: black;
         .content {
             margin: 30px 20px 10px 20px;
         }

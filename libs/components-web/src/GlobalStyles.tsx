@@ -25,6 +25,15 @@ export const GlobalStyles = () => (
                 line-height: 2rem;
             }
 
+            hr {
+                width: 80%;
+                border: none;
+                height: 2px;
+                background-color: #f0f0f0;
+                margin: 20px 0;
+                border-radius: 2px;
+            }
+
             h1 {
                 font-weight: 900;
                 font-size: 5rem;

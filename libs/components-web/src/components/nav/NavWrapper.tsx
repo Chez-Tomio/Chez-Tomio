@@ -64,11 +64,6 @@ export class NavWrapper extends React.Component<
                         width: 100vw;
                         right: ${this.state.isHamburger && this.state.isOpen ? '500px' : '0px'};
                         transition: right 0.3s;
-                        &:after {
-                            content: '';
-                            background-color: black;
-                            opacity: 0.8;
-                        }
                     `}
                 >
                     {this.props.children}

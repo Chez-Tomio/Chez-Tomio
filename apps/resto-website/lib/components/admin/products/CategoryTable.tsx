@@ -65,7 +65,6 @@ export const CategoryTable: React.FC<CategoryProps> = ({
                 open={isEditingCategory}
                 closeOnDocumentClick
                 onClose={() => setIsEditingCategory(false)}
-                contentStyle={{ overflowY: 'scroll', margin: '30px auto' }}
             >
                 <CategoriesForm
                     initialValues={category}
@@ -169,7 +168,6 @@ export const CategoryTable: React.FC<CategoryProps> = ({
                 open={isAddingProduct}
                 closeOnDocumentClick
                 onClose={() => setIsAddingProduct(false)}
-                contentStyle={{ overflowY: 'scroll', margin: '30px auto' }}
             >
                 <ProductsForm
                     initialValues={{

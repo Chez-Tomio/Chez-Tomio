@@ -17,7 +17,7 @@ export const CategoryTile: React.FC<CategoryProps> = ({ children, imageUrl }) =>
             justify-content: center;
             flex-direction: column;
             border-radius: 20px;
-            width: 100%;
+            /* width: 100%; */
             height: 250px;
             cursor: pointer;
             transition: all 0.5s;

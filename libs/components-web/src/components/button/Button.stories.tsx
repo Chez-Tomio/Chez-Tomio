@@ -17,6 +17,9 @@ export default {
 const Template: Story<ButtonProps> = (args) => <Button {...args}>Button</Button>;
 
 export const Primary = Template.bind({});
+Primary.parameters = {
+    backgrounds: { default: 'white' },
+};
 Primary.args = {
     primary: true,
 };
