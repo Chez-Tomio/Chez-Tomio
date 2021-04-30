@@ -8,7 +8,7 @@ import {
     WhiteSection,
 } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -60,7 +60,7 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
     );
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
     await connectToDatabase();
     return {
         props: {

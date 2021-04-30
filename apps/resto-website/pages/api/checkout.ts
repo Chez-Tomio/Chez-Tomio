@@ -31,7 +31,7 @@ export default apiEndpointWrapper(async (req, res) => {
 
     const user = await getUser(req);
 
-    const order = new Order(<IOrder>{
+    const order = new Order(<Partial<IOrder>>{
         contactPhoneNumber: checkoutDTO.contactPhoneNumber,
         user: user?._id,
         paymentStatus: 'unpayed',
