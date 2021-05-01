@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import Popup from 'reactjs-popup';
 
+import { ExtraDTO } from '../../api/dto/checkout';
 import { ISerializedProduct } from '../../database/mongo';
 import { Quantity } from '../formik/Quantity';
 import { ExtraFieldCount } from './ExtraFieldCount';
@@ -121,30 +122,59 @@ export const MenuProduct: React.FC<{
                                     <ErrorMessage name="count" component="span" className="error" />
                                 </div>
 
+                                {product.extras.length > 0 && (
+                                    <>
+                                        <hr />
+                                        <h4>Extras</h4>
+                                        {product.extras.map((e, i) => (
+                                            <div className="item" key={e._id}>
+                                                <Field
+                                                    name={`extras[${i}]`}
+                                                    component={ExtraFieldCount}
+                                                    {...{
+                                                        extra: e,
+                                                    }}
+                                                />
+
+                                                <ErrorMessage
+                                                    name={`extras[${i}]`}
+                                                    component="span"
+                                                    className="error"
+                                                />
+                                            </div>
+                                        ))}
+                                    </>
+                                )}
+
                                 <hr />
 
-                                <h4>Extras</h4>
-                                {product.extras.map((e, i) => (
-                                    <div className="item" key={e._id}>
-                                        <Field
-                                            name={`extras[${i}]`}
-                                            component={ExtraFieldCount}
-                                            {...{
-                                                extra: e,
-                                            }}
-                                        />
-
-                                        <ErrorMessage
-                                            name={`extras[${i}]`}
-                                            component="span"
-                                            className="error"
-                                        />
-                                    </div>
-                                ))}
-
-                                <hr />
-
-                                <h4>Price</h4>
+                                <h4
+                                    css={css`
+                                        margin: none;
+                                    `}
+                                >
+                                    Price:{' '}
+                                    <b>
+                                        {product.basePrice * values.count +
+                                            values.extras.reduce(
+                                                (acc, curr: ExtraDTO) =>
+                                                    acc +
+                                                    (product.extras.find((e) => e._id === curr.id)
+                                                        ?.price ?? 0) *
+                                                        curr.count,
+                                                0,
+                                            )}
+                                    </b>
+                                    $
+                                </h4>
+                                <small
+                                    css={css`
+                                        margin: none;
+                                        color: gray;
+                                    `}
+                                >
+                                    Tax not included
+                                </small>
 
                                 <Button type="submit" primary={true} disabled={isSubmitting}>
                                     Add to Cart

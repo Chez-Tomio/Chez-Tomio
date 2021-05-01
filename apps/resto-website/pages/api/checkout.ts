@@ -31,6 +31,11 @@ export default apiEndpointWrapper(async (req, res) => {
 
     const user = await getUser(req);
 
+    if (user) {
+        user.phoneNumber = checkoutDTO.contactPhoneNumber;
+        await user.save();
+    }
+
     const order = new Order(<Partial<IOrder>>{
         contactPhoneNumber: checkoutDTO.contactPhoneNumber,
         user: user?._id,

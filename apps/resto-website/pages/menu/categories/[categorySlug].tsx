@@ -107,6 +107,7 @@ export default function Menu({ category }: { category?: ISerializedCategoryWithP
         </>
     );
 }
+
 export const getServerSideProps: GetServerSideProps = async ({ locale, query }) => {
     await connectToDatabase();
 

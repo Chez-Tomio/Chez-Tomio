@@ -8,13 +8,11 @@ import safeCompare from 'safe-compare';
 
 import { connectToDatabase, IUserDocument, User } from '../database/mongo';
 
-export const getUser = async (
-    req: IncomingMessage,
-): Promise<LeanDocument<IUserDocument> | undefined> => {
+export const getUser = async (req: IncomingMessage): Promise<IUserDocument | undefined> => {
     const session = await getSession({ req });
     if (!session || !session.user.email) return undefined;
     const user = await User.findOne({ email: session.user.email });
-    return user?.toObject() ?? undefined;
+    return user ?? undefined;
 };
 
 export const isUserAdmin = async (req: IncomingMessage): Promise<boolean> => {

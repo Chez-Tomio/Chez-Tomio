@@ -12,6 +12,7 @@ export type IUser = {
     name: string;
     email: string;
     isAdmin?: boolean;
+    phoneNumber?: string;
 };
 
 export type IUserDocument = IUser & Document & DocumentTimestamps;
@@ -27,6 +28,14 @@ export const UserSchema = new Schema(
         email: {
             type: String,
             required: true,
+        },
+        isAdmin: {
+            type: Boolean,
+            default: false,
+        },
+        phoneNumber: {
+            type: String,
+            required: false,
         },
     },
     { timestamps: true },

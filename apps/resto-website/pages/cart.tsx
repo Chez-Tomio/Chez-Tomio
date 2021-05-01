@@ -1,29 +1,72 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
+
 import { Button, ImageSection, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
-import { GetStaticProps } from 'next';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { PhoneNumberUtil } from 'google-libphonenumber';
+import { round } from 'lodash';
+import { GetServerSideProps, GetStaticProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React, { useEffect, useState } from 'react';
+import Popup from 'reactjs-popup';
+import * as Yup from 'yup';
 
-import { ProductDTO } from '../lib/api/dto/checkout';
-import { IProduct } from '../lib/database/mongo';
+import { ProductDTO, ProductDTOWithMetadata } from '../lib/api/dto/checkout';
+import { getUser } from '../lib/api/utils';
+import { getTotalProductPrice } from '../lib/client/utils';
+import { connectToDatabase, ISerializedProduct, Product } from '../lib/database/mongo';
 
-export default function Cart() {
+const phoneUtil = PhoneNumberUtil.getInstance();
+
+Yup.addMethod(Yup.string, 'phone', function (errorMessage = 'Phone number is not valid') {
+    console.log(errorMessage);
+    return this.test('phone', errorMessage, (v) => {
+        console.log(v);
+        try {
+            return phoneUtil.isValidNumber(phoneUtil.parse(v, 'US'));
+        } catch (e) {
+            console.log(e);
+            return false;
+        }
+    });
+});
+
+export default function Cart({
+    allProducts,
+    taxeRate,
+    defaultContactPhoneNumber,
+}: {
+    allProducts: ISerializedProduct[];
+    taxeRate: number;
+    defaultContactPhoneNumber: string | null;
+}) {
+    const router = useRouter();
     const { t } = useTranslation('common');
-    const [productArray, setProductArray] = useState<IProduct[]>([]);
     const [productDTOArray, setProductDTOArray] = useState<ProductDTO[]>([]);
+    const [productArray, setProductArray] = useState<ProductDTOWithMetadata[]>([]);
     const [productCount, setProductCount] = useState(0);
+    const [subtotal, setSubtotal] = useState(0);
+    const [phoneNumberPopup, setPhoneNumberPopup] = useState(false);
 
     useEffect(() => {
         // Set productsArray
         const localStorageProducts = localStorage.getItem('cartProducts');
-        const data = localStorageProducts ? JSON.parse(localStorageProducts) : [];
+        const data = (localStorageProducts ? JSON.parse(localStorageProducts) : [])
+            .map((productDTO: ProductDTO) => {
+                const product = allProducts.find((p) => p._id === productDTO.id);
+                if (!product) return undefined;
+                productDTO.extras = productDTO.extras.filter((extraDTO) =>
+                    product.extras.find((e) => e._id === extraDTO.id),
+                );
+                return productDTO;
+            })
+            .filter((p: ProductDTO | undefined) => p !== undefined);
         setProductDTOArray(data);
-        console.log(productDTOArray);
     }, []);
 
     useEffect(() => {
@@ -33,15 +76,46 @@ export default function Cart() {
             count += p.count;
         });
         setProductCount(count);
+
+        setProductArray(
+            productDTOArray
+                .map((productDTO) => {
+                    const product = allProducts.find(
+                        (productMetadata) => productMetadata._id === productDTO.id,
+                    ) as ProductDTOWithMetadata | undefined;
+                    if (!product) return undefined;
+                    product.extras = product.extras
+                        .map((extraMetadata: ProductDTOWithMetadata['extras'][number]) => ({
+                            ...extraMetadata,
+                            count: productDTO.extras.find(
+                                (extraDTO) => extraDTO.id === extraMetadata._id,
+                            )?.count,
+                        }))
+                        .filter(
+                            (e): e is ProductDTOWithMetadata['extras'][number] =>
+                                e.count !== undefined,
+                        );
+                    product.count = productDTO.count;
+                    product.id = productDTO.id;
+                    return product;
+                })
+                .filter((p): p is ProductDTOWithMetadata => p !== undefined),
+        );
     }, [productDTOArray]);
 
+    useEffect(() => {
+        setSubtotal(productArray.reduce((acc, curr) => acc + getTotalProductPrice(curr), 0));
+    }, [productArray]);
+
     function removeProduct(id: string) {
-        const productDTOArrayWithRemovedProduct: ProductDTO[] = productDTOArray.filter(
+        const productDTOArrayWithoutRemovedProduct: ProductDTO[] = productDTOArray.filter(
             (e) => e.id !== id,
         );
-        setProductDTOArray(productDTOArrayWithRemovedProduct);
-        localStorage.setItem('cartProducts', JSON.stringify(productDTOArrayWithRemovedProduct));
+        setProductDTOArray(productDTOArrayWithoutRemovedProduct);
+        localStorage.setItem('cartProducts', JSON.stringify(productDTOArrayWithoutRemovedProduct));
     }
+
+    function checkout(phoneNumber: string) {}
 
     return (
         <>
@@ -49,6 +123,64 @@ export default function Cart() {
                 <title>Cart - Chez Tomio</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+
+            <Popup
+                open={phoneNumberPopup}
+                closeOnDocumentClick
+                onClose={() => setPhoneNumberPopup(false)}
+            >
+                <Formik
+                    initialValues={{ tel: defaultContactPhoneNumber ?? '' }}
+                    validationSchema={Yup.object().shape({
+                        // @ts-expect-error yup
+                        tel: Yup.string().phone('Invalid phone number').required('Required'),
+                    })}
+                    onSubmit={(values, { setSubmitting }) => {
+                        setSubmitting(false);
+                        checkout(values.tel);
+                    }}
+                >
+                    {({ values, isSubmitting, errors }) => (
+                        <Form
+                            css={css`
+                                display: flex;
+                                flex-direction: column;
+                                color: black;
+                                align-items: center;
+                                justify-content: center;
+                                height: 100%;
+                                .item {
+                                    padding: 5px;
+                                    display: flex;
+                                    flex-direction: column;
+                                    text-align: left;
+                                    * {
+                                        width: 100%;
+                                    }
+                                    label {
+                                        font-size: 0.9rem;
+                                    }
+                                    .error {
+                                        color: red;
+                                        font-size: 0.7rem;
+                                        margin-bottom: 15px;
+                                    }
+                                }
+                            `}
+                        >
+                            <div className="item">
+                                <h3>Phone Number</h3>
+                                <Field name="tel" type="tel" />
+                                <ErrorMessage name="tel" component="span" className="error" />
+                            </div>
+
+                            <Button type="submit" primary={true} disabled={isSubmitting}>
+                                Next
+                            </Button>
+                        </Form>
+                    )}
+                </Formik>
+            </Popup>
 
             <ImageSection imageUrl="/sample-image.jpg" size="half">
                 <h1>Cart</h1>
@@ -88,7 +220,7 @@ export default function Cart() {
                                 Items
                             </h4>
                         </div>
-                        {productDTOArray.map((p, i) => (
+                        {productArray.map((p) => (
                             <div
                                 key={p.id}
                                 className="cart-product"
@@ -100,7 +232,7 @@ export default function Cart() {
                             >
                                 <div>
                                     <img
-                                        src="/sample-image.jpg"
+                                        src={p.image}
                                         css={css`
                                             height: 100px;
                                         `}
@@ -125,7 +257,22 @@ export default function Cart() {
                                                 margin: 0;
                                             `}
                                         >
-                                            Title
+                                            {p.title[router.locale ?? 'fr']}{' '}
+                                            {p.extras.length > 0 && (
+                                                <>
+                                                    {' '}
+                                                    (
+                                                    {p.extras
+                                                        .map(
+                                                            (e) =>
+                                                                `${
+                                                                    e.title[router.locale ?? 'fr']
+                                                                } &times; ${e.count}`,
+                                                        )
+                                                        .join(', ')}
+                                                    )
+                                                </>
+                                            )}
                                         </h4>
                                         <h4
                                             css={css`
@@ -133,7 +280,7 @@ export default function Cart() {
                                                 margin-left: auto;
                                             `}
                                         >
-                                            $9.80
+                                            ${getTotalProductPrice(p)}
                                         </h4>
                                     </div>
                                     <p
@@ -143,7 +290,7 @@ export default function Cart() {
                                             color: gray;
                                         `}
                                     >
-                                        {p.count} &times; $0.00
+                                        {p.count} &times; ${getTotalProductPrice(p) / p.count}
                                     </p>
                                     <div>
                                         <svg
@@ -184,8 +331,8 @@ export default function Cart() {
                             `}
                         >
                             <h3>Order Summary</h3>
-                            <h4>Subtotal</h4>
-                            <h4>Taxes</h4>
+                            <h4>Subtotal</h4>${subtotal}
+                            <h4>Taxes (TPS &#38; TVQ)</h4>${round((taxeRate / 100) * subtotal, 2)}
                             <h4
                                 css={css`
                                     font-weight: bold;
@@ -193,7 +340,13 @@ export default function Cart() {
                             >
                                 Total
                             </h4>
-                            <Button primary={true}>Checkout</Button>
+                            {round((1 + taxeRate / 100) * subtotal, 2)}
+                            <Button
+                                primary={true}
+                                onClick={setPhoneNumberPopup.bind(undefined, true)}
+                            >
+                                Checkout
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -210,8 +363,15 @@ export default function Cart() {
     );
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-    props: {
-        ...(await serverSideTranslations(locale!, ['common'])),
-    },
-});
+export const getServerSideProps: GetServerSideProps = async ({ locale, req }) => {
+    await connectToDatabase();
+
+    return {
+        props: {
+            ...(await serverSideTranslations(locale!, ['common'])),
+            allProducts: JSON.parse(JSON.stringify(await Product.find())),
+            taxeRate: parseFloat(process.env.TAX_RATE),
+            defaultContactPhoneNumber: (await getUser(req))?.phoneNumber ?? null,
+        },
+    };
+};

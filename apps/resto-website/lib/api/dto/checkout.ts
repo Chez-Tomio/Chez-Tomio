@@ -13,6 +13,8 @@ import {
     ValidateNested,
 } from 'class-validator';
 
+import { ISerializedProduct } from '../../database/mongo';
+
 export class ExtraDTO {
     @Expose()
     @IsMongoId()
@@ -55,3 +57,9 @@ export class CheckoutDTO {
     @ArrayMinSize(1)
     products: ProductDTO[];
 }
+
+export type ProductDTOWithMetadata = {
+    extras: (ISerializedProduct['extras'][number] & { count: number })[];
+} & ISerializedProduct & {
+        count: number;
+    };
