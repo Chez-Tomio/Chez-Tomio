@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import Popup from 'reactjs-popup';
 
+import { isStoreEnabled } from '../../../config.json';
 import { ExtraDTO } from '../../api/dto/checkout';
 import { ISerializedProduct } from '../../database/mongo';
 import { Quantity } from '../formik/Quantity';
@@ -32,6 +33,7 @@ export const MenuProduct: React.FC<{
                 title={product.title[router.locale ?? 'fr']}
                 description={product.description[router.locale ?? 'fr']}
                 price={product.basePrice}
+                canBeBought={isStoreEnabled}
                 onClickAdd={() => {
                     setProductOptions(true);
                 }}
@@ -61,10 +63,12 @@ export const MenuProduct: React.FC<{
                         initialValues={{
                             id: product._id,
                             count: 1,
-                            extras: [],
+                            extras: [] as ExtraDTO[],
                         }}
                         // validationSchema={ProductsFormSchema}
                         onSubmit={(values, { setSubmitting }) => {
+                            values.extras = values.extras.filter((e) => e.count >= 1);
+                            if (isNaN(values.count)) values.count = 1;
                             addToCart(values);
                             setSubmitting(false);
                         }}
@@ -125,7 +129,21 @@ export const MenuProduct: React.FC<{
                                 {product.extras.length > 0 && (
                                     <>
                                         <hr />
-                                        <h4>Extras</h4>
+                                        <h4
+                                            css={css`
+                                                margin: 0;
+                                            `}
+                                        >
+                                            Extras
+                                        </h4>
+                                        <small
+                                            css={css`
+                                                color: gray;
+                                                margin-bottom: 20px;
+                                            `}
+                                        >
+                                            Maximum 3 per extra
+                                        </small>
                                         {product.extras.map((e, i) => (
                                             <div className="item" key={e._id}>
                                                 <Field
@@ -150,33 +168,34 @@ export const MenuProduct: React.FC<{
 
                                 <h4
                                     css={css`
-                                        margin: none;
+                                        margin: 0;
                                     `}
                                 >
-                                    Price:{' '}
+                                    Price: $
                                     <b>
-                                        {product.basePrice * values.count +
-                                            values.extras.reduce(
-                                                (acc, curr: ExtraDTO) =>
-                                                    acc +
-                                                    (product.extras.find((e) => e._id === curr.id)
-                                                        ?.price ?? 0) *
-                                                        curr.count,
-                                                0,
-                                            )}
+                                        {(isNaN(values.count) ? 1 : values.count) *
+                                            (product.basePrice +
+                                                values.extras.reduce(
+                                                    (acc, curr: ExtraDTO) =>
+                                                        acc +
+                                                        (product.extras.find(
+                                                            (e) => e._id === curr.id,
+                                                        )?.price ?? 0) *
+                                                            (isNaN(curr.count) ? 0 : curr.count),
+                                                    0,
+                                                ))}
                                     </b>
-                                    $
                                 </h4>
                                 <small
                                     css={css`
-                                        margin: none;
                                         color: gray;
+                                        margin-bottom: 20px;
                                     `}
                                 >
                                     Tax not included
                                 </small>
 
-                                <Button type="submit" primary={true} disabled={isSubmitting}>
+                                <Button type="submit" primary={true}>
                                     Add to Cart
                                 </Button>
                             </Form>

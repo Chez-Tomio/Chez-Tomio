@@ -1,0 +1,9 @@
+{
+    "name": "@chez-tomio/site-chez-tomio",
+    "version": "0.1.0",
+    "private": true,
+    "license": "UNLICENSED",
+    "dependencies": {
+        "@chez-tomio/components-web": "*"
+    }
+}

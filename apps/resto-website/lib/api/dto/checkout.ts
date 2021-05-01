@@ -47,7 +47,7 @@ export class ProductDTO {
 
 export class CheckoutDTO {
     @Expose()
-    @IsPhoneNumber()
+    @IsPhoneNumber('US')
     contactPhoneNumber: string;
 
     @Expose()

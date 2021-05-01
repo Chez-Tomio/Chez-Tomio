@@ -3,12 +3,7 @@ import 'reflect-metadata';
 import { Expose, plainToClass, Transform } from 'class-transformer';
 import { IsInt, Min, validateOrReject } from 'class-validator';
 
-import {
-    apiEndpointWrapper,
-    areValidationErrors,
-    isAdmin,
-    sendError,
-} from '../../../lib/api/utils';
+import { apiEndpointWrapper, areValidationErrors, sendError } from '../../../lib/api/utils';
 import { Order } from '../../../lib/database/mongo';
 
 class PaginateQueryDTO {
@@ -25,31 +20,32 @@ class PaginateQueryDTO {
     pageNumber: number;
 }
 
-export default apiEndpointWrapper(async (req, res) => {
-    if (!(await isAdmin(req))) return sendError(res, 403);
+export default apiEndpointWrapper(
+    async (req, res) => {
+        if (req.method !== 'GET') return sendError(res, 405);
 
-    if (req.method !== 'GET') return sendError(res, 405);
+        const paginateQueryDTO = plainToClass(PaginateQueryDTO, req.query, {
+            excludeExtraneousValues: true,
+        });
 
-    const paginateQueryDTO = plainToClass(PaginateQueryDTO, req.query, {
-        excludeExtraneousValues: true,
-    });
+        try {
+            await validateOrReject(paginateQueryDTO);
+        } catch (e) {
+            if (areValidationErrors(e)) return sendError(res, 400);
+            else throw e;
+        }
 
-    try {
-        await validateOrReject(paginateQueryDTO);
-    } catch (e) {
-        if (areValidationErrors(e)) return sendError(res, 400);
-        else throw e;
-    }
+        const { perPage, pageNumber } = paginateQueryDTO;
 
-    const { perPage, pageNumber } = paginateQueryDTO;
+        const totalNumberOfPages = Math.ceil((await Order.count()) / perPage);
 
-    const totalNumberOfPages = Math.ceil((await Order.count()) / perPage);
+        const orders = await Order.find(
+            {},
+            {},
+            { sort: { createdAt: 'desc' }, skip: perPage * pageNumber, limit: perPage },
+        );
 
-    const orders = await Order.find(
-        {},
-        {},
-        { sort: { createdAt: 'desc' }, skip: perPage * pageNumber, limit: perPage },
-    );
-
-    return res.send({ totalNumberOfPages, orders });
-});
+        return res.send({ totalNumberOfPages, orders });
+    },
+    { requiresAdmin: true },
+);

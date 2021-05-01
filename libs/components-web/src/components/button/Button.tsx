@@ -34,4 +34,8 @@ export const Button = styled.button<ButtonProps>`
         color: ${(props) => (props.primary ? '' : '#000')};
         background-color: ${(props) => (props.primary ? '#ac1b24' : '#fff')};
     }
+    &:disabled {
+        background-color: ${(props) => (props.primary ? '#ed777d' : 'transparent')};
+        cursor: auto;
+    }
 `;

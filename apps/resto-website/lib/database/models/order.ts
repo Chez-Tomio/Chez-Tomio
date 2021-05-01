@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { LeanDocument, Model, model, models, Schema, Types } from 'mongoose';
+import { LeanDocument, Model, model, models, Schema } from 'mongoose';
 
 import { Document, DocumentTimestamps } from '../utils';
 import { IProductDocument, ProductSchema } from './product';
@@ -13,6 +13,7 @@ export type IOrder = {
     >[];
     contactPhoneNumber: string;
     paymentStatus: typeof PaymentStatusPossibilities[number];
+    paymentIntent?: string;
     completed: boolean;
 };
 
@@ -33,6 +34,10 @@ export const OrderSchema = new Schema(
             type: String,
             enum: PaymentStatusPossibilities,
             required: true,
+        },
+        paymentIntent: {
+            type: String,
+            required: false,
         },
         completed: {
             type: Boolean,

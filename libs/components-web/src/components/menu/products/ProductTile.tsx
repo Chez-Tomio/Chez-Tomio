@@ -8,6 +8,7 @@ export interface ProductProps {
     title: string;
     description: string;
     price: number;
+    canBeBought?: boolean;
     onClickAdd: () => void;
 }
 
@@ -79,6 +80,7 @@ export const ProductTile: React.FC<ProductProps> = ({
     title,
     description,
     price,
+    canBeBought = true,
     onClickAdd,
 }) => (
     <div css={productStyles}>
@@ -96,25 +98,29 @@ export const ProductTile: React.FC<ProductProps> = ({
                 <h3 className="title">{title}</h3>
                 <h1 className="price">${price}</h1>
             </div>
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                className="add-btn"
-                viewBox="0 0 16 16"
-                onClick={() => onClickAdd()}
-            >
-                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
-            </svg>
+            {canBeBought && (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    className="add-btn"
+                    viewBox="0 0 16 16"
+                    onClick={() => onClickAdd()}
+                >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                </svg>
+            )}
         </div>
 
-        <div
-            className="description"
-            css={css`
-                width: 100%;
-                height: 100%;
-            `}
-        >
-            <div className="content">{description}</div>
-        </div>
+        {description && (
+            <div
+                className="description"
+                css={css`
+                    width: 100%;
+                    height: 100%;
+                `}
+            >
+                <div className="content">{description}</div>
+            </div>
+        )}
     </div>
 );

@@ -1,0 +1,27 @@
+{
+    "taxRate": 14.975,
+    "isStoreEnabled": false,
+    "stripePublicKey": "pk_test_51IdN5lD9q3pL6dzgVF1WRHYimnXkY5Rg8f3yOeXcUl1mToFSUBJG6gGUMQfhReoicinFWpElpeHEqW2ZCuBfeOPM00rfscUupM",
+    "menuItems": [
+        {
+            "url": "/",
+            "translationKey": "home"
+        },
+        {
+            "url": "/menu/categories",
+            "translationKey": "menu"
+        },
+        {
+            "url": "/a-propos",
+            "translationKey": "about"
+        },
+        {
+            "url": "/galerie",
+            "translationKey": "galery"
+        },
+        {
+            "url": "/contact",
+            "translationKey": "contact"
+        }
+    ]
+}

@@ -8,15 +8,19 @@ import {
     WhiteSection,
 } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 
-export default function Home() {
+import { connectToDatabase, ISerializedProduct, Product } from '../lib/database/mongo';
+
+export default function Home({ specialities }: { specialities: ISerializedProduct[] }) {
+    const router = useRouter();
     const { t } = useTranslation('common');
 
     return (
@@ -89,36 +93,14 @@ export default function Home() {
 
             <WhiteSection>
                 <SpecialtiesGrid>
-                    <Specialty
-                        imageUrl="/sample-image.jpg"
-                        name="Specialty"
-                        description="Description"
-                    />
-                    <Specialty
-                        imageUrl="/sample-image.jpg"
-                        name="Specialty"
-                        description="Description"
-                    />
-                    <Specialty
-                        imageUrl="/sample-image.jpg"
-                        name="Specialty"
-                        description="Description"
-                    />
-                    <Specialty
-                        imageUrl="/sample-image.jpg"
-                        name="Specialty"
-                        description="Description"
-                    />
-                    <Specialty
-                        imageUrl="/sample-image.jpg"
-                        name="Specialty"
-                        description="Description"
-                    />
-                    <Specialty
-                        imageUrl="/sample-image.jpg"
-                        name="Specialty"
-                        description="Description"
-                    />
+                    {specialities.map((s) => (
+                        <Specialty
+                            key={s._id}
+                            imageUrl={s.image ?? ''}
+                            name={s.title[router.locale ?? 'fr']}
+                            description={s.description[router.locale ?? 'fr']}
+                        />
+                    ))}
                 </SpecialtiesGrid>
             </WhiteSection>
 
@@ -133,8 +115,13 @@ export default function Home() {
     );
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-    props: {
-        ...(await serverSideTranslations(locale!, ['common'])),
-    },
-});
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+    await connectToDatabase();
+
+    return {
+        props: {
+            ...(await serverSideTranslations(locale!, ['common'])),
+            specialities: JSON.parse(JSON.stringify(await Product.find({ isSpecialty: true }))),
+        },
+    };
+};

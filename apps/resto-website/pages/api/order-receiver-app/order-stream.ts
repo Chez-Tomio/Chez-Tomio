@@ -17,7 +17,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.setHeader('Content-Encoding', 'none');
 
     for (const order of (
-        await Order.find({}, {}, { sort: { createdAt: 'desc' }, limit: parseInt(limit) })
+        await Order.find(
+            {
+                paymentStatus: 'payed',
+            },
+            {},
+            { sort: { createdAt: 'desc' }, limit: parseInt(limit) },
+        )
     ).reverse())
         res.write(`data: ${order.id}\n\n`);
 

@@ -3,10 +3,10 @@
 
 import { Button, ImageSection, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
+import { loadStripe, Stripe } from '@stripe/stripe-js';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { PhoneNumberUtil } from 'google-libphonenumber';
 import { round } from 'lodash';
-import { GetServerSideProps, GetStaticProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -16,39 +16,35 @@ import React, { useEffect, useState } from 'react';
 import Popup from 'reactjs-popup';
 import * as Yup from 'yup';
 
-import { ProductDTO, ProductDTOWithMetadata } from '../lib/api/dto/checkout';
+import { taxRate } from '../config.json';
+import { stripePublicKey } from '../config.json';
+import { CheckoutDTO, ProductDTO, ProductDTOWithMetadata } from '../lib/api/dto/checkout';
 import { getTotalProductPrice } from '../lib/client/utils';
 import { connectToDatabase, ISerializedProduct, Product } from '../lib/database/mongo';
+import { requiresStoreToBeEnabled } from '../lib/server/utils';
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
 Yup.addMethod(Yup.string, 'phone', function (errorMessage = 'Phone number is not valid') {
-    console.log(errorMessage);
     return this.test('phone', errorMessage, (v) => {
-        console.log(v);
         try {
             return phoneUtil.isValidNumber(phoneUtil.parse(v, 'US'));
-        } catch (e) {
-            console.log(e);
+        } catch {
             return false;
         }
     });
 });
 
-export default function Cart({
-    allProducts,
-    taxeRate,
-}: {
-    allProducts: ISerializedProduct[];
-    taxeRate: number;
-}) {
+export default function Cart({ allProducts }: { allProducts: ISerializedProduct[] }) {
     const router = useRouter();
     const { t } = useTranslation('common');
     const [productDTOArray, setProductDTOArray] = useState<ProductDTO[]>([]);
     const [productArray, setProductArray] = useState<ProductDTOWithMetadata[]>([]);
     const [productCount, setProductCount] = useState(0);
     const [subtotal, setSubtotal] = useState(0);
+    const [taxes, setTaxes] = useState(0);
     const [phoneNumberPopup, setPhoneNumberPopup] = useState(false);
+    const [stripePromise, setStripePromise] = useState<Promise<Stripe | null>>();
 
     useEffect(() => {
         // Set productsArray
@@ -64,6 +60,9 @@ export default function Cart({
             })
             .filter((p: ProductDTO | undefined) => p !== undefined);
         setProductDTOArray(data);
+
+        // Start loading Stripe
+        setStripePromise(loadStripe(stripePublicKey));
     }, []);
 
     useEffect(() => {
@@ -102,6 +101,20 @@ export default function Cart({
 
     useEffect(() => {
         setSubtotal(productArray.reduce((acc, curr) => acc + getTotalProductPrice(curr), 0));
+        setTaxes(
+            productArray.reduce(
+                (acc, curr) =>
+                    acc +
+                    curr.count *
+                        (round(curr.basePrice * (taxRate / 100), 2) +
+                            curr.extras.reduce(
+                                (acc, curr) =>
+                                    acc + curr.count * round(curr.price * (taxRate / 100), 2),
+                                0,
+                            )),
+                0,
+            ),
+        );
     }, [productArray]);
 
     function removeProduct(id: string) {
@@ -112,7 +125,35 @@ export default function Cart({
         localStorage.setItem('cartProducts', JSON.stringify(productDTOArrayWithoutRemovedProduct));
     }
 
-    function checkout(phoneNumber: string) {}
+    async function checkout(contactPhoneNumber: string) {
+        try {
+            const stripe = await stripePromise;
+            if (!stripe) throw 'Stripe could not be loaded';
+            const checkoutDTO: CheckoutDTO = {
+                contactPhoneNumber,
+                products: productDTOArray,
+            };
+
+            const response = await fetch('/api/checkout', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(checkoutDTO),
+            });
+
+            if (!response.ok) throw await response.json();
+
+            const { sessionId }: { sessionId: string } = await response.json();
+
+            const { error } = await stripe.redirectToCheckout({ sessionId });
+            if (error) throw error;
+        } catch (error) {
+            alert('An error occured while trying to redirect to checkout');
+            console.error(error);
+        }
+    }
 
     return (
         <>
@@ -264,7 +305,7 @@ export default function Cart({
                                                             (e) =>
                                                                 `${
                                                                     e.title[router.locale ?? 'fr']
-                                                                } &times; ${e.count}`,
+                                                                } x${e.count}`,
                                                         )
                                                         .join(', ')}
                                                     )
@@ -329,7 +370,7 @@ export default function Cart({
                         >
                             <h3>Order Summary</h3>
                             <h4>Subtotal</h4>${subtotal}
-                            <h4>Taxes (TPS &#38; TVQ)</h4>${round((taxeRate / 100) * subtotal, 2)}
+                            <h4>Taxes (TPS &#38; TVQ)</h4>${taxes}
                             <h4
                                 css={css`
                                     font-weight: bold;
@@ -337,9 +378,10 @@ export default function Cart({
                             >
                                 Total
                             </h4>
-                            {round((1 + taxeRate / 100) * subtotal, 2)}
+                            ${taxes + subtotal}
                             <Button
                                 primary={true}
+                                disabled={subtotal <= 0}
                                 onClick={setPhoneNumberPopup.bind(undefined, true)}
                             >
                                 Checkout
@@ -360,14 +402,13 @@ export default function Cart({
     );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ locale, req }) => {
+export const getServerSideProps = requiresStoreToBeEnabled(async ({ locale }) => {
     await connectToDatabase();
 
     return {
         props: {
             ...(await serverSideTranslations(locale!, ['common'])),
             allProducts: JSON.parse(JSON.stringify(await Product.find())),
-            taxeRate: parseFloat(process.env.TAX_RATE),
         },
     };
-};
+});

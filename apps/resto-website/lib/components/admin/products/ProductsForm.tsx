@@ -58,7 +58,6 @@ export const ProductsForm: React.FC<ProductsFormProps> = ({
                     updatedAt: undefined as unknown,
                     ...values,
                 } as ISerializedProduct);
-                console.log(values);
                 setSubmitting(false);
             }}
         >

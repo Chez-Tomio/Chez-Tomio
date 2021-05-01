@@ -26,6 +26,9 @@ export default function AboutUs() {
 
             <WhiteSection>
                 <h2>About Us</h2>
+                <Link href="/a-propos/ce-site">
+                    <Button primary={true}>À propos de ce site</Button>
+                </Link>
             </WhiteSection>
 
             <ImageSection imageUrl="/sample-image-2.jpg">
