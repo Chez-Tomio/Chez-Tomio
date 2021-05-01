@@ -7,7 +7,7 @@ import Stripe from 'stripe';
 
 import { CheckoutDTO } from '../../lib/api/dto/checkout';
 import { apiEvents } from '../../lib/api/events';
-import { apiEndpointWrapper, areValidationErrors, getUser, sendError } from '../../lib/api/utils';
+import { apiEndpointWrapper, areValidationErrors, sendError } from '../../lib/api/utils';
 import { Category, IOrder, Order, Product } from '../../lib/database/mongo';
 import { localizedStringToString } from '../../lib/database/utils';
 import { Unboxed } from '../../lib/types/utils';
@@ -29,16 +29,8 @@ export default apiEndpointWrapper(async (req, res) => {
         else throw e;
     }
 
-    const user = await getUser(req);
-
-    if (user) {
-        user.phoneNumber = checkoutDTO.contactPhoneNumber;
-        await user.save();
-    }
-
     const order = new Order(<Partial<IOrder>>{
         contactPhoneNumber: checkoutDTO.contactPhoneNumber,
-        user: user?._id,
         paymentStatus: 'unpayed',
         products: [],
     });
@@ -105,7 +97,6 @@ export default apiEndpointWrapper(async (req, res) => {
         mode: 'payment',
         success_url: `${process.env.SITE_BASE_URL}/success`,
         cancel_url: `${process.env.SITE_BASE_URL}/cancel`,
-        customer_email: user?.email,
         metadata: {
             orderId: order._id.toString(),
         },

@@ -2,11 +2,11 @@ import { isMongoId } from 'class-validator';
 import mongoose from 'mongoose';
 import slug from 'slug';
 
-import { apiEndpointWrapper, isUserAdmin, sendError } from '../../../lib/api/utils';
+import { apiEndpointWrapper, isAdmin, sendError } from '../../../lib/api/utils';
 import { Category, Product } from '../../../lib/database/mongo';
 
 export default apiEndpointWrapper(async (req, res) => {
-    if (!(await isUserAdmin(req))) return sendError(res, 403);
+    if (!(await isAdmin(req))) return sendError(res, 403);
 
     const { categoryId } = req.query as { categoryId: string };
     if (!isMongoId(categoryId)) return sendError(res, 400);

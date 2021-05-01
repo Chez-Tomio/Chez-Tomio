@@ -39,7 +39,7 @@ export default function SignIn({
                     border-radius: 20px;
                 `}
             >
-                <h3>Sign In</h3>
+                <h3>Sign In - Admin</h3>
                 <div key={cognitoProvider.name}>
                     <Button primary={true} onClick={() => signIn(cognitoProvider.id)}>
                         Sign in with email

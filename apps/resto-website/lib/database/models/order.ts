@@ -3,7 +3,6 @@ import { LeanDocument, Model, model, models, Schema, Types } from 'mongoose';
 
 import { Document, DocumentTimestamps } from '../utils';
 import { IProductDocument, ProductSchema } from './product';
-import { ISerializedUser, User } from './user';
 
 const PaymentStatusPossibilities = ['unpayed', 'payed', 'refunded'] as const;
 
@@ -13,16 +12,14 @@ export type IOrder = {
         'archived' | 'isSpecialty' | 'minimumPrice' | 'image'
     >[];
     contactPhoneNumber: string;
-    user?: Types.ObjectId;
     paymentStatus: typeof PaymentStatusPossibilities[number];
     completed: boolean;
 };
 
 export type IOrderDocument = IOrder & Document & DocumentTimestamps;
 
-export type ISerializedOrderWithUser = Omit<LeanDocument<IOrderDocument>, '_id' | 'user'> & {
+export type ISerializedOrder = Omit<LeanDocument<IOrderDocument>, '_id'> & {
     _id: string;
-    user?: ISerializedUser;
 };
 
 export const OrderSchema = new Schema(
@@ -31,10 +28,6 @@ export const OrderSchema = new Schema(
         contactPhoneNumber: {
             type: String,
             required: true,
-        },
-        user: {
-            type: Schema.Types.ObjectId,
-            ref: User.modelName,
         },
         paymentStatus: {
             type: String,

@@ -17,7 +17,6 @@ import Popup from 'reactjs-popup';
 import * as Yup from 'yup';
 
 import { ProductDTO, ProductDTOWithMetadata } from '../lib/api/dto/checkout';
-import { getUser } from '../lib/api/utils';
 import { getTotalProductPrice } from '../lib/client/utils';
 import { connectToDatabase, ISerializedProduct, Product } from '../lib/database/mongo';
 
@@ -39,11 +38,9 @@ Yup.addMethod(Yup.string, 'phone', function (errorMessage = 'Phone number is not
 export default function Cart({
     allProducts,
     taxeRate,
-    defaultContactPhoneNumber,
 }: {
     allProducts: ISerializedProduct[];
     taxeRate: number;
-    defaultContactPhoneNumber: string | null;
 }) {
     const router = useRouter();
     const { t } = useTranslation('common');
@@ -130,7 +127,7 @@ export default function Cart({
                 onClose={() => setPhoneNumberPopup(false)}
             >
                 <Formik
-                    initialValues={{ tel: defaultContactPhoneNumber ?? '' }}
+                    initialValues={{ tel: '' }}
                     validationSchema={Yup.object().shape({
                         // @ts-expect-error yup
                         tel: Yup.string().phone('Invalid phone number').required('Required'),
@@ -371,7 +368,6 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, req }) =>
             ...(await serverSideTranslations(locale!, ['common'])),
             allProducts: JSON.parse(JSON.stringify(await Product.find())),
             taxeRate: parseFloat(process.env.TAX_RATE),
-            defaultContactPhoneNumber: (await getUser(req))?.phoneNumber ?? null,
         },
     };
 };

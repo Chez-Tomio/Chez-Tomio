@@ -9,13 +9,13 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 
-import { isUserAdmin } from '../../lib/api/utils';
-import { connectToDatabase, ISerializedOrderWithUser } from '../../lib/database/mongo';
+import { isAdmin } from '../../lib/api/utils';
+import { connectToDatabase, ISerializedOrder } from '../../lib/database/mongo';
 
 export default function AdminOrders() {
     const [perPage, setPerPage] = useState(3);
     const [pageNumber, setPageNumber] = useState(0);
-    const [orders, setOrders] = useState<ISerializedOrderWithUser[]>();
+    const [orders, setOrders] = useState<ISerializedOrder[]>();
     const [totalNumberOfPages, setTotalNumberOfPages] = useState(0);
 
     useEffect(() => {
@@ -93,7 +93,6 @@ export default function AdminOrders() {
                             <th>Date</th>
                             <th>Payment Status</th>
                             <th>Total</th>
-                            <th>User</th>
                             <th>Phone</th>
                         </tr>
                     </thead>
@@ -103,7 +102,6 @@ export default function AdminOrders() {
                                 <td>{o.createdAt}</td>
                                 <td>{o.paymentStatus}</td>
                                 <td>{o.products.map((p) => p.title.fr).join(', ')}</td>
-                                <td>{o.user?.email}</td>
                                 <td>{o.contactPhoneNumber}</td>
                             </tr>
                         ))}
@@ -146,8 +144,7 @@ export default function AdminOrders() {
 export const getServerSideProps: GetServerSideProps = async ({ locale, req, res }) => {
     await connectToDatabase();
 
-    const isAdmin = await isUserAdmin(req);
-    if (!isAdmin) {
+    if (!(await isAdmin(req))) {
         res.statusCode = 403;
         res.end(STATUS_CODES[res.statusCode]);
         return { props: {} };

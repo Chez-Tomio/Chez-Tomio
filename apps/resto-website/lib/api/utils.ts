@@ -1,23 +1,16 @@
 import { ValidationError } from 'class-validator';
 import { IncomingMessage, STATUS_CODES } from 'http';
 import sanitize from 'mongo-sanitize';
-import { LeanDocument } from 'mongoose';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/client';
 import safeCompare from 'safe-compare';
 
-import { connectToDatabase, IUserDocument, User } from '../database/mongo';
+import { connectToDatabase } from '../database/mongo';
 
-export const getUser = async (req: IncomingMessage): Promise<IUserDocument | undefined> => {
+export const isAdmin = async (req: IncomingMessage): Promise<boolean> => {
     const session = await getSession({ req });
-    if (!session || !session.user.email) return undefined;
-    const user = await User.findOne({ email: session.user.email });
-    return user ?? undefined;
-};
-
-export const isUserAdmin = async (req: IncomingMessage): Promise<boolean> => {
-    const user = await getUser(req);
-    return user?.isAdmin ?? false;
+    if (!session?.user) return false;
+    return true;
 };
 
 export const isRequesterOrderReceiverApp = (req: IncomingMessage): boolean => {

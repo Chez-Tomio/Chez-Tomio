@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 import { useToasts } from 'react-toast-notifications';
 import Popup from 'reactjs-popup';
 
-import { isUserAdmin } from '../../lib/api/utils';
+import { isAdmin } from '../../lib/api/utils';
 import { CategoriesForm } from '../../lib/components/admin/products/CategoriesForm';
 import { CategoryTable } from '../../lib/components/admin/products/CategoryTable';
 import {
@@ -247,8 +247,7 @@ export default function AdminProducts({
 export const getServerSideProps: GetServerSideProps = async ({ locale, req, res }) => {
     await connectToDatabase();
 
-    const isAdmin = await isUserAdmin(req);
-    if (!isAdmin) {
+    if (!(await isAdmin(req))) {
         res.statusCode = 403;
         res.end(STATUS_CODES[res.statusCode]);
         return { props: {} };

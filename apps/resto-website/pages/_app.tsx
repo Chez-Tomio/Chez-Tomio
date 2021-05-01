@@ -19,7 +19,6 @@ import { Provider } from 'next-auth/client';
 import { appWithTranslation, useTranslation } from 'next-i18next';
 import { ToastProvider } from 'react-toast-notifications';
 
-import { LoginButton } from '../lib/components/app/LoginButton';
 import Logo from '../public/logo.svg';
 
 function App({ Component: Page, pageProps }: AppProps) {
@@ -85,8 +84,6 @@ function App({ Component: Page, pageProps }: AppProps) {
                                     </div>
                                 </Link>
                             </Nav>
-
-                            <LoginButton />
 
                             <div
                                 css={css`

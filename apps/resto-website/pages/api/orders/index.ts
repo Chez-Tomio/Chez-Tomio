@@ -6,7 +6,7 @@ import { IsInt, Min, validateOrReject } from 'class-validator';
 import {
     apiEndpointWrapper,
     areValidationErrors,
-    isUserAdmin,
+    isAdmin,
     sendError,
 } from '../../../lib/api/utils';
 import { Order } from '../../../lib/database/mongo';
@@ -26,7 +26,7 @@ class PaginateQueryDTO {
 }
 
 export default apiEndpointWrapper(async (req, res) => {
-    if (!(await isUserAdmin(req))) return sendError(res, 403);
+    if (!(await isAdmin(req))) return sendError(res, 403);
 
     if (req.method !== 'GET') return sendError(res, 405);
 
@@ -49,7 +49,7 @@ export default apiEndpointWrapper(async (req, res) => {
         {},
         {},
         { sort: { createdAt: 'desc' }, skip: perPage * pageNumber, limit: perPage },
-    ).populate('user');
+    );
 
     return res.send({ totalNumberOfPages, orders });
 });

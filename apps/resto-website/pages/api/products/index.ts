@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 
-import { apiEndpointWrapper, isUserAdmin, sendError } from '../../../lib/api/utils';
+import { apiEndpointWrapper, isAdmin, sendError } from '../../../lib/api/utils';
 import { Category, Product } from '../../../lib/database/mongo';
 
 export default apiEndpointWrapper(async (req, res) => {
-    if (!(await isUserAdmin(req))) return sendError(res, 403);
+    if (!(await isAdmin(req))) return sendError(res, 403);
 
     switch (req.method) {
         case 'GET': {
