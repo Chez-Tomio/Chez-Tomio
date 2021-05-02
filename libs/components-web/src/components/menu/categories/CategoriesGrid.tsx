@@ -8,7 +8,8 @@ const categoriesGridStyles = css`
     padding: 20px;
     display: grid;
     grid-gap: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    width: 100%;
 `;
 
 export const CategoriesGrid: React.FC = ({ children }) => (

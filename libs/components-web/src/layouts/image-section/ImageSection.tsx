@@ -17,17 +17,6 @@ const heights: { [k in ImageSectionSize]: string } = {
     fill: '100vh',
 };
 
-const imageSectionStyles = css`
-    font-family: 'Montserrat', sans-serif;
-    padding: 120px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-    max-height: 100vh;
-`;
-
 export const ImageSection: React.FC<ImageSectionProps> = ({
     children,
     imageUrl,
@@ -36,7 +25,14 @@ export const ImageSection: React.FC<ImageSectionProps> = ({
 }) => (
     <div
         css={css`
-            ${imageSectionStyles}
+            font-family: 'Montserrat', sans-serif;
+            padding: 120px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            max-height: 100vh;
             background: rgba(0, 0, 0, ${opacity ?? 0.65}) url(${imageUrl});
             background-blend-mode: darken;
             background-position: center;

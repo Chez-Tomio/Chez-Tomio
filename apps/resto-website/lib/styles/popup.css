@@ -1,0 +1,52 @@
+@media (min-width: 1300px) {
+    .popup-content {
+        margin: 40px auto !important;
+        width: 50%;
+    }
+}
+
+@media (max-width: 1300px) {
+    .popup-content {
+        margin: 40px auto !important;
+        width: 60%;
+    }
+}
+
+@media (max-width: 900px) {
+    .popup-content {
+        margin: 40px 5% !important;
+        width: 100%;
+    }
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    color: black;
+    overflow-y: auto;
+}
+
+[role='tooltip'].popup-content {
+    width: 200px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.16);
+    border-radius: 5px;
+}
+
+.popup-overlay {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+[data-popup='tooltip'].popup-overlay {
+    background: transparent;
+}
+
+.popup-arrow {
+    -webkit-filter: drop-shadow(0 -3px 3px rgba(0, 0, 0, 0.16));
+    filter: drop-shadow(0 -3px 3px rgba(0, 0, 0, 0.16));
+    color: #fff;
+    stroke-width: 2px;
+    stroke: #d7d7d7;
+    stroke-dasharray: 30px;
+    stroke-dashoffset: -54px;
+}

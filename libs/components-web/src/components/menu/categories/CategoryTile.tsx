@@ -7,7 +7,7 @@ export interface CategoryProps {
     imageUrl: string;
 }
 
-export const Category: React.FC<CategoryProps> = ({ children, imageUrl }) => (
+export const CategoryTile: React.FC<CategoryProps> = ({ children, imageUrl }) => (
     <div
         css={css`
             font-family: 'Montserrat', sans-serif;
@@ -17,17 +17,18 @@ export const Category: React.FC<CategoryProps> = ({ children, imageUrl }) => (
             justify-content: center;
             flex-direction: column;
             border-radius: 20px;
-            width: 100%;
+            /* width: 100%; */
             height: 250px;
             cursor: pointer;
             transition: all 0.5s;
-            h3 {
-                transition: all 0.3s;
-            }
+            color: white;
             background: rgba(0, 0, 0, 0.5) url(${imageUrl});
             background-blend-mode: darken;
             background-position: center;
             background-size: cover;
+            h3 {
+                transition: all 0.3s;
+            }
             &:hover {
                 background: rgba(0, 0, 0, 0.2) url(${imageUrl});
                 background-blend-mode: darken;

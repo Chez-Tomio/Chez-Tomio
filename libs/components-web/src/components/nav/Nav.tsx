@@ -1,8 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext } from 'react';
 import { useGesture } from 'react-use-gesture';
+
 import { NavWrapper } from '../..';
 
 export interface NavProps {
@@ -40,6 +41,11 @@ const mobileNavStyles = css`
         width: 100%;
         height: 100%;
         overflow: auto;
+        a {
+            text-decoration: none;
+            color: #fff;
+            outline: none;
+        }
         .nav-item {
             color: black;
             .nav-item-li {
@@ -56,7 +62,7 @@ const navStyles = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 100;
     ul {
         list-style: none;
         display: flex;
@@ -70,10 +76,10 @@ export const Nav: React.FC<NavProps> = ({ children, stacked }) => {
         useGesture(
             {
                 onDrag: ({ movement: [mx] }) => {
-                    if (isHamburger && mx < -5) {
+                    if (isHamburger && mx < -20) {
                         setIsOpen(true);
                     }
-                    if (isHamburger && mx > 5) {
+                    if (isHamburger && mx > 20) {
                         setIsOpen(false);
                     }
                 },
@@ -100,7 +106,7 @@ export const Nav: React.FC<NavProps> = ({ children, stacked }) => {
                 >
                     <path
                         fill="currentColor"
-                        d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
+                        d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
                     />
                 </svg>
 
@@ -146,6 +152,7 @@ export const Nav: React.FC<NavProps> = ({ children, stacked }) => {
                 <ul
                     css={css`
                         flex-direction: ${stacked ? 'column' : ''};
+                        width: 100%;
                     `}
                 >
                     {children}

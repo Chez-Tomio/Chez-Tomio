@@ -9,8 +9,10 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "jsx": "preserve",
-        "strict": false
+        "strict": false,
+        "strictNullChecks": true,
+        "experimentalDecorators": true
     },
-    "include": ["next-env.d.ts", "images.d.ts", "**/*.ts", "**/*.tsx"],
+    "include": ["next-env.d.ts", "images.d.ts", "mongoose.d.ts", "**/*.ts", "**/*.tsx"],
     "exclude": ["node_modules"]
 }

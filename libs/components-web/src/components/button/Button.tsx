@@ -25,14 +25,17 @@ export const Button = styled.button<ButtonProps>`
     transition: 0.2s;
     color: white;
     background-color: ${(props) => (props.primary ? '#ED1B24' : 'transparent')};
-    box-shadow: ${(props) =>
-        !props.primary ? 'rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset' : 'none'};
     font-size: 1rem;
     padding: ${(props) => paddings[props.size ?? 'medium']};
     border: ${(props) => (props.primary ? '' : '2px solid #fff')};
     margin: 10px 20px;
+    outline: none;
     &:hover {
         color: ${(props) => (props.primary ? '' : '#000')};
         background-color: ${(props) => (props.primary ? '#ac1b24' : '#fff')};
+    }
+    &:disabled {
+        background-color: ${(props) => (props.primary ? '#ed777d' : 'transparent')};
+        cursor: auto;
     }
 `;

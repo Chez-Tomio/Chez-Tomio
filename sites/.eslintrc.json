@@ -1,0 +1,3 @@
+{
+    "extends": ["../apps/resto-website/.eslintrc.json"]
+}

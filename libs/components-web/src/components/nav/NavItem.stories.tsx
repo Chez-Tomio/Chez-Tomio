@@ -9,6 +9,4 @@ export default {
 } as Meta;
 
 export const Template: Story<NavItemProps> = (args) => <NavItem {...args}>NavItem</NavItem>;
-Template.args = {
-    href: '',
-};
+Template.args = {};

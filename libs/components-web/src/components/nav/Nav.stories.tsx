@@ -13,12 +13,14 @@ export default {
 const Template: Story<NavProps> = (args) => (
     <NavWrapper>
         <Nav {...args}>
-            <NavItem href="">Home</NavItem>
-            <NavItem href="">Page 1</NavItem>
-            <NavItem href="">Page 2</NavItem>
-            <NavItem href="">Page 3</NavItem>
-            <NavItem href="">Page 4</NavItem>
-            <NavItem href="">Page 5</NavItem>
+            <NavItem>Home</NavItem>
+            <NavItem>Page 1</NavItem>
+            <NavItem>Page 2</NavItem>
+            <NavItem>Page 3</NavItem>
+            <NavItem>Page 4</NavItem>
+            <NavItem>
+                <div>Page 5</div>
+            </NavItem>
         </Nav>
     </NavWrapper>
 );

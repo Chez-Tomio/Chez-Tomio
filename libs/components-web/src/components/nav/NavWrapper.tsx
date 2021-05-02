@@ -1,10 +1,10 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import React from 'react';
 import { css, jsx } from '@emotion/react';
+import React from 'react';
 
 export class NavWrapper extends React.Component<
-    {},
+    Record<string, unknown>,
     {
         isOpen: boolean;
         isHamburger: boolean;
@@ -13,6 +13,7 @@ export class NavWrapper extends React.Component<
     public static Context = React.createContext({
         isHamburger: false,
         isOpen: false,
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         setIsOpen: (_: boolean) => {},
     });
 
@@ -63,11 +64,6 @@ export class NavWrapper extends React.Component<
                         width: 100vw;
                         right: ${this.state.isHamburger && this.state.isOpen ? '500px' : '0px'};
                         transition: right 0.3s;
-                        &:after {
-                            content: '';
-                            background-color: black;
-                            opacity: 0.8;
-                        }
                     `}
                 >
                     {this.props.children}

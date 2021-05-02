@@ -1,4 +1,6 @@
-import { css, Global } from '@emotion/react';
+/** @jsxRuntime classic */
+/** @jsx jsx */
+import { css, Global, jsx } from '@emotion/react';
 
 export const GlobalStyles = () => (
     <Global
@@ -21,6 +23,15 @@ export const GlobalStyles = () => (
             p {
                 margin: 1rem 0;
                 line-height: 2rem;
+            }
+
+            hr {
+                width: 80%;
+                border: none;
+                height: 2px;
+                background-color: #f0f0f0;
+                margin: 20px 0;
+                border-radius: 2px;
             }
 
             h1 {

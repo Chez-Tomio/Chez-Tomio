@@ -2,7 +2,7 @@ import { Meta, Story } from '@storybook/react/types-6-0';
 import React from 'react';
 
 import { CategoriesGrid } from './CategoriesGrid';
-import { Category } from './Category';
+import { CategoryTile } from './CategoryTile';
 
 export default {
     title: 'Components/Menu/Categories/CategoriesGrid',
@@ -14,11 +14,11 @@ export default {
 
 export const Template: Story = (args) => (
     <CategoriesGrid {...args}>
-        <Category imageUrl="/sample-image.jpg">Category</Category>
-        <Category imageUrl="/sample-image.jpg">Category</Category>
-        <Category imageUrl="/sample-image.jpg">Category</Category>
-        <Category imageUrl="/sample-image.jpg">Category</Category>
-        <Category imageUrl="/sample-image.jpg">Category</Category>
-        <Category imageUrl="/sample-image.jpg">Category</Category>
+        <CategoryTile imageUrl="/sample-image.jpg">Category</CategoryTile>
+        <CategoryTile imageUrl="/sample-image.jpg">Category</CategoryTile>
+        <CategoryTile imageUrl="/sample-image.jpg">Category</CategoryTile>
+        <CategoryTile imageUrl="/sample-image.jpg">Category</CategoryTile>
+        <CategoryTile imageUrl="/sample-image.jpg">Category</CategoryTile>
+        <CategoryTile imageUrl="/sample-image.jpg">Category</CategoryTile>
     </CategoriesGrid>
 );
