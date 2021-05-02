@@ -11,9 +11,9 @@ export default apiEndpointWrapper(
             }
             case 'POST': {
                 try {
-                    const product = new Category(req.body);
-                    await product.save();
-                    return res.send(product);
+                    const category = new Category(req.body);
+                    await category.save();
+                    return res.send(category);
                 } catch (e) {
                     if (
                         e instanceof mongoose.Error.CastError ||

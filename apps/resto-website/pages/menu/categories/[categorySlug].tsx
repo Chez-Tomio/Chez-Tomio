@@ -3,7 +3,6 @@
 import { Button, ImageSection, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { GetServerSideProps } from 'next';
-import ErrorPage from 'next/error';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -20,7 +19,7 @@ import {
     ISerializedCategoryWithProducts,
 } from '../../../lib/database/mongo';
 
-export default function Menu({ category }: { category?: ISerializedCategoryWithProducts }) {
+export default function Menu({ category }: { category: ISerializedCategoryWithProducts }) {
     const { t } = useTranslation('common');
     const router = useRouter();
 
@@ -46,8 +45,6 @@ export default function Menu({ category }: { category?: ISerializedCategoryWithP
 
         localStorage.setItem('cartProducts', JSON.stringify(productsArray));
     }
-
-    if (!category) return <ErrorPage statusCode={404} />;
 
     return (
         <>
@@ -112,7 +109,14 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, query }) 
     await connectToDatabase();
 
     const { categorySlug } = query as { categorySlug: string };
-    const category = await Category.findOne({ slug: categorySlug }).populate('products');
+    const category = await Category.findOne({ slug: categorySlug, archived: false }).populate({
+        path: 'products',
+        match: {
+            archived: false,
+        },
+    });
+
+    if (!category) return { notFound: true };
 
     return {
         props: {

@@ -408,7 +408,7 @@ export const getServerSideProps = requiresStoreToBeEnabled(async ({ locale }) =>
     return {
         props: {
             ...(await serverSideTranslations(locale!, ['common'])),
-            allProducts: JSON.parse(JSON.stringify(await Product.find())),
+            allProducts: JSON.parse(JSON.stringify(await Product.find({ archived: false }))),
         },
     };
 });

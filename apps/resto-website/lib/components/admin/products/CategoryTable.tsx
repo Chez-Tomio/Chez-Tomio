@@ -147,7 +147,7 @@ export const CategoryTable: React.FC<CategoryProps> = ({
                         <th>Description</th>
                         <th>Image</th>
                         <th>Base Price</th>
-                        <th>Speciality</th>
+                        <th>Specialty</th>
                         <th>Extras</th>
                         <th>Archived</th>
                         <th>Edit</th>

@@ -40,7 +40,7 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
                     {categories.map((c) => (
                         <Link href={`/menu/categories/${c.slug}`} key={c._id}>
                             <div>
-                                <CategoryTile imageUrl="/sample-image.jpg">
+                                <CategoryTile imageUrl={c.image}>
                                     {c.title[router.locale ?? 'fr']}
                                 </CategoryTile>
                             </div>
@@ -65,7 +65,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
     return {
         props: {
             ...(await serverSideTranslations(locale!, ['common'])),
-            categories: JSON.parse(JSON.stringify(await Category.find())),
+            categories: JSON.parse(JSON.stringify(await Category.find({ archived: false }))),
         },
     };
 };

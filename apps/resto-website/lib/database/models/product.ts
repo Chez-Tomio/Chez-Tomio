@@ -45,7 +45,7 @@ export const ProductSchema = new Schema(
             type: Number,
             required: true,
         },
-        isSpeciality: {
+        isSpecialty: {
             type: Boolean,
             default: false,
         },

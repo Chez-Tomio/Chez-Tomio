@@ -5,6 +5,7 @@ export async function connectToDatabase() {
         await connect(process.env.MONGO_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
+            useFindAndModify: false,
         });
 }
 

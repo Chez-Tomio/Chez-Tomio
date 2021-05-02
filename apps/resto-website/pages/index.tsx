@@ -10,7 +10,6 @@ import {
 import { css, jsx } from '@emotion/react';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
@@ -82,7 +81,7 @@ export default function Home({ specialities }: { specialities: ISerializedProduc
                             width: 200px;
                         `}
                     >
-                        <Image src="/sample-image.jpg" alt="" height={300} width={300} />
+                        <img src="/sample-image.jpg" alt="" height={300} width={300} />
                     </div>
                 </div>
             </WhiteSection>
@@ -121,7 +120,9 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
     return {
         props: {
             ...(await serverSideTranslations(locale!, ['common'])),
-            specialities: JSON.parse(JSON.stringify(await Product.find({ isSpecialty: true }))),
+            specialities: JSON.parse(
+                JSON.stringify(await Product.find({ isSpecialty: true, archived: false })),
+            ),
         },
     };
 };

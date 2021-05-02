@@ -23,6 +23,7 @@ export default apiEndpointWrapper(
 
                     return res.json(category);
                 } catch (e) {
+                    console.log(e);
                     if (
                         e instanceof mongoose.Error.CastError ||
                         e instanceof mongoose.Error.ValidationError

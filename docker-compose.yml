@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+    mongo:
+        image: mongo
+        container_name: mongo
+        restart: unless-stopped
+        security_opt:
+            - no-new-privileges:true
+        networks:
+            - test-net
+
+    cheztomio:
+        depends_on:
+            - mongo
+        build:
+            context: .
+            dockerfile: ./RestoWebsite.Dockerfile
+            args:
+                SITE: chez-tomio
+        container_name: cheztomio
+        restart: unless-stopped
+        security_opt:
+            - no-new-privileges:true
+        networks:
+            - test-net
+        ports:
+            - '3000:3000'
+        environment:
+            PORT: 3000
+
+networks:
+    test-net:

@@ -36,7 +36,10 @@ export default function AdminProducts({
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(newCategory),
+                body: JSON.stringify({
+                    ...newCategory,
+                    products: newCategory.products.map((p) => p._id),
+                }),
             });
             if (!response.ok) throw await response.json();
             addToast(`The category "${newCategory.title.fr}" was successfully updated`, {
@@ -101,6 +104,7 @@ export default function AdminProducts({
 
     async function updateProduct(newProduct: ISerializedProduct) {
         try {
+            console.log(newProduct);
             const response = await fetch(`/api/products/${newProduct._id}`, {
                 method: 'PATCH',
                 headers: {

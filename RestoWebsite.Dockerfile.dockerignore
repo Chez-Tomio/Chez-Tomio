@@ -1,3 +1,5 @@
 apps/*
 !apps/resto-website
 node_modules/*
+apps/resto-website/config.json
+apps/resto-website/.env.local
