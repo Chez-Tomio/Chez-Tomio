@@ -41,7 +41,9 @@ export default function Home({ specialities }: { specialities: ISerializedProduc
                     `}
                 >
                     <Button primary={true}>Voir le menu</Button>
-                    <Button>Nous contacter!</Button>
+                    <Link href="/contact">
+                        <Button>Nous contacter!</Button>
+                    </Link>
                 </div>
             </ImageSection>
 
@@ -86,22 +88,26 @@ export default function Home({ specialities }: { specialities: ISerializedProduc
                 </div>
             </WhiteSection>
 
-            <ImageSection imageUrl="/sample-image.jpg" size="half">
-                <h2>Spécialités!</h2>
-            </ImageSection>
+            {specialities.length > 0 && (
+                <>
+                    <ImageSection imageUrl="/sample-image.jpg" size="half">
+                        <h2>Spécialités!</h2>
+                    </ImageSection>
 
-            <WhiteSection>
-                <SpecialtiesGrid>
-                    {specialities.map((s) => (
-                        <Specialty
-                            key={s._id}
-                            imageUrl={s.image ?? ''}
-                            name={s.title[router.locale ?? 'fr']}
-                            description={s.description[router.locale ?? 'fr']}
-                        />
-                    ))}
-                </SpecialtiesGrid>
-            </WhiteSection>
+                    <WhiteSection>
+                        <SpecialtiesGrid>
+                            {specialities.map((s) => (
+                                <Specialty
+                                    key={s._id}
+                                    imageUrl={s.image ?? ''}
+                                    name={s.title[router.locale ?? 'fr']}
+                                    description={s.description[router.locale ?? 'fr']}
+                                />
+                            ))}
+                        </SpecialtiesGrid>
+                    </WhiteSection>
+                </>
+            )}
 
             <ImageSection imageUrl="/sample-image-2.jpg">
                 <h2>Venez manger avec nous!</h2>

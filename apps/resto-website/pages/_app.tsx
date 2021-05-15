@@ -38,7 +38,7 @@ function App({ Component: Page, pageProps }: AppProps) {
                             flex-direction: column;
                         `}
                     >
-                        <Header>
+                        <Header backgroundFull={pageProps.headerBackgroundFull}>
                             <Link href="/">
                                 <Logo
                                     css={css`

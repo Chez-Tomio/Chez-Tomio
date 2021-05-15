@@ -8,10 +8,30 @@ export default {
     component: Header,
 } as Meta;
 
-export const Template: Story = (args) => (
+export const WhiteBackground: Story = (args) => (
     <Header {...args}>
         Left
         <HeaderSpace />
         Right
     </Header>
 );
+WhiteBackground.parameters = {
+    backgrounds: { default: 'white' },
+};
+WhiteBackground.args = {
+    backgroundFull: true,
+};
+
+export const BlackBackground: Story = (args) => (
+    <Header {...args}>
+        Left
+        <HeaderSpace />
+        Right
+    </Header>
+);
+BlackBackground.parameters = {
+    backgrounds: { default: 'black' },
+};
+BlackBackground.args = {
+    backgroundFull: false,
+};

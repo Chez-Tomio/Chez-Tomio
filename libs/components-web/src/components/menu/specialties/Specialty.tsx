@@ -17,11 +17,6 @@ const styles = css`
     flex: 1 0 auto;
     align-items: center;
     max-width: 100vw;
-    img {
-        border-radius: 50%;
-        width: 200px;
-        max-width: 40%;
-    }
     .specialty-text-container {
         display: flex;
         flex-direction: column;
@@ -32,7 +27,18 @@ const styles = css`
 
 export const Specialty: React.FC<SpecialtyProps> = ({ imageUrl, name, description }) => (
     <div css={styles}>
-        <img src={imageUrl} alt="specialty-img" />
+        <div
+            css={css`
+                border-radius: 50%;
+                width: 130px;
+                height: 130px;
+                background-color: lightgray;
+                background-image: url(${imageUrl});
+                background-position: center;
+                background-size: cover;
+            `}
+        ></div>
+        {/* <img src={imageUrl} alt="specialty-img" /> */}
         <div className="specialty-text-container">
             <h3>{name}</h3>
             <p>{description}</p>
