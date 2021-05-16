@@ -16,6 +16,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, res }) =>
         props: {
             ...(await serverSideTranslations(locale!, ['common'])),
             headerBackgroundFull: true,
+            bottomBanner: false,
             errorCode,
         },
     };

@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import Popup from 'reactjs-popup';
 
-import { isStoreEnabled } from '../../../config.json';
+import { isStoreEnabled } from '../../../config/global.json';
 import { ExtraDTO } from '../../api/dto/checkout';
 import { ISerializedProduct } from '../../database/mongo';
 import { Quantity } from '../formik/Quantity';

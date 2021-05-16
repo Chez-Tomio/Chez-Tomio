@@ -16,8 +16,8 @@ import React, { useEffect, useState } from 'react';
 import Popup from 'reactjs-popup';
 import * as Yup from 'yup';
 
-import { taxRate } from '../config.json';
-import { stripePublicKey } from '../config.json';
+import { taxRate } from '../config/global.json';
+import { stripePublicKey } from '../config/global.json';
 import { CheckoutDTO, ProductDTO, ProductDTOWithMetadata } from '../lib/api/dto/checkout';
 import { getTotalProductPrice } from '../lib/client/utils';
 import { connectToDatabase, ISerializedProduct, Product } from '../lib/database/mongo';
@@ -390,14 +390,6 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                     </div>
                 </div>
             </WhiteSection>
-
-            <ImageSection imageUrl="/sample-image-2.jpg">
-                <h2>Venez manger avec nous!</h2>
-                <h4>On vous servira avec grand plaisir! On espère vous voir bientôt!</h4>
-                <Link href="/contact">
-                    <Button primary={true}>Nous contacter!</Button>
-                </Link>
-            </ImageSection>
         </>
     );
 }

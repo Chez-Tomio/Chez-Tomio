@@ -1,7 +1,7 @@
 import { STATUS_CODES } from 'http';
 import { GetServerSideProps } from 'next';
 
-import { isStoreEnabled } from '../../config.json';
+import { isStoreEnabled } from '../../config/global.json';
 
 export const requiresStoreToBeEnabled = (
     getServerSideProps: GetServerSideProps,

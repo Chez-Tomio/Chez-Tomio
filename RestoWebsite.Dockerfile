@@ -20,7 +20,7 @@ RUN yarn run build:components-web
 
 ARG SITE
 
-COPY sites/$SITE/config.json apps/resto-website/config.json
+COPY sites/$SITE/config.json apps/resto-website/config/global.json
 COPY sites/$SITE/.env.local apps/resto-website/.env.local
 
 COPY sites/$SITE/pages/ apps/resto-website/pages/

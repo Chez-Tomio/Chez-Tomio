@@ -1,7 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
-import React from 'react';
+import React, { useContext } from 'react';
+
+import { NavWrapper } from '../..';
 
 export interface NavItemProps {
     border?: boolean;
@@ -43,16 +45,21 @@ const navItemStyles = css`
     }
 `;
 
-export const NavItem: React.FC<NavItemProps> = ({ children, border }) => (
-    <div className="nav-item" css={navItemStyles}>
-        <li
-            className="nav-item-li"
-            css={css`
-                border: ${border ? '#fff solid 2px' : ''};
-                border-radius: 5px;
-            `}
-        >
-            <span className="nav-item-text">{children}</span>
-        </li>
-    </div>
-);
+export const NavItem: React.FC<NavItemProps> = ({ children, border }) => {
+    const { setIsOpen } = useContext(NavWrapper.Context);
+
+    return (
+        <div className="nav-item" css={navItemStyles}>
+            <li
+                className="nav-item-li"
+                onClick={() => setIsOpen(false)}
+                css={css`
+                    border: ${border ? '#fff solid 2px' : ''};
+                    border-radius: 5px;
+                `}
+            >
+                <span className="nav-item-text">{children}</span>
+            </li>
+        </div>
+    );
+};

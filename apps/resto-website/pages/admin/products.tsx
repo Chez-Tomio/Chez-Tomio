@@ -261,6 +261,8 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, req, res 
         props: {
             ...(await serverSideTranslations(locale!, ['common'])),
             categories: JSON.parse(JSON.stringify(await Category.find().populate('products'))),
+            headerBackgroundFull: true,
+            bottomBanner: false,
         },
     };
 };

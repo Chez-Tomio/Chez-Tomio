@@ -3,10 +3,12 @@
 import '../lib/styles/popup.css';
 
 import {
+    Button,
     Footer,
     GlobalStyles,
     Header,
     HeaderSpace,
+    ImageSection,
     Nav,
     NavItem,
     NavWrapper,
@@ -19,8 +21,30 @@ import { Provider } from 'next-auth/client';
 import { appWithTranslation, useTranslation } from 'next-i18next';
 import { ToastProvider } from 'react-toast-notifications';
 
-import { isStoreEnabled, menuItems } from '../config.json';
-import Logo from '../public/logo.svg';
+import { app, isStoreEnabled } from '../config/global.json';
+
+const defaultMenuItems = [
+    {
+        url: '/',
+        translationKey: 'home',
+    },
+    {
+        url: '/menu',
+        translationKey: 'menu',
+    },
+    {
+        url: '/a-propos',
+        translationKey: 'about',
+    },
+    {
+        url: '/galerie',
+        translationKey: 'galery',
+    },
+    {
+        url: '/contact',
+        translationKey: 'contact',
+    },
+];
 
 function App({ Component: Page, pageProps }: AppProps) {
     const router = useRouter();
@@ -40,7 +64,9 @@ function App({ Component: Page, pageProps }: AppProps) {
                     >
                         <Header backgroundFull={pageProps.headerBackgroundFull}>
                             <Link href="/">
-                                <Logo
+                                <img
+                                    src={app.logo}
+                                    alt="logo"
                                     css={css`
                                         height: 85%;
                                         cursor: pointer;
@@ -50,13 +76,15 @@ function App({ Component: Page, pageProps }: AppProps) {
                             </Link>
                             <HeaderSpace />
                             <Nav>
-                                {menuItems.map(({ url, translationKey }, i) => (
-                                    <Link href={url} key={i}>
-                                        <div>
-                                            <NavItem>{t(translationKey)}</NavItem>
-                                        </div>
-                                    </Link>
-                                ))}
+                                {[...defaultMenuItems, ...app.menuItems].map(
+                                    ({ url, translationKey }, i) => (
+                                        <Link href={url} key={i}>
+                                            <div>
+                                                <NavItem>{t(translationKey)}</NavItem>
+                                            </div>
+                                        </Link>
+                                    ),
+                                )}
 
                                 <Link
                                     href={router.asPath}
@@ -100,9 +128,19 @@ function App({ Component: Page, pageProps }: AppProps) {
 
                         <Page {...pageProps} />
 
+                        {(pageProps.bottomBanner ?? true) && (
+                            <ImageSection imageUrl={app.bottomBannerImage}>
+                                <h2>{t('eatWithUs')}</h2>
+                                <h4>{t('eatWithUsDescription')}</h4>
+                                <Link href="/contact">
+                                    <Button primary={true}>{t('contactUs')}</Button>
+                                </Link>
+                            </ImageSection>
+                        )}
+
                         <Footer
-                            leftText="Copyright © 2021 Chez Tomio"
-                            rightText="Tous droits réservés."
+                            leftText={`Copyright © 2021 ${app.restoName}`}
+                            rightText={t('rightsReserved')}
                         />
                     </main>
                 </NavWrapper>

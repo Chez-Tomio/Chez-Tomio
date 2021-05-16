@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { Button, ImageSection, WhiteSection } from '@chez-tomio/components-web';
+import { ImageSection, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { uniqBy } from 'lodash';
 import { GetStaticProps } from 'next';
@@ -11,27 +11,25 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 
 import packageJsonComponentsWeb from '../../../../libs/components-web/package.json';
+import * as pageConfig from '../../config/pages/about.json';
 import packageJsonRestoWebsite from '../../package.json';
 
 export default function ThisSite() {
-    const { t } = useTranslation('common');
+    const { t } = useTranslation('about');
 
     return (
         <>
             <Head>
-                <title>About This Site - Chez Tomio</title>
+                <title>{t('aboutThisSiteTitle')} - Chez Tomio</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <ImageSection imageUrl="/sample-image.jpg" size="half">
-                <h1>About This Site</h1>
+            <ImageSection imageUrl={pageConfig.topBannerImage} size="half">
+                <h1>{t('aboutThisSiteTitle')}</h1>
             </ImageSection>
 
             <WhiteSection>
-                <h4>
-                    Les librairies et sources suivantes ont été utilisées dans la création de ce
-                    site:
-                </h4>
+                <h4>{t('credits')}</h4>
                 <div
                     css={css`
                         display: grid;
@@ -76,20 +74,12 @@ export default function ThisSite() {
                     </div>
                 </div>
             </WhiteSection>
-
-            <ImageSection imageUrl="/sample-image-2.jpg">
-                <h2>Venez manger avec nous!</h2>
-                <h4>On vous servira avec grand plaisir! On espère vous voir bientôt!</h4>
-                <Link href="/contact">
-                    <Button primary={true}>Nous contacter!</Button>
-                </Link>
-            </ImageSection>
         </>
     );
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale!, ['common'])),
+        ...(await serverSideTranslations(locale!, ['common', 'about'])),
     },
 });

@@ -21,20 +21,11 @@ export default function Test() {
 
             <ImageSection imageUrl="/sample-image.jpg" size="half">
                 <h1>Galerie</h1>
-                <h4>Cuisine fusion asiatique!</h4>
             </ImageSection>
 
             <WhiteSection>
                 <h2>Galerie</h2>
             </WhiteSection>
-
-            <ImageSection imageUrl="/sample-image-2.jpg">
-                <h2>Venez manger avec nous!</h2>
-                <h4>On vous servira avec grand plaisir! On espère vous voir bientôt!</h4>
-                <Link href="/contact">
-                    <Button primary={true}>Nous contacter!</Button>
-                </Link>
-            </ImageSection>
         </>
     );
 }

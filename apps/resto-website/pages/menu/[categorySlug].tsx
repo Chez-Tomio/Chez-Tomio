@@ -1,26 +1,26 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { Button, ImageSection, WhiteSection } from '@chez-tomio/components-web';
+import { ImageSection, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 import Masonry from 'react-masonry-css';
 
-import { ProductDTO } from '../../../lib/api/dto/checkout';
-import { MenuProduct } from '../../../lib/components/menu/MenuProduct';
+import * as pageConfig from '../../config/pages/menu.json';
+import { ProductDTO } from '../../lib/api/dto/checkout';
+import { MenuProduct } from '../../lib/components/menu/MenuProduct';
 import {
     Category,
     connectToDatabase,
     ISerializedCategoryWithProducts,
-} from '../../../lib/database/mongo';
+} from '../../lib/database/mongo';
 
 export default function Menu({ category }: { category: ISerializedCategoryWithProducts }) {
-    const { t } = useTranslation('common');
+    const { t } = useTranslation('menu');
     const router = useRouter();
 
     function addToCart(data: ProductDTO) {
@@ -49,13 +49,12 @@ export default function Menu({ category }: { category: ISerializedCategoryWithPr
     return (
         <>
             <Head>
-                <title>Menu - Chez Tomio</title>
+                <title>{t('pageName')} - Chez Tomio</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <ImageSection imageUrl="/sample-image.jpg" size="half">
-                <h1>Menu</h1>
-                <h4>Cuisine fusion asiatique!</h4>
+            <ImageSection imageUrl={pageConfig.topBannerImage} size="half">
+                <h1>{t('pageName')}</h1>
             </ImageSection>
 
             <WhiteSection>
@@ -93,14 +92,6 @@ export default function Menu({ category }: { category: ISerializedCategoryWithPr
                     </div>
                 </div>
             </WhiteSection>
-
-            <ImageSection imageUrl="/sample-image-2.jpg">
-                <h2>Venez manger avec nous!</h2>
-                <h4>On vous servira avec grand plaisir! On espère vous voir bientôt!</h4>
-                <Link href="/contact">
-                    <Button primary={true}>Nous contacter!</Button>
-                </Link>
-            </ImageSection>
         </>
     );
 }
@@ -120,7 +111,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, query }) 
 
     return {
         props: {
-            ...(await serverSideTranslations(locale!, ['common'])),
+            ...(await serverSideTranslations(locale!, ['common', 'menu'])),
             category: JSON.parse(JSON.stringify(category)),
         },
     };

@@ -29,6 +29,7 @@
         "react-masonry-css": "^1.0.16",
         "react-paginate": "^7.1.2",
         "react-toast-notifications": "^2.4.3",
+        "react-vertical-timeline-component": "^3.3.3",
         "reactjs-popup": "^2.0.4",
         "safe-compare": "^1.1.4",
         "slug": "^4.0.3",

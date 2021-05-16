@@ -76,10 +76,10 @@ export const Nav: React.FC<NavProps> = ({ children, stacked }) => {
         useGesture(
             {
                 onDrag: ({ movement: [mx] }) => {
-                    if (isHamburger && mx < -20) {
+                    if (isHamburger && mx < -50) {
                         setIsOpen(true);
                     }
-                    if (isHamburger && mx > 20) {
+                    if (isHamburger && mx > 50) {
                         setIsOpen(false);
                     }
                 },

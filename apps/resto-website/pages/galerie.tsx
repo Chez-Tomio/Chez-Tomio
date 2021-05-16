@@ -9,38 +9,37 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 
+import * as pageConfig from '../config/pages/galery.json';
+
 export default function Galerie() {
-    const { t } = useTranslation('common');
+    const { t } = useTranslation('galery');
 
     return (
         <>
             <Head>
-                <title>Galerie - Chez Tomio</title>
+                <title>{t('pageName')} - Chez Tomio</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <ImageSection imageUrl="/sample-image.jpg" size="half">
-                <h1>Galerie</h1>
-                <h4>Cuisine fusion asiatique!</h4>
+            <ImageSection imageUrl={pageConfig.topBannerImage} size="half">
+                <h1>{t('pageName')}</h1>
             </ImageSection>
 
             <WhiteSection>
-                <h2>Galerie</h2>
+                <h2
+                    css={css`
+                        margin: 100px 0;
+                    `}
+                >
+                    À venir... / Coming soon...
+                </h2>
             </WhiteSection>
-
-            <ImageSection imageUrl="/sample-image-2.jpg">
-                <h2>Venez manger avec nous!</h2>
-                <h4>On vous servira avec grand plaisir! On espère vous voir bientôt!</h4>
-                <Link href="/contact">
-                    <Button primary={true}>Nous contacter!</Button>
-                </Link>
-            </ImageSection>
         </>
     );
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale!, ['common'])),
+        ...(await serverSideTranslations(locale!, ['common', 'galery'])),
     },
 });

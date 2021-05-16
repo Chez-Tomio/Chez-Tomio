@@ -1,3 +1,5 @@
+/* Based on https://github.com/yjose/reactjs-popup/blob/master/src/index.css */
+
 @media (min-width: 1300px) {
     .popup-content {
         margin: 40px auto !important;

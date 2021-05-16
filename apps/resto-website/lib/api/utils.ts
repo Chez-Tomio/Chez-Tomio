@@ -5,7 +5,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/client';
 import safeCompare from 'safe-compare';
 
-import { isStoreEnabled } from '../../config.json';
+import { isStoreEnabled } from '../../config/global.json';
 import { connectToDatabase } from '../database/mongo';
 
 export const isAdmin = async (req: IncomingMessage): Promise<boolean> => {
