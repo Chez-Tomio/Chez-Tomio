@@ -10,7 +10,7 @@ jobs:
             - name: Set up checkout
               uses: actions/checkout@v1
             - name: Build image
-              run: docker build -f RestoWebsite.Dockerfile -t resto-website .
+              run: docker build -f RestoWebsite.Dockerfile -t resto-website . --build-arg SITE=chez-tomio
             - name: Save image
               run: docker save -o resto-website.image resto-website
             - name: Setup SSH key
