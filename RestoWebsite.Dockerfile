@@ -25,9 +25,7 @@ RUN echo $(jq -sc ".[0] * .[1]" sites/$SITE/config/locales/fr/common.json apps/r
 
 COPY sites/$SITE/config apps/resto-website/config
 COPY sites/$SITE/.env.local apps/resto-website/.env.local
-
 COPY sites/$SITE/pages/ apps/resto-website/pages/
-
 COPY sites/$SITE/public/ apps/resto-website/public/
 
 ENV NEXT_TELEMETRY_DISABLED 1
