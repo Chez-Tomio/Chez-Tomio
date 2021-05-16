@@ -20,13 +20,15 @@ RUN yarn run build:components-web
 
 ARG SITE
 
-COPY sites/$SITE/config.json apps/resto-website/config/global.json
+RUN echo $(jq -sc ".[0] * .[1]" sites/$SITE/config/locales/en/common.json apps/resto-website/config/locales/en/common.json) > sites/$SITE/config/locales/en/common.json
+RUN echo $(jq -sc ".[0] * .[1]" sites/$SITE/config/locales/fr/common.json apps/resto-website/config/locales/fr/common.json) > sites/$SITE/config/locales/fr/common.json
+
+COPY sites/$SITE/config apps/resto-website/config
 COPY sites/$SITE/.env.local apps/resto-website/.env.local
 
 COPY sites/$SITE/pages/ apps/resto-website/pages/
 
-RUN echo $(jq -sc ".[0] * .[1]" sites/$SITE/locales/en.json apps/resto-website/public/locales/en/common.json) > apps/resto-website/public/locales/en/common.json
-RUN echo $(jq -sc ".[0] * .[1]" sites/$SITE/locales/fr.json apps/resto-website/public/locales/fr/common.json) > apps/resto-website/public/locales/fr/common.json
+COPY sites/$SITE/public/ apps/resto-website/public/
 
 ENV NEXT_TELEMETRY_DISABLED 1
 
