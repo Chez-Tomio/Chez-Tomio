@@ -2,6 +2,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
 import React from 'react';
+import { isMobile } from 'react-device-detect';
 
 export type ImageSectionSize = 'normal' | 'half' | 'fill';
 
@@ -35,10 +36,12 @@ export const ImageSection: React.FC<ImageSectionProps> = ({
             max-height: 100vh;
             background: rgba(0, 0, 0, ${opacity ?? 0.65}) url(${imageUrl});
             background-blend-mode: darken;
-            background-position: center;
+            background-repeat: no-repeat;
+            background-position: center center;
             background-size: cover;
-            background-attachment: fixed;
+            background-attachment: ${!isMobile && 'fixed'};
             height: ${heights[size ?? 'normal']};
+            min-height: 400px;
         `}
     >
         {children}

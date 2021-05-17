@@ -18,6 +18,7 @@ export const GlobalStyles = () => (
                 font-family: 'Montserrat', sans-serif;
                 background-color: black;
                 color: white;
+                min-height: 100%;
             }
 
             p {

@@ -18,7 +18,7 @@ const mobileNavStyles = css`
     background-color: #fff;
     z-index: 1000;
     overflow: hidden;
-    height: 100vh;
+    height: 100%;
     transition: width 0.3s;
     max-width: 100vw;
     .close {

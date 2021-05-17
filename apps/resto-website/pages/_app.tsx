@@ -57,7 +57,7 @@ function App({ Component: Page, pageProps }: AppProps) {
                 <NavWrapper>
                     <main
                         css={css`
-                            min-height: 100vh;
+                            min-height: 100%;
                             display: flex;
                             flex-direction: column;
                         `}

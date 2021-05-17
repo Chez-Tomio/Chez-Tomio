@@ -33,13 +33,14 @@ export default function ThisSite() {
                 <div
                     css={css`
                         display: grid;
-                        grid-template-columns: repeat(auto-fit, minmax(50ch, 1fr));
+                        grid-template-columns: repeat(auto-fit, minmax(25ch, 1fr));
                         width: 100%;
                         grid-gap: 20px;
                         .item {
                             display: flex;
                             align-items: center;
                             justify-content: center;
+                            text-align: center;
                         }
                     `}
                 >

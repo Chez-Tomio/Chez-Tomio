@@ -11,19 +11,19 @@ const waveStyles = css`
     @media (max-width: 1024px), (max-height: 480px) {
         height: 50px;
         &.top-wave {
-            top: -50px;
+            top: -49px;
         }
         &.bottom-wave {
-            bottom: -50px;
+            bottom: -49px;
         }
     }
     @media (min-width: 1025px), (min-height: 481px) {
         height: 80px;
         &.top-wave {
-            top: -80px;
+            top: -79px;
         }
         &.bottom-wave {
-            bottom: -80px;
+            bottom: -79px;
         }
     }
 `;

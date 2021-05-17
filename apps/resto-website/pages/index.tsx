@@ -85,7 +85,8 @@ export default function Home({ specialities }: { specialities: ISerializedProduc
                             src={pageConfig.ourRestaurantImage}
                             alt=""
                             css={css`
-                                height: 300px;
+                                width: 100%;
+                                max-width: 400px;
                             `}
                         />
                     </div>

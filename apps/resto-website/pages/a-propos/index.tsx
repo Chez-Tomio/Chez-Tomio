@@ -29,7 +29,11 @@ export default function AboutUs() {
             </ImageSection>
 
             <WhiteSection>
-                <div>
+                <div
+                    css={css`
+                        overflow: hidden;
+                    `}
+                >
                     <VerticalTimeline
                         css={css`
                             &::before {
