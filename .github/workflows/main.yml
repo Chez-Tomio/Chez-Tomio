@@ -8,14 +8,14 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Set up checkout
-              uses: actions/checkout@v1
+              uses: actions/checkout@v2
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v1
               id: buildx
               with:
                   install: true
             - name: Build image
-              run: yarn docker-build chez-tomio
+              run: docker build -f RestoWebsite.Dockerfile -t chez-tomio . --build-arg SITE=chez-tomio
             - name: Save image
               run: docker save -o chez-tomio.image chez-tomio
             - name: Setup SSH key
