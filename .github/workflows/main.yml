@@ -15,13 +15,11 @@ jobs:
               with:
                   install: true
             - name: Build image
-              run: docker build -f RestoWebsite.Dockerfile -t chez-tomio . --build-arg SITE=chez-tomio
-            - name: Save image
-              run: docker save -o chez-tomio.image chez-tomio
+              run: docker build -f RestoWebsite.Dockerfile -t chez-tomio . -o chez-tomio.image --build-arg SITE=chez-tomio
             - name: Setup SSH key
               run: echo "$SSH_KEY" > ./chez-tomio-vps01.key && chmod 600 ./chez-tomio-vps01.key
               shell: bash
               env:
                   SSH_KEY: ${{secrets.PRIVATE_KEY}}
             - name: Upload image
-              run: scp -o StrictHostKeyChecking=no -i ./chez-tomio-vps01.key ./resto-website.image administrator@${{secrets.SERVER_IP}}:/home/administrator/images
+              run: scp -o StrictHostKeyChecking=no -i ./chez-tomio-vps01.key ./chez-tomio.image administrator@${{secrets.SERVER_IP}}:/home/administrator/images
