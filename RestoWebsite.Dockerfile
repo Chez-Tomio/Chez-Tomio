@@ -9,14 +9,11 @@ COPY package.json .
 COPY yarn.lock .
 COPY libs/components-web/package.json libs/components-web/package.json
 COPY apps/resto-website/package.json apps/resto-website/package.json
-
-RUN yarn install --frozen
-
-RUN yarn lerna bootstrap
+RUN ["yarn", "install", "--frozen"]
+RUN ["yarn", "lerna", "bootstrap"]
 
 COPY . .
-
-RUN yarn run build:components-web
+RUN ["yarn", "run", "build:components-web"]
 
 ARG SITE
 

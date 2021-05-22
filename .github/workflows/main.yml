@@ -14,8 +14,19 @@ jobs:
               id: buildx
               with:
                   install: true
+            - name: Cache Docker layers
+              uses: actions/cache@v2
+              with:
+                  path: /tmp/.buildx-cache
+                  key: ${{ runner.os }}-buildx-${{ github.sha }}
+                  restore-keys: |
+                      ${{ runner.os }}-buildx-
             - name: Build image
-              run: docker build -f RestoWebsite.Dockerfile -t chez-tomio -o type=docker,dest=- . > chez-tomio.tar --build-arg SITE=chez-tomio
+              run: docker build -f RestoWebsite.Dockerfile -t chez-tomio -o type=docker,dest=- . > chez-tomio.tar --build-arg SITE=chez-tomio --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new
+            - name: Move cache
+              run: |
+                  rm -rf /tmp/.buildx-cache
+                  mv /tmp/.buildx-cache-new /tmp/.buildx-cache
             - name: Setup SSH key
               run: echo "$SSH_KEY" > ./chez-tomio-vps01.key && chmod 600 ./chez-tomio-vps01.key
               shell: bash
