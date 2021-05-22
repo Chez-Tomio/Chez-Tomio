@@ -17,7 +17,7 @@ jobs:
             - name: Build image
               run: yarn docker-build chez-tomio
             - name: Save image
-              run: docker save -o resto-website.image resto-website
+              run: docker save -o chez-tomio.image chez-tomio
             - name: Setup SSH key
               run: echo "$SSH_KEY" > ./chez-tomio-vps01.key && chmod 600 ./chez-tomio-vps01.key
               shell: bash
