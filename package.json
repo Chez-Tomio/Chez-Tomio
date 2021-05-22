@@ -15,18 +15,18 @@
         "build:resto-website": "lerna run build --stream --scope=@chez-tomio/resto-website",
         "build:components-web": "lerna run build --stream --scope=@chez-tomio/components-web",
         "postinstall": "husky install",
-        "docker-build": "docker build -f RestoWebsite.Dockerfile -t ${0} . --build-arg SITE=${0}"
+        "docker-build": "f() { docker build -f RestoWebsite.Dockerfile -t \"${1}\" . --build-arg SITE=\"${1}\"; }; f"
     },
     "devDependencies": {
         "@commitlint/cli": "^12.0.1",
         "@commitlint/config-conventional": "^12.0.1",
-        "husky": "^5.1.2",
-        "lerna": "^3.22.1",
         "@typescript-eslint/eslint-plugin": "^4.6.1",
         "@typescript-eslint/parser": "^4.6.1",
         "eslint": "^7.12.1",
         "eslint-config-prettier": "7.2.0",
         "eslint-plugin-prettier": "^3.1.4",
-        "eslint-plugin-simple-import-sort": "^7.0.0"
+        "eslint-plugin-simple-import-sort": "^7.0.0",
+        "husky": "^5.1.2",
+        "lerna": "^3.22.1"
     }
 }
