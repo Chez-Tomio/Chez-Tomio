@@ -45,7 +45,7 @@ export default function AboutUs() {
                             date="2007"
                             contentStyle={{ background: '#ededed' }}
                             contentArrowStyle={{ borderRight: '7px solid  #ededed' }}
-                            iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
+                            iconStyle={{ background: '#242424', color: '#fff' }}
                             icon={
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -68,9 +68,9 @@ export default function AboutUs() {
                         </VerticalTimelineElement>
                         <VerticalTimelineElement
                             date="2011"
-                            contentStyle={{ background: 'rgb(33, 150, 243)' }}
-                            contentArrowStyle={{ borderRight: '7px solid  rgb(33, 150, 243)' }}
-                            iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
+                            contentStyle={{ background: '#242424' }}
+                            contentArrowStyle={{ borderRight: '7px solid  #242424' }}
+                            iconStyle={{ background: '#242424', color: '#fff' }}
                             icon={
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -100,7 +100,7 @@ export default function AboutUs() {
                             date="2014"
                             contentStyle={{ background: '#ededed' }}
                             contentArrowStyle={{ borderRight: '7px solid  #ededed' }}
-                            iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
+                            iconStyle={{ background: '#242424', color: '#fff' }}
                             icon={
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -123,9 +123,9 @@ export default function AboutUs() {
                         </VerticalTimelineElement>
                         <VerticalTimelineElement
                             date={`2017 - ${new Date().getFullYear()}`}
-                            contentStyle={{ background: 'rgb(33, 150, 243)' }}
-                            contentArrowStyle={{ borderRight: '7px solid  rgb(33, 150, 243)' }}
-                            iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
+                            contentStyle={{ background: '#242424' }}
+                            contentArrowStyle={{ borderRight: '7px solid  #242424' }}
+                            iconStyle={{ background: '#242424', color: '#fff' }}
                             icon={
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -154,7 +154,7 @@ export default function AboutUs() {
                             date="2019"
                             contentStyle={{ background: '#ededed' }}
                             contentArrowStyle={{ borderRight: '7px solid  #ededed' }}
-                            iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
+                            iconStyle={{ background: '#242424', color: '#fff' }}
                             icon={
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
