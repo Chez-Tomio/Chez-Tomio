@@ -1,5 +1,11 @@
 # Chez Tomio
 
+This project contains:
+
+-   resto-website
+    -   chez-tomio
+-   components-web
+
 ## Installation
 
 ### Docker
