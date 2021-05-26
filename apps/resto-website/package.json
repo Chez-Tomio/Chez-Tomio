@@ -16,6 +16,7 @@
         "@svgr/webpack": "^5.5.0",
         "class-transformer": "^0.4.0",
         "class-validator": "^0.13.1",
+        "endent": "^2.0.1",
         "formik": "^2.2.6",
         "google-libphonenumber": "^3.2.19",
         "lodash": "^4.17.21",
@@ -34,6 +35,7 @@
         "safe-compare": "^1.1.4",
         "slug": "^4.0.3",
         "stripe": "^8.142.0",
+        "text-to-image": "^4.0.0",
         "yup": "^0.32.9"
     },
     "devDependencies": {
