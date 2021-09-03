@@ -1,0 +1,8 @@
+{
+    "selectService": "Please select a service.",
+    "rightsReserved": "All rights reserved.",
+    "sites": {
+        "restaurant": "Restaurant",
+        "foodtruck": "Foodtruck"
+    }
+}

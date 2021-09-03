@@ -26,6 +26,7 @@ export const CategoryTile: React.FC<CategoryProps> = ({ children, imageUrl }) =>
             background-blend-mode: darken;
             background-position: center;
             background-size: cover;
+            text-align: center;
             h3 {
                 transition: all 0.3s;
             }

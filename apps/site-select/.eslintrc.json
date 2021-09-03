@@ -1,0 +1,11 @@
+{
+    "extends": ["../../.eslintrc.json", "plugin:react/recommended"],
+    "rules": {
+        "react/prop-types": [0],
+        "@typescript-eslint/no-non-null-assertion": [0],
+        "@typescript-eslint/no-var-requires": [0]
+    },
+    "env": {
+        "jest": true
+    }
+}

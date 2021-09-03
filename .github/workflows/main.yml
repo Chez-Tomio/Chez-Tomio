@@ -1,36 +1,44 @@
+name: Build and publish
+
 on:
     push:
-        branches:
-            - main
+        branches: ['main']
+
+env:
+    REGISTRY: ghcr.io
+    IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-    resto-website:
+    build-and-push-image:
         runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            packages: write
+
         steps:
-            - name: Set up checkout
+            - name: Checkout repository
               uses: actions/checkout@v2
-            - name: Set up Docker Buildx
-              uses: docker/setup-buildx-action@v1
-              id: buildx
+
+            - name: Log in to the Container registry
+              uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
               with:
-                  install: true
-            - name: Cache Docker layers
-              uses: actions/cache@v2
+                  registry: ${{ env.REGISTRY }}
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Extract metadata (tags, labels) for Docker
+              id: meta
+              uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
               with:
-                  path: /tmp/.buildx-cache
-                  key: ${{ runner.os }}-buildx-${{ github.sha }}
-                  restore-keys: |
-                      ${{ runner.os }}-buildx-
-            - name: Build image
-              run: docker build -f RestoWebsite.Dockerfile -t chez-tomio -o type=docker,dest=- . > chez-tomio.tar --build-arg SITE=chez-tomio --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new
-            - name: Move cache
-              run: |
-                  rm -rf /tmp/.buildx-cache
-                  mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-            - name: Setup SSH key
-              run: echo "$SSH_KEY" > ./chez-tomio-vps01.key && chmod 600 ./chez-tomio-vps01.key
-              shell: bash
-              env:
-                  SSH_KEY: ${{secrets.PRIVATE_KEY}}
-            - name: Upload image
-              run: scp -o StrictHostKeyChecking=no -i ./chez-tomio-vps01.key ./chez-tomio.tar administrator@${{secrets.SERVER_IP}}:/home/administrator/images
+                  images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+            - name: Build and push Docker image
+              uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+              with:
+                  context: .
+                  file: RestoWebsite.Dockerfile
+                  build-args: |
+                      SITE=chez-tomio
+                  push: true
+                  tags: ${{ steps.meta.outputs.tags }}
+                  labels: ${{ steps.meta.outputs.labels }}
