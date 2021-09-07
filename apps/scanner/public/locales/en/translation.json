@@ -1,0 +1,14 @@
+{
+    "qrScanner": "QR Code Scanner",
+    "notValidUrl": "The QR Code you are scanning is not a valid URL!",
+    "deviceUnsupported": "Your device is not supported!",
+    "open": "Open",
+    "scanSteps": [
+        "Click the button below to open your camera",
+        "A prompt will pop up, please press \"Allow\"",
+        "Scan the QR code with your camera",
+        "The URL will open in a new tab"
+    ],
+    "scanQrCode": "Scan QR Code",
+    "rightsReserved": "All rights reserved."
+}
