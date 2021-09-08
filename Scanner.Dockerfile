@@ -15,4 +15,4 @@ RUN ["yarn", "run", "build:components-web"]
 
 RUN ["yarn", "run", "build:scanner"]
 
-CMD [ "yarn", "lerna", "run", "start", "--stream", "--scope=@chez-tomio/resto-website" ]
+CMD [ "yarn", "lerna", "run", "start", "--stream", "--scope=@chez-tomio/scanner" ]
