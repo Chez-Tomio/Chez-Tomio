@@ -1,0 +1,16 @@
+apps/*
+!apps/scanner
+
+.github/*
+.husky/*
+.vscode/*
+node_modules/*
+tools/*
+
+.editorconfig
+.gitignore
+.prettierrc
+.vsls.json
+commitlint.config.js
+docker-compose.yml
+README.md

@@ -15,7 +15,7 @@
         "dev:components-web": "lerna run dev --stream --scope=@chez-tomio/components-web",
         "build": "lerna run build --stream",
         "build:resto-website": "lerna run build --stream --scope=@chez-tomio/resto-website",
-        "build:scanner": "lerna run scanner --stream --scope=@chez-tomio/resto-website",
+        "build:scanner": "lerna run build --stream --scope=@chez-tomio/scanner",
         "build:components-web": "lerna run build --stream --scope=@chez-tomio/components-web",
         "postinstall": "husky install",
         "docker-build": "f() { docker build -f RestoWebsite.Dockerfile -t \"${1}\" . --build-arg SITE=\"${1}\"; }; f"
