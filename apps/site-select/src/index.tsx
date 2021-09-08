@@ -1,7 +1,7 @@
 import './i18n';
 
 import { GlobalStyles } from '@chez-tomio/components-web';
-import React, { Suspense } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 
 import App from './App';

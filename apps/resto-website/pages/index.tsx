@@ -9,6 +9,7 @@ import {
 } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { GetServerSideProps } from 'next';
+import getConfig from 'next/config';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -16,8 +17,9 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 
-import * as pageConfig from '../config/pages/home.json';
 import { connectToDatabase, ISerializedProduct, Product } from '../lib/database/mongo';
+
+const { homeConfig } = getConfig().publicRuntimeConfig.pagesConfig;
 
 export default function Home({ specialities }: { specialities: ISerializedProduct[] }) {
     const router = useRouter();
@@ -30,7 +32,7 @@ export default function Home({ specialities }: { specialities: ISerializedProduc
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <ImageSection imageUrl={pageConfig.welcomeImage} size="fill">
+            <ImageSection imageUrl={homeConfig.welcomeImage} size="fill">
                 <h1>{t('welcome')}</h1>
                 <h4>{t('welcomeSubtitle')}</h4>
                 <div
@@ -82,7 +84,7 @@ export default function Home({ specialities }: { specialities: ISerializedProduc
                         `}
                     >
                         <img
-                            src={pageConfig.ourRestaurantImage}
+                            src={homeConfig.ourRestaurantImage}
                             alt=""
                             css={css`
                                 width: 100%;
@@ -95,7 +97,7 @@ export default function Home({ specialities }: { specialities: ISerializedProduc
 
             {specialities.length > 0 && (
                 <>
-                    <ImageSection imageUrl={pageConfig.specialtyImage} size="half">
+                    <ImageSection imageUrl={homeConfig.specialtyImage} size="half">
                         <h2>{t('specialties')}!</h2>
                     </ImageSection>
 

@@ -3,15 +3,17 @@
 import { Button, ProductTile } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
+import getConfig from 'next/config';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import Popup from 'reactjs-popup';
 
-import { isStoreEnabled } from '../../../config/global.json';
 import { ExtraDTO } from '../../api/dto/checkout';
 import { ISerializedProduct } from '../../database/mongo';
 import { Quantity } from '../formik/Quantity';
 import { ExtraFieldCount } from './ExtraFieldCount';
+
+const { globalConfig } = getConfig().publicRuntimeConfig;
 
 export const MenuProduct: React.FC<{
     product: ISerializedProduct;
@@ -33,7 +35,7 @@ export const MenuProduct: React.FC<{
                 title={product.title[router.locale ?? 'fr']}
                 description={product.description[router.locale ?? 'fr']}
                 price={product.basePrice}
-                canBeBought={isStoreEnabled}
+                canBeBought={globalConfig.isStoreEnabled}
                 onClickAdd={() => {
                     setProductOptions(true);
                 }}

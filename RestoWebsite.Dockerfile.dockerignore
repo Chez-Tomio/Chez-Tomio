@@ -1,6 +1,5 @@
 apps/*
 !apps/resto-website
-apps/resto-website/config/global.json
 apps/resto-website/.env.local
 
 .github/*

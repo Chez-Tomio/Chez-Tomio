@@ -5,6 +5,7 @@ import 'react-vertical-timeline-component/style.min.css';
 import { Button, ImageSection, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { GetStaticProps } from 'next';
+import getConfig from 'next/config';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
@@ -12,7 +13,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 
-import * as pageConfig from '../../config/pages/about.json';
+const { aboutConfig } = getConfig().publicRuntimeConfig.pagesConfig;
 
 export default function AboutUs() {
     const { t } = useTranslation('about');
@@ -24,7 +25,7 @@ export default function AboutUs() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <ImageSection imageUrl={pageConfig.topBannerImage} size="half">
+            <ImageSection imageUrl={aboutConfig.topBannerImage} size="half">
                 <h1>{t('pageName')}</h1>
             </ImageSection>
 

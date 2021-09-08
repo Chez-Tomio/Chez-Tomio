@@ -8,6 +8,7 @@ import {
 } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { GetServerSideProps } from 'next';
+import getConfig from 'next/config';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -15,8 +16,9 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 
-import * as pageConfig from '../../config/pages/menu.json';
 import { Category, connectToDatabase, ISerializedCategory } from '../../lib/database/mongo';
+
+const { menuConfig } = getConfig().publicRuntimeConfig.pagesConfig;
 
 export default function Menu({ categories }: { categories: ISerializedCategory[] }) {
     const router = useRouter();
@@ -29,7 +31,7 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <ImageSection imageUrl={pageConfig.topBannerImage} size="half">
+            <ImageSection imageUrl={menuConfig.topBannerImage} size="half">
                 <h1>{t('pageName')}</h1>
             </ImageSection>
 

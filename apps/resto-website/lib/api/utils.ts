@@ -2,11 +2,13 @@ import { ValidationError } from 'class-validator';
 import { IncomingMessage, STATUS_CODES } from 'http';
 import sanitize from 'mongo-sanitize';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
+import getConfig from 'next/config';
 import { getSession } from 'next-auth/client';
 import safeCompare from 'safe-compare';
 
-import { isStoreEnabled } from '../../config/global.json';
 import { connectToDatabase } from '../database/mongo';
+
+const { globalConfig } = getConfig().publicRuntimeConfig;
 
 export const isAdmin = async (req: IncomingMessage): Promise<boolean> => {
     const session = await getSession({ req });
@@ -33,7 +35,10 @@ export const apiEndpointWrapper = (
         requiresAdmin = false,
     }: Partial<{ requiresStoreToBeEnabled: boolean; requiresAdmin: boolean }> = {},
 ): NextApiHandler => async (req, res) => {
-    if ((requiresStoreToBeEnabled && !isStoreEnabled) || (requiresAdmin && !(await isAdmin(req))))
+    if (
+        (requiresStoreToBeEnabled && !globalConfig.isStoreEnabled) ||
+        (requiresAdmin && !(await isAdmin(req)))
+    )
         return sendError(res, 403);
 
     try {
