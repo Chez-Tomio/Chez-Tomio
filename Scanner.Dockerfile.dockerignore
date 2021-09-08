@@ -4,7 +4,6 @@ apps/*
 .github/*
 .husky/*
 .vscode/*
-node_modules/*
 tools/*
 
 .editorconfig

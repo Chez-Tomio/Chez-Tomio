@@ -1,5 +1,6 @@
 FROM node:15-alpine as build
 WORKDIR /app
+ENV PATH /app/node_modules/.bin:$PATH
 COPY lerna.json .
 COPY package.json .
 COPY yarn.lock .
@@ -9,7 +10,6 @@ RUN ["yarn", "install", "--frozen"]
 RUN ["yarn", "lerna", "bootstrap"]
 COPY . .
 RUN ["yarn", "run", "build:components-web"]
-
 RUN ["yarn", "run", "build:scanner"]
 
 FROM nginx:stable-alpine
