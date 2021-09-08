@@ -9,6 +9,7 @@ RUN ["yarn", "install", "--frozen"]
 RUN ["yarn", "lerna", "bootstrap"]
 COPY . .
 RUN ["yarn", "run", "build:components-web"]
+
 RUN ["yarn", "run", "build:scanner"]
 
 FROM nginx:stable-alpine
