@@ -99,7 +99,7 @@ export default function App() {
                             onError={handleError}
                             onScan={handleScan}
                             css={css`
-                                width: 500px;
+                                width: 400px;
                                 max-width: 100%;
                                 margin: 20px 0;
                             `}
