@@ -48,8 +48,6 @@ COPY --from=builder /app/apps/resto-website/package.json ./package.json
 
 USER nextjs
 
-EXPOSE 3000
-
 ENV NEXT_TELEMETRY_DISABLED 1
 
 CMD [ "yarn", "start" ]
