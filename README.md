@@ -24,13 +24,13 @@ services:
     chez-tomio:
         depends_on:
             - mongo
-        image: ghcr.io/chez-tomio/chez-tomio:main
+        image: ghcr.io/chez-tomio/chez-tomio-resto-website:main
         container_name: chez-tomio
         restart: unless-stopped
         security_opt:
             - no-new-privileges:true
         networks:
-            - traefik-proxy
+            - proxy
         environment:
             PORT: 5000
 

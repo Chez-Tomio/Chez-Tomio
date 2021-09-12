@@ -14,6 +14,7 @@ RUN yarn lerna bootstrap
 FROM node:15-alpine AS builder
 WORKDIR /app
 COPY . .
+COPY --from=deps /app/apps/resto-website/node_modules ./apps/resto-website/node_modules
 COPY --from=deps /app/node_modules ./node_modules
 ARG SITE
 RUN echo $(jq -sc ".[0] * .[1]" sites/$SITE/config/locales/en/common.json apps/resto-website/config/locales/en/common.json) > sites/$SITE/config/locales/en/common.json
@@ -38,8 +39,11 @@ RUN adduser -S nextjs -u 1001
 COPY --from=builder /app/apps/resto-website/next.config.js ./
 COPY --from=builder /app/apps/resto-website/public ./public
 COPY --from=builder /app/apps/resto-website/config ./config
+COPY --from=builder /app/apps/resto-website/.env.local ./.env.local
+COPY --from=builder /app/apps/resto-website/next-i18next.config.js ./next-i18next.config.js
 COPY --from=builder --chown=nextjs:nodejs /app/apps/resto-website/.next ./.next
-COPY --from=builder /app/apps/resto-website/node_modules ./node_modules
+# COPY --from=builder /app/apps/resto-website/node_modules ./node_modules
+COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/apps/resto-website/package.json ./package.json
 
 USER nextjs
