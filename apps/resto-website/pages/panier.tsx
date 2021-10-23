@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 
-import { Button, ImageSection, WhiteSection } from '@chez-tomio/components-web';
+import { Button, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
@@ -18,6 +18,7 @@ import * as Yup from 'yup';
 
 import { CheckoutDTO, ProductDTO, ProductDTOWithMetadata } from '../lib/api/dto/checkout';
 import { getTotalProductPrice } from '../lib/client/utils';
+import { NextImageSection } from '../lib/components/NextImageSection';
 import { connectToDatabase, ISerializedProduct, Product } from '../lib/database/mongo';
 import { GlobalDispatchContext, GlobalStateContext, SET_CART_ITEMS } from '../lib/global-state';
 import { requiresStoreToBeEnabled } from '../lib/server/utils';
@@ -76,9 +77,6 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
         //     })
         //     .filter((p: ProductDTO | undefined) => p !== undefined);
         // setProductDTOArray(data);
-
-        console.log('hey', globalState.cartItems);
-        console.log('hey2', data);
 
         // Start loading Stripe
         setStripePromise(loadStripe(globalConfig.stripePublicKey));
@@ -242,9 +240,9 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                 </Formik>
             </Popup>
 
-            <ImageSection imageUrl={cartConfig.topBannerImage} size="half">
+            <NextImageSection imageUrl={cartConfig.topBannerImage} size="half">
                 <h1>{t('pageName')}</h1>
-            </ImageSection>
+            </NextImageSection>
 
             <WhiteSection>
                 <div

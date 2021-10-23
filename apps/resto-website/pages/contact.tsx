@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { ImageSection, WhiteSection } from '@chez-tomio/components-web';
+import { WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { GetStaticProps } from 'next';
 import getConfig from 'next/config';
@@ -8,6 +8,8 @@ import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
+
+import { NextImageSection } from '../lib/components/NextImageSection';
 
 const { contactConfig } = getConfig().publicRuntimeConfig.pagesConfig;
 
@@ -21,9 +23,9 @@ export default function Contact() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <ImageSection imageUrl={contactConfig.topBannerImage} size="half">
+            <NextImageSection imageUrl={contactConfig.topBannerImage} size="half">
                 <h1>{t('pageName')}</h1>
-            </ImageSection>
+            </NextImageSection>
 
             <WhiteSection>
                 <div
@@ -31,7 +33,7 @@ export default function Contact() {
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        div {
+                        & > div {
                             display: flex;
                             justify-content: center;
                         }
@@ -40,42 +42,58 @@ export default function Contact() {
                         }
                     `}
                 >
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2794.7039956108906!2d-73.58344908444008!3d45.53616187910186!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cc91bde3d22b383%3A0xbeb0e2fcc3f5739f!2s5161%20Av.%20Papineau%2C%20Montr%C3%A9al%2C%20QC%20H2H%201W1!5e0!3m2!1sen!2sca!4v1634997287889!5m2!1sen!2sca"
+                        width="600"
+                        height="450"
+                        css={css`
+                            border: 0;
+                            margin: 5px;
+                        `}
+                        allowFullScreen={true}
+                        loading="lazy"
+                    ></iframe>
+
                     <div
                         css={css`
                             flex-direction: column;
                             flex: 50%;
+                            margin-left: 5%;
                         `}
                     >
-                        {' '}
                         <p>{t('descriptionParagraph1')}</p>
                         <p>{t('descriptionParagraph2')}</p>
-                    </div>
-                    <div
-                        css={css`
-                            flex-direction: column;
-                            flex: 50%;
-                        `}
-                    >
-                        {/* <div>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        className="bi bi-geo-alt-fill"
-                        viewBox="0 0 16 16"
-                    >
-                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
-                    </svg>
-                    2190 rue Ontario E, Montréal, QC H2K 1V6
-                    </div> */}
 
                         <div
                             css={css`
                                 display: flex;
                                 align-items: center;
-                                justify-content: center;
-                                padding: 5px;
+                                padding: 10px;
+                            `}
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                className="bi bi-geo-alt-fill"
+                                viewBox="0 0 16 16"
+                                css={css`
+                                    color: #ed1b24;
+                                    height: 25px;
+                                    width: 25px;
+                                    margin-right: 10px;
+                                `}
+                            >
+                                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
+                            </svg>
+                            5161 Av. Papineau, Montréal, QC H2H 1W1
+                        </div>
+                        <div
+                            css={css`
+                                display: flex;
+                                align-items: center;
+                                padding: 10px;
                             `}
                         >
                             <svg
@@ -97,13 +115,11 @@ export default function Contact() {
                             </svg>
                             (514) 898-3818
                         </div>
-
                         <div
                             css={css`
                                 display: flex;
                                 align-items: center;
-                                justify-content: center;
-                                padding: 5px;
+                                padding: 10px;
                             `}
                         >
                             <svg
@@ -122,18 +138,18 @@ export default function Contact() {
                             </svg>
                             long.chiem@tomiosushi.com
                         </div>
-
-                        {/* <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2270.2875490392325!2d-73.55772914998427!3d45.52915970075373!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cc91bbc1919be8d%3A0xa09c25cc29e72de6!2s2190%20Ontario%20St%20E%2C%20Montreal%2C%20QC%20H2K%201V6!5e0!3m2!1sen!2sca!4v1617575075966!5m2!1sen!2sca"
-                    width="600"
-                    height="450"
-                    css={css`
-                        border: 0;
-                    `}
-                    allowFullScreen={true}
-                    loading="lazy"
-                    ></iframe> */}
                     </div>
+                    {/* <div
+                        css={css`
+                            flex-direction: column;
+                            flex: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        `}
+                    >
+
+                    </div> */}
                 </div>
             </WhiteSection>
         </>

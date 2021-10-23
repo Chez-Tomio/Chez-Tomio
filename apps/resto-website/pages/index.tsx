@@ -1,12 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import {
-    Button,
-    ImageSection,
-    SpecialtiesGrid,
-    Specialty,
-    WhiteSection,
-} from '@chez-tomio/components-web';
+import { Button, SpecialtiesGrid, Specialty, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { GetServerSideProps } from 'next';
 import getConfig from 'next/config';
@@ -17,6 +11,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 
+import { NextImageSection } from '../lib/components/NextImageSection';
 import { connectToDatabase, ISerializedProduct, Product } from '../lib/database/mongo';
 
 const { homeConfig } = getConfig().publicRuntimeConfig.pagesConfig;
@@ -32,7 +27,7 @@ export default function Home({ specialities }: { specialities: ISerializedProduc
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <ImageSection imageUrl={homeConfig.welcomeImage} size="fill">
+            <NextImageSection imageUrl={homeConfig.welcomeImage} size="fill">
                 <h1>{t('welcome')}</h1>
                 <h4>{t('welcomeSubtitle')}</h4>
                 <div
@@ -50,7 +45,7 @@ export default function Home({ specialities }: { specialities: ISerializedProduc
                         <Button>{t('contactUs')}</Button>
                     </Link>
                 </div>
-            </ImageSection>
+            </NextImageSection>
 
             <WhiteSection>
                 <div
@@ -97,9 +92,9 @@ export default function Home({ specialities }: { specialities: ISerializedProduc
 
             {specialities.length > 0 && (
                 <>
-                    <ImageSection imageUrl={homeConfig.specialtyImage} size="half">
+                    <NextImageSection imageUrl={homeConfig.specialtyImage} size="half">
                         <h2>{t('specialties')}!</h2>
-                    </ImageSection>
+                    </NextImageSection>
 
                     <WhiteSection>
                         <SpecialtiesGrid>

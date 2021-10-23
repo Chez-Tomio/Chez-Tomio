@@ -8,7 +8,6 @@ import {
     GlobalStyles,
     Header,
     HeaderSpace,
-    ImageSection,
     Nav,
     NavItem,
     NavWrapper,
@@ -24,6 +23,7 @@ import React, { useEffect, useReducer, useState } from 'react';
 import { ToastProvider } from 'react-toast-notifications';
 
 import { CartIcon } from '../lib/components/CartIcon';
+import { NextImageSection } from '../lib/components/NextImageSection';
 import GlobalState, { reducer, SET_CART_ITEMS } from '../lib/global-state';
 
 const { globalConfig } = getConfig().publicRuntimeConfig;
@@ -65,7 +65,6 @@ function App({ Component: Page, pageProps }: AppProps) {
     useEffect(() => {
         setCartItemCount(0);
         state.cartItems.map((cartItem) => setCartItemCount((i) => i + cartItem.count));
-        console.log(state);
     }, [state]);
 
     useEffect(() => {
@@ -131,13 +130,13 @@ function App({ Component: Page, pageProps }: AppProps) {
                             <Page {...pageProps} />
 
                             {(pageProps.bottomBanner ?? true) && (
-                                <ImageSection imageUrl={globalConfig.app.bottomBannerImage}>
+                                <NextImageSection imageUrl={globalConfig.app.bottomBannerImage}>
                                     <h2>{t('eatWithUs')}</h2>
                                     <h4>{t('eatWithUsDescription')}</h4>
                                     <Link href="/contact">
                                         <Button primary={true}>{t('contactUs')}</Button>
                                     </Link>
-                                </ImageSection>
+                                </NextImageSection>
                             )}
 
                             <Footer

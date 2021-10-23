@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { ImageSection, WhiteSection } from '@chez-tomio/components-web';
+import { WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { GetServerSideProps } from 'next';
 import getConfig from 'next/config';
@@ -13,6 +13,7 @@ import Masonry from 'react-masonry-css';
 
 import { ProductDTO } from '../../lib/api/dto/checkout';
 import { MenuProduct } from '../../lib/components/menu/MenuProduct';
+import { NextImageSection } from '../../lib/components/NextImageSection';
 import {
     Category,
     connectToDatabase,
@@ -59,9 +60,9 @@ export default function Menu({ category }: { category: ISerializedCategoryWithPr
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <ImageSection imageUrl={menuConfig.topBannerImage} size="half">
+            <NextImageSection imageUrl={menuConfig.topBannerImage} size="half">
                 <h1>{t('pageName')}</h1>
-            </ImageSection>
+            </NextImageSection>
 
             <WhiteSection>
                 <div

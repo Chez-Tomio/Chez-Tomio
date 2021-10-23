@@ -7,7 +7,7 @@ module.exports = {
         menuItems: [],
     },
     taxRate: 14.975,
-    isStoreEnabled: true,
+    isStoreEnabled: false,
     stripePublicKey:
         'pk_test_51IdN5lD9q3pL6dzgVF1WRHYimnXkY5Rg8f3yOeXcUl1mToFSUBJG6gGUMQfhReoicinFWpElpeHEqW2ZCuBfeOPM00rfscUupM',
 };

@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { ImageSection, WhiteSection } from '@chez-tomio/components-web';
+import { WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import getConfig from 'next/config';
 import Head from 'next/head';
@@ -8,6 +8,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React, { useEffect } from 'react';
 
+import { NextImageSection } from '../lib/components/NextImageSection';
 import { requiresStoreToBeEnabled } from '../lib/server/utils';
 
 const { paymentCompleteConfig } = getConfig().publicRuntimeConfig.pagesConfig;
@@ -26,9 +27,9 @@ export default function Galerie() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <ImageSection imageUrl={paymentCompleteConfig.topBannerImage} size="half">
+            <NextImageSection imageUrl={paymentCompleteConfig.topBannerImage} size="half">
                 <h1>{t('pageName')}</h1>
-            </ImageSection>
+            </NextImageSection>
 
             <WhiteSection>
                 <div

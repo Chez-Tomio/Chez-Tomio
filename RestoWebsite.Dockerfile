@@ -42,7 +42,6 @@ COPY --from=builder /app/apps/resto-website/config ./config
 COPY --from=builder /app/apps/resto-website/.env.local ./.env.local
 COPY --from=builder /app/apps/resto-website/next-i18next.config.js ./next-i18next.config.js
 COPY --from=builder --chown=nextjs:nodejs /app/apps/resto-website/.next ./.next
-# COPY --from=builder /app/apps/resto-website/node_modules ./node_modules
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/apps/resto-website/package.json ./package.json
 

@@ -1,11 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import {
-    CategoriesGrid,
-    CategoryTile,
-    ImageSection,
-    WhiteSection,
-} from '@chez-tomio/components-web';
+import { CategoriesGrid, CategoryTile, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { GetServerSideProps } from 'next';
 import getConfig from 'next/config';
@@ -16,6 +11,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 
+import { NextImageSection } from '../../lib/components/NextImageSection';
 import { Category, connectToDatabase, ISerializedCategory } from '../../lib/database/mongo';
 
 const { menuConfig } = getConfig().publicRuntimeConfig.pagesConfig;
@@ -31,9 +27,9 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <ImageSection imageUrl={menuConfig.topBannerImage} size="half">
+            <NextImageSection imageUrl={menuConfig.topBannerImage} size="half">
                 <h1>{t('pageName')}</h1>
-            </ImageSection>
+            </NextImageSection>
 
             <WhiteSection>
                 <CategoriesGrid>

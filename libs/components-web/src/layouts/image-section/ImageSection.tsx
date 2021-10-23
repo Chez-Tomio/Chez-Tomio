@@ -23,27 +23,30 @@ export const ImageSection: React.FC<ImageSectionProps> = ({
     imageUrl,
     opacity,
     size,
-}) => (
-    <div
-        css={css`
-            font-family: 'Montserrat', sans-serif;
-            padding: 120px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            text-align: center;
-            max-height: 100vh;
-            background: rgba(0, 0, 0, ${opacity ?? 0.65}) url(${imageUrl});
-            background-blend-mode: darken;
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover;
-            background-attachment: ${!isMobile && 'fixed'};
-            height: ${heights[size ?? 'normal']};
-            min-height: 400px;
-        `}
-    >
-        {children}
-    </div>
-);
+}) => {
+    console.log(isMobile);
+    return (
+        <div
+            css={css`
+                font-family: 'Montserrat', sans-serif;
+                padding: 120px 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                text-align: center;
+                max-height: 100vh;
+                background: rgba(0, 0, 0, ${opacity ?? 0.65}) url(${imageUrl});
+                background-blend-mode: darken;
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-size: cover;
+                background-attachment: ${isMobile ? 'scroll' : 'fixed'};
+                height: ${heights[size ?? 'normal']};
+                min-height: 400px;
+            `}
+        >
+            {children}
+        </div>
+    );
+};
