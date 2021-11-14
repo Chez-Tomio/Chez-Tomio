@@ -24,7 +24,6 @@ export const ImageSection: React.FC<ImageSectionProps> = ({
     opacity,
     size,
 }) => {
-    console.log(isMobile);
     return (
         <div
             css={css`

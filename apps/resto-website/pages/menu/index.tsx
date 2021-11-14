@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { CategoriesGrid, CategoryTile, WhiteSection } from '@chez-tomio/components-web';
+import { Button, CategoriesGrid, CategoryTile, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { GetServerSideProps } from 'next';
 import getConfig from 'next/config';
@@ -43,6 +43,22 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
                         </Link>
                     ))}
                 </CategoriesGrid>
+                <div
+                    css={css`
+                        display: flex;
+                    `}
+                >
+                    <a target="_blank" href="/menu-principal.pdf">
+                        <Button primary={true}>{t('seeKitchenMenu')}</Button>
+                    </a>
+                    <a target="_blank" href="/sushi-list.pdf">
+                        <Button primary={true}>{t('seeSushiList')}</Button>
+                    </a>
+                </div>
+                <p>
+                    Veuillez noter que nous sommes encore en pré-ouverture et que les menus peuvent
+                    changer.
+                </p>
             </WhiteSection>
         </>
     );
