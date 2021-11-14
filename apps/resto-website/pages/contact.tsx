@@ -49,6 +49,7 @@ export default function Contact() {
                         css={css`
                             border: 0;
                             margin: 5px;
+                            max-width: 90%;
                         `}
                         allowFullScreen={true}
                         loading="lazy"

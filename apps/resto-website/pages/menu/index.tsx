@@ -46,6 +46,9 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
                 <div
                     css={css`
                         display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-wrap: wrap;
                     `}
                 >
                     <a target="_blank" href="/menu-principal.pdf">
