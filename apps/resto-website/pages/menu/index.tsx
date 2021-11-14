@@ -62,6 +62,7 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
                     Veuillez noter que nous sommes encore en pré-ouverture et que les menus peuvent
                     changer.
                 </p>
+                <p>Please note that we are still in pre-opening and menus may change.</p>
             </WhiteSection>
         </>
     );
