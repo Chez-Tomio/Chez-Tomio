@@ -1,4 +1,4 @@
-FROM node:15-alpine AS build
+FROM node:16-alpine AS build
 WORKDIR /app
 COPY lerna.json .
 COPY package.json .
