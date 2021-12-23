@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { validateOrReject } from 'class-validator';
 import _ from 'lodash';
 import Stripe from 'stripe';
@@ -20,7 +20,9 @@ export default apiEndpointWrapper(
     async (req, res) => {
         if (req.method !== 'POST') return sendError(res, 405);
 
-        const checkoutDTO = plainToClass(CheckoutDTO, req.body, { excludeExtraneousValues: true });
+        const checkoutDTO = plainToInstance(CheckoutDTO, req.body, {
+            excludeExtraneousValues: true,
+        });
 
         try {
             await validateOrReject(checkoutDTO);
