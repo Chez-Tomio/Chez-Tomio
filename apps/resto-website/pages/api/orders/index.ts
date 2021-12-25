@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 
-import { Expose, plainToInstance, Transform } from 'class-transformer';
+import { Expose, plainToClass, Transform } from 'class-transformer';
 import { IsInt, Min, validateOrReject } from 'class-validator';
 
 import { apiEndpointWrapper, areValidationErrors, sendError } from '../../../lib/api/utils';
@@ -24,7 +24,7 @@ export default apiEndpointWrapper(
     async (req, res) => {
         if (req.method !== 'GET') return sendError(res, 405);
 
-        const paginateQueryDTO = plainToInstance(PaginateQueryDTO, req.query, {
+        const paginateQueryDTO = plainToClass(PaginateQueryDTO, req.query, {
             excludeExtraneousValues: true,
         });
 

@@ -1,5 +1,5 @@
 # Install dependencies only when needed
-FROM node:16-alpine AS deps
+FROM node:15-alpine AS deps
 RUN apk add --no-cache libc6-compat jq
 WORKDIR /app
 COPY lerna.json .
@@ -11,7 +11,7 @@ RUN yarn install --frozen --silent
 RUN yarn lerna bootstrap
 
 # Rebuild the source code only when needed
-FROM node:16-alpine AS builder
+FROM node:15-alpine AS builder
 WORKDIR /app
 COPY . .
 COPY --from=deps /app/apps/resto-website/node_modules ./apps/resto-website/node_modules
@@ -28,7 +28,7 @@ RUN yarn run build:components-web
 RUN yarn run build:resto-website
 
 # Production image, copy all the files and run next
-FROM node:16-alpine AS runner
+FROM node:15-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV production

@@ -1,3 +1,3 @@
 module.exports = {
-    topBannerImage: '/contact.jpg',
+    topBannerImage: '/sample-image-2.jpg',
 };
