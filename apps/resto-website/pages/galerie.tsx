@@ -1,15 +1,18 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { Button, ImageSection, WhiteSection } from '@chez-tomio/components-web';
+import { Button, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { GetStaticProps } from 'next';
+import getConfig from 'next/config';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 
-import * as pageConfig from '../config/pages/galery.json';
+import { NextImageSection } from '../lib/components/NextImageSection';
+
+const { galeryConfig } = getConfig().publicRuntimeConfig.pagesConfig;
 
 export default function Galerie() {
     const { t } = useTranslation('galery');
@@ -21,9 +24,9 @@ export default function Galerie() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <ImageSection imageUrl={pageConfig.topBannerImage} size="half">
+            <NextImageSection imageUrl={galeryConfig.topBannerImage} size="half">
                 <h1>{t('pageName')}</h1>
-            </ImageSection>
+            </NextImageSection>
 
             <WhiteSection>
                 <h2

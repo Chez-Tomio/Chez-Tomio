@@ -1,13 +1,14 @@
 import { STATUS_CODES } from 'http';
 import { GetServerSideProps } from 'next';
+import getConfig from 'next/config';
 
-import { isStoreEnabled } from '../../config/global.json';
+const { globalConfig } = getConfig().publicRuntimeConfig;
 
 export const requiresStoreToBeEnabled = (
     getServerSideProps: GetServerSideProps,
 ): GetServerSideProps => async (context) => {
     const { res } = context;
-    if (!isStoreEnabled) {
+    if (!globalConfig.isStoreEnabled) {
         res.statusCode = 403;
         res.end(STATUS_CODES[res.statusCode]);
         return { props: {} };

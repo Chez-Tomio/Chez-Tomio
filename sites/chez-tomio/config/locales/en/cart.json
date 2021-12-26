@@ -1,0 +1,13 @@
+{
+    "pageName": "Cart",
+
+    "shoppingCart": "Shopping Cart",
+    "items": "Items",
+    "cartEmpty": "Your cart is empty!",
+
+    "orderSummary": "Order Summary",
+    "subtotal": "Subtotal",
+    "taxes": "Taxes",
+    "total": "Total",
+    "checkout": "Checkout"
+}

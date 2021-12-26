@@ -1,48 +1,55 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { ImageSection, WhiteSection } from '@chez-tomio/components-web';
+import { WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { GetServerSideProps } from 'next';
+import getConfig from 'next/config';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import React from 'react';
+import React, { useContext } from 'react';
 import Masonry from 'react-masonry-css';
 
-import * as pageConfig from '../../config/pages/menu.json';
 import { ProductDTO } from '../../lib/api/dto/checkout';
 import { MenuProduct } from '../../lib/components/menu/MenuProduct';
+import { NextImageSection } from '../../lib/components/NextImageSection';
 import {
     Category,
     connectToDatabase,
     ISerializedCategoryWithProducts,
 } from '../../lib/database/mongo';
+import { GlobalDispatchContext, GlobalStateContext, SET_CART_ITEMS } from '../../lib/global-state';
+
+const { menuConfig } = getConfig().publicRuntimeConfig.pagesConfig;
 
 export default function Menu({ category }: { category: ISerializedCategoryWithProducts }) {
     const { t } = useTranslation('menu');
     const router = useRouter();
 
+    const globalState = useContext(GlobalStateContext);
+    const dispatch = useContext(GlobalDispatchContext);
+
     function addToCart(data: ProductDTO) {
-        let productsArray: ProductDTO[] = [];
-        const localStorageProducts = localStorage.getItem('cartProducts');
-        if (localStorageProducts) {
-            const data = JSON.parse(localStorageProducts);
-            productsArray = data;
-        }
+        const productsArray: ProductDTO[] = globalState.cartItems;
+
+        console.log(productsArray);
 
         // If product is already in cart just add more to count
-        let productIsInCart = false;
-        productsArray.forEach((p, i) => {
-            if (p.id === data.id) {
-                productIsInCart = true;
-                p.count += data.count;
-            }
-        });
-        if (!productIsInCart) {
-            productsArray.push(data);
-        }
+        // let productIsInCart = false;
+        // productsArray.forEach((p, i) => {
+        //     if (p.id === data.id) {
+        //         productIsInCart = true;
+        //         p.count += data.count;
+        //     }
+        // });
+        // if (!productIsInCart) {
+        //     productsArray.push(data);
+        // }
 
+        productsArray.push(data);
+
+        dispatch({ type: SET_CART_ITEMS, payload: productsArray });
         localStorage.setItem('cartProducts', JSON.stringify(productsArray));
     }
 
@@ -53,9 +60,9 @@ export default function Menu({ category }: { category: ISerializedCategoryWithPr
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <ImageSection imageUrl={pageConfig.topBannerImage} size="half">
+            <NextImageSection imageUrl={menuConfig.topBannerImage} size="half">
                 <h1>{t('pageName')}</h1>
-            </ImageSection>
+            </NextImageSection>
 
             <WhiteSection>
                 <div

@@ -1,27 +1,30 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 
-import { Button, ImageSection, WhiteSection } from '@chez-tomio/components-web';
+import { Button, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { PhoneNumberUtil } from 'google-libphonenumber';
 import { round } from 'lodash';
+import getConfig from 'next/config';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Popup from 'reactjs-popup';
 import * as Yup from 'yup';
 
-import { taxRate } from '../config/global.json';
-import { stripePublicKey } from '../config/global.json';
 import { CheckoutDTO, ProductDTO, ProductDTOWithMetadata } from '../lib/api/dto/checkout';
 import { getTotalProductPrice } from '../lib/client/utils';
+import { NextImageSection } from '../lib/components/NextImageSection';
 import { connectToDatabase, ISerializedProduct, Product } from '../lib/database/mongo';
+import { GlobalDispatchContext, GlobalStateContext, SET_CART_ITEMS } from '../lib/global-state';
 import { requiresStoreToBeEnabled } from '../lib/server/utils';
+
+const { globalConfig } = getConfig().publicRuntimeConfig;
+const { cartConfig } = getConfig().publicRuntimeConfig.pagesConfig;
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
@@ -37,7 +40,7 @@ Yup.addMethod(Yup.string, 'phone', function (errorMessage = 'Phone number is not
 
 export default function Cart({ allProducts }: { allProducts: ISerializedProduct[] }) {
     const router = useRouter();
-    const { t } = useTranslation('common');
+    const { t } = useTranslation('cart');
     const [productDTOArray, setProductDTOArray] = useState<ProductDTO[]>([]);
     const [productArray, setProductArray] = useState<ProductDTOWithMetadata[]>([]);
     const [productCount, setProductCount] = useState(0);
@@ -46,10 +49,12 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
     const [phoneNumberPopup, setPhoneNumberPopup] = useState(false);
     const [stripePromise, setStripePromise] = useState<Promise<Stripe | null>>();
 
+    const globalState = useContext(GlobalStateContext);
+    const dispatch = useContext(GlobalDispatchContext);
+
     useEffect(() => {
-        // Set productsArray
-        const localStorageProducts = localStorage.getItem('cartProducts');
-        const data = (localStorageProducts ? JSON.parse(localStorageProducts) : [])
+        // const localStorageProducts = localStorage.getItem('cartProducts');
+        const data = globalState.cartItems
             .map((productDTO: ProductDTO) => {
                 const product = allProducts.find((p) => p._id === productDTO.id);
                 if (!product) return undefined;
@@ -61,8 +66,20 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
             .filter((p: ProductDTO | undefined) => p !== undefined);
         setProductDTOArray(data);
 
+        // const data = (globalState.cartItems ? JSON.parse(globalState.cartItems) : [])
+        //     .map((productDTO: ProductDTO) => {
+        //         const product = allProducts.find((p) => p._id === productDTO.id);
+        //         if (!product) return undefined;
+        //         productDTO.extras = productDTO.extras.filter((extraDTO) =>
+        //             product.extras.find((e) => e._id === extraDTO.id),
+        //         );
+        //         return productDTO;
+        //     })
+        //     .filter((p: ProductDTO | undefined) => p !== undefined);
+        // setProductDTOArray(data);
+
         // Start loading Stripe
-        setStripePromise(loadStripe(stripePublicKey));
+        setStripePromise(loadStripe(globalConfig.stripePublicKey));
     }, []);
 
     useEffect(() => {
@@ -74,7 +91,7 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
         setProductCount(count);
 
         setProductArray(
-            productDTOArray
+            globalState.cartItems
                 .map((productDTO) => {
                     const product = allProducts.find(
                         (productMetadata) => productMetadata._id === productDTO.id,
@@ -97,7 +114,7 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                 })
                 .filter((p): p is ProductDTOWithMetadata => p !== undefined),
         );
-    }, [productDTOArray]);
+    }, [globalState.cartItems]);
 
     useEffect(() => {
         setSubtotal(productArray.reduce((acc, curr) => acc + getTotalProductPrice(curr), 0));
@@ -106,10 +123,12 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                 (acc, curr) =>
                     acc +
                     curr.count *
-                        (round(curr.basePrice * (taxRate / 100), 2) +
+                        (round(curr.basePrice * (globalConfig.taxRate / 100), 2) +
                             curr.extras.reduce(
                                 (acc, curr) =>
-                                    acc + curr.count * round(curr.price * (taxRate / 100), 2),
+                                    acc +
+                                    curr.count *
+                                        round(curr.price * (globalConfig.taxRate / 100), 2),
                                 0,
                             )),
                 0,
@@ -118,10 +137,11 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
     }, [productArray]);
 
     function removeProduct(id: string) {
-        const productDTOArrayWithoutRemovedProduct: ProductDTO[] = productDTOArray.filter(
+        const productDTOArrayWithoutRemovedProduct: ProductDTO[] = globalState.cartItems.filter(
             (e) => e.id !== id,
         );
-        setProductDTOArray(productDTOArrayWithoutRemovedProduct);
+        // setProductDTOArray(productDTOArrayWithoutRemovedProduct);
+        dispatch({ type: SET_CART_ITEMS, payload: productDTOArrayWithoutRemovedProduct });
         localStorage.setItem('cartProducts', JSON.stringify(productDTOArrayWithoutRemovedProduct));
     }
 
@@ -158,7 +178,7 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
     return (
         <>
             <Head>
-                <title>Cart - Chez Tomio</title>
+                <title>{t('pageName')} - Chez Tomio</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
@@ -220,15 +240,24 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                 </Formik>
             </Popup>
 
-            <ImageSection imageUrl="/sample-image.jpg" size="half">
-                <h1>Cart</h1>
-            </ImageSection>
+            <NextImageSection imageUrl={cartConfig.topBannerImage} size="half">
+                <h1>{t('pageName')}</h1>
+            </NextImageSection>
 
             <WhiteSection>
                 <div
                     css={css`
                         display: flex;
                         width: 100%;
+                        .cart-total {
+                            width: 25%;
+                        }
+                        @media (max-width: 1000px) {
+                            flex-direction: column;
+                            .cart-total {
+                                width: 100%;
+                            }
+                        }
                     `}
                 >
                     <div
@@ -248,16 +277,17 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                                 margin-bottom: 20px;
                             `}
                         >
-                            <h3>Shopping Cart</h3>
+                            <h3>{t('shoppingCart')}</h3>
                             <h4
                                 css={css`
                                     margin-left: auto;
                                 `}
                             >
                                 {productCount + ' '}
-                                Items
+                                {t('items')}
                             </h4>
                         </div>
+                        {productArray.length === 0 && <p>{t('cartEmpty')}</p>}
                         {productArray.map((p) => (
                             <div
                                 key={p.id}
@@ -353,12 +383,7 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                             </div>
                         ))}
                     </div>
-                    <div
-                        className="cart-total"
-                        css={css`
-                            width: 25%;
-                        `}
-                    >
+                    <div className="cart-total">
                         <div
                             css={css`
                                 display: flex;
@@ -368,15 +393,15 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                                 border-radius: 20px;
                             `}
                         >
-                            <h3>Order Summary</h3>
-                            <h4>Subtotal</h4>${subtotal}
-                            <h4>Taxes (TPS &#38; TVQ)</h4>${taxes}
+                            <h3>{t('orderSummary')}</h3>
+                            <h4>{t('subtotal')}</h4>${subtotal}
+                            <h4>{t('taxes')} (TPS &#38; TVQ)</h4>${taxes}
                             <h4
                                 css={css`
                                     font-weight: bold;
                                 `}
                             >
-                                Total
+                                {t('total')}
                             </h4>
                             ${taxes + subtotal}
                             <Button
@@ -384,7 +409,7 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                                 disabled={subtotal <= 0}
                                 onClick={setPhoneNumberPopup.bind(undefined, true)}
                             >
-                                Checkout
+                                {t('checkout')}
                             </Button>
                         </div>
                     </div>
@@ -399,7 +424,7 @@ export const getServerSideProps = requiresStoreToBeEnabled(async ({ locale }) =>
 
     return {
         props: {
-            ...(await serverSideTranslations(locale!, ['common'])),
+            ...(await serverSideTranslations(locale!, ['common', 'cart'])),
             allProducts: JSON.parse(JSON.stringify(await Product.find({ archived: false }))),
         },
     };

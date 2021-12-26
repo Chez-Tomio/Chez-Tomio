@@ -24,12 +24,6 @@ export const ImageSection: React.FC<ImageSectionProps> = ({
     opacity,
     size,
 }) => {
-    const [clientIsMobile, setClientIsMobile] = useState(true);
-
-    useEffect(() => {
-        setClientIsMobile(isMobile);
-    }, []);
-
     return (
         <div
             css={css`
@@ -46,7 +40,7 @@ export const ImageSection: React.FC<ImageSectionProps> = ({
                 background-repeat: no-repeat;
                 background-position: center center;
                 background-size: cover;
-                background-attachment: ${!clientIsMobile && 'fixed'};
+                background-attachment: ${isMobile ? 'scroll' : 'fixed'};
                 height: ${heights[size ?? 'normal']};
                 min-height: 400px;
             `}

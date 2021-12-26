@@ -1,18 +1,21 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { ImageSection, WhiteSection } from '@chez-tomio/components-web';
-import packageJsonComponentsWeb from '@chez-tomio/components-web/package.json';
+import { WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { uniqBy } from 'lodash';
 import { GetStaticProps } from 'next';
+import getConfig from 'next/config';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 
-import * as pageConfig from '../../config/pages/about.json';
+import packageJsonComponentsWeb from '../../../../libs/components-web/package.json';
+import { NextImageSection } from '../../lib/components/NextImageSection';
 import packageJsonRestoWebsite from '../../package.json';
+
+const { aboutConfig } = getConfig().publicRuntimeConfig.pagesConfig;
 
 export default function ThisSite() {
     const { t } = useTranslation('about');
@@ -24,9 +27,9 @@ export default function ThisSite() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <ImageSection imageUrl={pageConfig.topBannerImage} size="half">
+            <NextImageSection imageUrl={aboutConfig.topBannerImage} size="half">
                 <h1>{t('aboutThisSiteTitle')}</h1>
-            </ImageSection>
+            </NextImageSection>
 
             <WhiteSection>
                 <h4>{t('credits')}</h4>

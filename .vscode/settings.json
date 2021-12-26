@@ -1,3 +1,9 @@
 {
-    "conventionalCommits.scopes": ["all", "resto-website", "components-web"]
+    "conventionalCommits.scopes": [
+        "all",
+        "resto-website",
+        "components-web",
+        "site-select",
+        "scanner"
+    ]
 }

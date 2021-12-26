@@ -2,9 +2,10 @@
 /** @jsx jsx */
 import 'react-vertical-timeline-component/style.min.css';
 
-import { Button, ImageSection, WhiteSection } from '@chez-tomio/components-web';
+import { Button, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { GetStaticProps } from 'next';
+import getConfig from 'next/config';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
@@ -12,7 +13,9 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 
-import * as pageConfig from '../../config/pages/about.json';
+import { NextImageSection } from '../../lib/components/NextImageSection';
+
+const { aboutConfig } = getConfig().publicRuntimeConfig.pagesConfig;
 
 export default function AboutUs() {
     const { t } = useTranslation('about');
@@ -24,9 +27,9 @@ export default function AboutUs() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <ImageSection imageUrl={pageConfig.topBannerImage} size="half">
+            <NextImageSection imageUrl={aboutConfig.topBannerImage} size="half">
                 <h1>{t('pageName')}</h1>
-            </ImageSection>
+            </NextImageSection>
 
             <WhiteSection>
                 <div
@@ -176,6 +179,36 @@ export default function AboutUs() {
                                     {t('event2019Title')}
                                 </h3>
                                 <p>{t('event2019Description')}</p>
+                            </div>
+                        </VerticalTimelineElement>
+                        <VerticalTimelineElement
+                            date="2021"
+                            contentStyle={{ background: 'rgb(33, 150, 243)' }}
+                            contentArrowStyle={{ borderRight: '7px solid  rgb(33, 150, 243)' }}
+                            iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
+                            icon={
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    className="bi bi-door-open"
+                                    viewBox="0 0 16 16"
+                                >
+                                    <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z" />
+                                    <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117zM11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5zM4 1.934V15h6V1.077l-6 .857z" />
+                                </svg>
+                            }
+                        >
+                            <div
+                                css={css`
+                                    color: white;
+                                `}
+                            >
+                                <h3 className="vertical-timeline-element-title">
+                                    {t('event2021Title')}
+                                </h3>
+                                <p>{t('event2021Description')}</p>
                             </div>
                         </VerticalTimelineElement>
                         <VerticalTimelineElement

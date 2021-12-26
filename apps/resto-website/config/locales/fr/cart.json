@@ -1,0 +1,13 @@
+{
+    "pageName": "Panier",
+
+    "shoppingCart": "Votre panier",
+    "items": "Articles",
+    "cartEmpty": "Votre panier est vide!",
+
+    "orderSummary": "Votre commande",
+    "subtotal": "Sous-total",
+    "taxes": "Taxes",
+    "total": "Total",
+    "checkout": "Payer"
+}
