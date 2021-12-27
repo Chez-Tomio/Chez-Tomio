@@ -4,6 +4,10 @@ import getConfig from 'next/config';
 
 const { globalConfig } = getConfig().publicRuntimeConfig;
 
+/**
+ * Wrapper for Next.js getServerSideProps in pages that need store to be enabled
+ * @param getServerSideProps
+ */
 export const requiresStoreToBeEnabled = (
     getServerSideProps: GetServerSideProps,
 ): GetServerSideProps => async (context) => {

@@ -20,7 +20,6 @@ export const Button = styled.button<ButtonProps>`
     border: 0;
     border-radius: 3em;
     cursor: pointer;
-    display: inline-block;
     line-height: 1;
     transition: 0.2s;
     color: white;
@@ -30,6 +29,13 @@ export const Button = styled.button<ButtonProps>`
     border: ${(props) => (props.primary ? '' : '2px solid #fff')};
     margin: 10px 20px;
     outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    svg {
+        height: 24px;
+        margin-right: 5px;
+    }
     &:hover {
         color: ${(props) => (props.primary ? '' : '#000')};
         background-color: ${(props) => (props.primary ? '#ac1b24' : '#fff')};

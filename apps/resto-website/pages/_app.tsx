@@ -23,8 +23,8 @@ import React, { useEffect, useReducer, useState } from 'react';
 import { ToastProvider } from 'react-toast-notifications';
 
 import { CartIcon } from '../lib/components/CartIcon';
+import GlobalState, { reducer, SET_CART_ITEMS } from '../lib/components/GlobalState';
 import { NextImageSection } from '../lib/components/NextImageSection';
-import GlobalState, { reducer, SET_CART_ITEMS } from '../lib/global-state';
 
 const { globalConfig } = getConfig().publicRuntimeConfig;
 

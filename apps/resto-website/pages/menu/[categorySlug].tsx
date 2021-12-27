@@ -12,6 +12,11 @@ import React, { useContext } from 'react';
 import Masonry from 'react-masonry-css';
 
 import { ProductDTO } from '../../lib/api/dto/checkout';
+import {
+    GlobalDispatchContext,
+    GlobalStateContext,
+    SET_CART_ITEMS,
+} from '../../lib/components/GlobalState';
 import { MenuProduct } from '../../lib/components/menu/MenuProduct';
 import { NextImageSection } from '../../lib/components/NextImageSection';
 import {
@@ -19,7 +24,6 @@ import {
     connectToDatabase,
     ISerializedCategoryWithProducts,
 } from '../../lib/database/mongo';
-import { GlobalDispatchContext, GlobalStateContext, SET_CART_ITEMS } from '../../lib/global-state';
 
 const { menuConfig } = getConfig().publicRuntimeConfig.pagesConfig;
 

@@ -6,7 +6,7 @@
     "license": "UNLICENSED",
     "scripts": {
         "dev": "concurrently \"yarn dev:storybook\" \"yarn dev:tsc\"",
-        "dev:storybook": "start-storybook -s ./src/assets -p 5000 --quiet",
+        "dev:storybook": "start-storybook -s ./src/assets -p 4000 --quiet",
         "dev:tsc": "tsc --watch | awk '{gsub(/\\033c/,\"\") system(\"\")}1'",
         "build": "tsc",
         "lint": "eslint \"src/**/*.{tsx,ts}\" --fix"

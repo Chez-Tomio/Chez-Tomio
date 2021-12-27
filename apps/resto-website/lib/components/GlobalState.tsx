@@ -6,6 +6,9 @@ export const GlobalDispatchContext = React.createContext(null as any);
 
 export const SET_CART_ITEMS = 'SET_CART_ITEMS';
 
+/**
+ * Global state reducer
+ */
 export const reducer = (state, action) => {
     const { type, payload } = action;
     switch (type) {
@@ -21,6 +24,11 @@ export const reducer = (state, action) => {
     }
 };
 
+/**
+ * Global state provider
+ * @param props
+ * @returns
+ */
 function GlobalState(props) {
     const { initialState, dispatch } = props;
     return (

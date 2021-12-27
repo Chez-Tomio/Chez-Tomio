@@ -1,6 +1,6 @@
 {
     "recommendations": [
         "vivaxy.vscode-conventional-commits",
-        "jpoissonnier.vscode-styled-components"
+        "styled-components.vscode-styled-components"
     ]
 }

@@ -4,24 +4,29 @@ import slug from 'slug';
 import { ILocalizedString, LocalizedStringSchema } from '../utils';
 import { Document, DocumentTimestamps } from '../utils';
 import { ISerializedProduct, Product } from './product';
-export type ICategory = {
+
+/**
+ * Category types
+ */
+type ICategory = {
     image: string;
     title: ILocalizedString;
     slug: string;
     products: Types.ObjectId[];
     archived: boolean;
 };
-
-export type ICategoryDocument = ICategory & Document & DocumentTimestamps;
-
-export type ISerializedCategory = Omit<LeanDocument<ICategoryDocument>, '_id' | 'products'> & {
+type ICategoryDocument = ICategory & Document & DocumentTimestamps;
+type ISerializedCategory = Omit<LeanDocument<ICategoryDocument>, '_id' | 'products'> & {
     _id: string;
 };
-
-export type ISerializedCategoryWithProducts = ISerializedCategory & {
+type ISerializedCategoryWithProducts = ISerializedCategory & {
     products: ISerializedProduct[];
 };
+export type { ICategory, ICategoryDocument, ISerializedCategory, ISerializedCategoryWithProducts };
 
+/**
+ * Category schema
+ */
 export const CategorySchema = new Schema(
     {
         image: {
@@ -51,5 +56,8 @@ export const CategorySchema = new Schema(
     { timestamps: true },
 );
 
+/**
+ * Category model
+ */
 export const Category: Model<ICategoryDocument> =
     models.Category ?? model('Category', CategorySchema, 'categories');

@@ -9,8 +9,8 @@ import { CheckoutDTO } from '../../lib/api/dto/checkout';
 import { apiEndpointWrapper, areValidationErrors, sendError } from '../../lib/api/utils';
 import { Category, IOrder, Order, Product } from '../../lib/database/mongo';
 import { localizedStringToString } from '../../lib/database/utils';
-import { Unboxed } from '../../lib/types/utils';
-import { emptyStringToUndefined } from '../../lib/utils';
+import { Unboxed } from '../../lib/types';
+import { emptyStringToUndefined } from '../../lib/utils/common';
 
 const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY, {
     apiVersion: '2020-08-27',

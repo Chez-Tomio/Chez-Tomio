@@ -1,6 +1,6 @@
 {
     "pageName": "Menu",
 
-    "seeKitchenMenu": "Voir le menu PDF de la cuisine",
-    "seeSushiList": "Voir la liste PDF des sushis à la carte"
+    "seeKitchenMenu": "Voir le menu du restaurant",
+    "seeSushiList": "Voir la liste des sushis à la carte"
 }

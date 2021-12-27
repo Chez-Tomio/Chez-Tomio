@@ -4,30 +4,18 @@ import { LeanDocument, Model, model, models, Schema, Types } from 'mongoose';
 import { Document, DocumentTimestamps } from '../utils';
 import { ILocalizedString, LocalizedStringSchema } from '../utils';
 
+/**
+ * Buyable interface
+ */
 interface IBuyable {
     title: ILocalizedString;
     description: Partial<ILocalizedString>;
     price: number;
 }
 
-export type IProduct = Omit<IBuyable, 'price'> & {
-    basePrice: number;
-    isSpecialty: boolean;
-    image?: string;
-    archived: boolean;
-    extras: IBuyable[];
-};
-
-export type IProductDocument = Omit<IProduct, 'extras'> & {
-    extras: (IBuyable & { _id: Types.ObjectId })[];
-} & Document &
-    DocumentTimestamps;
-
-export type ISerializedProduct = Omit<LeanDocument<IProductDocument>, '_id' | 'extras'> & {
-    _id: string;
-    extras: (IBuyable & { _id: string })[];
-};
-
+/**
+ * Buyable schema
+ */
 const BuyablePartialSchema = {
     title: LocalizedStringSchema(true),
     description: LocalizedStringSchema(false),
@@ -37,6 +25,29 @@ const BuyablePartialSchema = {
     },
 };
 
+/**
+ * Product types
+ */
+type IProduct = Omit<IBuyable, 'price'> & {
+    basePrice: number;
+    isSpecialty: boolean;
+    image?: string;
+    archived: boolean;
+    extras: IBuyable[];
+};
+type IProductDocument = Omit<IProduct, 'extras'> & {
+    extras: (IBuyable & { _id: Types.ObjectId })[];
+} & Document &
+    DocumentTimestamps;
+type ISerializedProduct = Omit<LeanDocument<IProductDocument>, '_id' | 'extras'> & {
+    _id: string;
+    extras: (IBuyable & { _id: string })[];
+};
+export type { IProduct, IProductDocument, ISerializedProduct };
+
+/**
+ * Product schema
+ */
 export const ProductSchema = new Schema(
     {
         image: String,
@@ -58,5 +69,8 @@ export const ProductSchema = new Schema(
     { timestamps: true },
 );
 
+/**
+ * Product model
+ */
 export const Product: Model<IProductDocument> =
     models.Product ?? model('Product', ProductSchema, 'products');

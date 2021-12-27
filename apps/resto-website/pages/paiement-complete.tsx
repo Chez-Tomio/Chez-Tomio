@@ -9,7 +9,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React, { useEffect } from 'react';
 
 import { NextImageSection } from '../lib/components/NextImageSection';
-import { requiresStoreToBeEnabled } from '../lib/server/utils';
+import { requiresStoreToBeEnabled } from '../lib/utils/server';
 
 const { paymentCompleteConfig } = getConfig().publicRuntimeConfig.pagesConfig;
 

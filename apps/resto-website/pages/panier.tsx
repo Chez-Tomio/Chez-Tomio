@@ -17,11 +17,15 @@ import Popup from 'reactjs-popup';
 import * as Yup from 'yup';
 
 import { CheckoutDTO, ProductDTO, ProductDTOWithMetadata } from '../lib/api/dto/checkout';
-import { getTotalProductPrice } from '../lib/client/utils';
+import {
+    GlobalDispatchContext,
+    GlobalStateContext,
+    SET_CART_ITEMS,
+} from '../lib/components/GlobalState';
 import { NextImageSection } from '../lib/components/NextImageSection';
 import { connectToDatabase, ISerializedProduct, Product } from '../lib/database/mongo';
-import { GlobalDispatchContext, GlobalStateContext, SET_CART_ITEMS } from '../lib/global-state';
-import { requiresStoreToBeEnabled } from '../lib/server/utils';
+import { getTotalProductPrice } from '../lib/utils/client';
+import { requiresStoreToBeEnabled } from '../lib/utils/server';
 
 const { globalConfig } = getConfig().publicRuntimeConfig;
 const { cartConfig } = getConfig().publicRuntimeConfig.pagesConfig;
