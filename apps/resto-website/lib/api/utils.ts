@@ -10,24 +10,9 @@ import { connectToDatabase } from '../database/mongo';
 
 const { globalConfig } = getConfig().publicRuntimeConfig;
 
-export const isAdmin = async (req: IncomingMessage): Promise<boolean> => {
-    const session = await getSession({ req });
-    if (!session?.user) return false;
-    return true;
-};
-
-export const isRequesterOrderReceiverApp = (req: IncomingMessage): boolean => {
-    const correactBearerHeader = `Bearer ${process.env.ORDER_RECEIVER_APP_TOKEN}`;
-
-    return safeCompare(correactBearerHeader, req.headers['authorization'] ?? '');
-};
-
-export const sendError = (res: NextApiResponse, errorCode: number, details?: any) =>
-    res.status(errorCode).json({
-        error: STATUS_CODES[errorCode],
-        details,
-    });
-
+/**
+ * Api endpoint wrapper
+ */
 export const apiEndpointWrapper = (
     endpoint: NextApiHandler,
     {
@@ -51,10 +36,54 @@ export const apiEndpointWrapper = (
     }
 };
 
+/**
+ * Returns true if user is admin
+ * @param req
+ * @returns {boolean}
+ */
+export const isAdmin = async (req: IncomingMessage): Promise<boolean> => {
+    const session = await getSession({ req });
+    if (!session?.user) return false;
+    return true;
+};
+
+/**
+ * Returns true if requester is order receiver app
+ * @param req
+ * @returns {boolean}
+ */
+export const isRequesterOrderReceiverApp = (req: IncomingMessage): boolean => {
+    const correactBearerHeader = `Bearer ${process.env.ORDER_RECEIVER_APP_TOKEN}`;
+
+    return safeCompare(correactBearerHeader, req.headers['authorization'] ?? '');
+};
+
+/**
+ * Sends an error response
+ * @param res
+ * @param errorCode
+ * @param details
+ */
+export const sendError = (res: NextApiResponse, errorCode: number, details?: any) =>
+    res.status(errorCode).json({
+        error: STATUS_CODES[errorCode],
+        details,
+    });
+
+/**
+ * Checks if errors are validation errors
+ * @param errors
+ * @returns {boolean}
+ */
 export const areValidationErrors = (errors: any): errors is ValidationError[] => {
     return errors instanceof Array && errors.every((e) => e instanceof ValidationError);
 };
 
+/**
+ * Get the raw body of a request
+ * @param req
+ * @returns {Promise<string>}
+ */
 export const getRawBody = (req: NextApiRequest): Promise<string | undefined> =>
     new Promise((r) => {
         if (req.body) return r(undefined);
