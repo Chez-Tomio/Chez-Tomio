@@ -1,7 +1,10 @@
 import mongoose from 'mongoose';
 
+import { uploadImage } from '../../../lib/api/minio';
 import { apiEndpointWrapper, sendError } from '../../../lib/api/utils';
 import { Category } from '../../../lib/database/mongo';
+
+export const config = { api: { bodyParser: { sizeLimit: '10mb' } } };
 
 export default apiEndpointWrapper(
     async (req, res) => {
@@ -12,6 +15,7 @@ export default apiEndpointWrapper(
             case 'POST': {
                 try {
                     const category = new Category(req.body);
+                    category.image = await uploadImage(category._id, category.image, 'categories');
                     await category.save();
                     return res.send(category);
                 } catch (e) {

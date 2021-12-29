@@ -1,15 +1,20 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { WhiteSection } from '@chez-tomio/components-web';
+import {
+    CategoriesSlider,
+    CategoriesSliderItem,
+    ProductsGrid,
+    WhiteSection,
+} from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { GetServerSideProps } from 'next';
 import getConfig from 'next/config';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React, { useContext } from 'react';
-import Masonry from 'react-masonry-css';
 
 import { ProductDTO } from '../../lib/api/dto/checkout';
 import {
@@ -22,12 +27,19 @@ import { NextImageSection } from '../../lib/components/NextImageSection';
 import {
     Category,
     connectToDatabase,
+    ISerializedCategory,
     ISerializedCategoryWithProducts,
 } from '../../lib/database/mongo';
 
 const { menuConfig } = getConfig().publicRuntimeConfig.pagesConfig;
 
-export default function Menu({ category }: { category: ISerializedCategoryWithProducts }) {
+export default function Menu({
+    categories,
+    category,
+}: {
+    categories: ISerializedCategory[];
+    category: ISerializedCategoryWithProducts;
+}) {
     const { t } = useTranslation('menu');
     const router = useRouter();
 
@@ -74,33 +86,27 @@ export default function Menu({ category }: { category: ISerializedCategoryWithPr
                         width: 100%;
                     `}
                 >
-                    <h2>{category.title[router.locale ?? 'fr']}</h2>
-                    <div
-                        css={css`
-                            width: 100%;
-                            .my-masonry-grid {
-                                display: flex;
-                            }
-                        `}
-                    >
-                        <Masonry
-                            breakpointCols={{
-                                default: 3,
-                                1200: 2,
-                                800: 1,
-                            }}
-                            className="my-masonry-grid"
-                            columnClassName="my-masonry-grid_column"
-                        >
-                            {category?.products.map((p) => (
-                                <MenuProduct
-                                    key={p._id}
-                                    product={p}
-                                    onAddToCart={(formData) => addToCart(formData)}
-                                />
-                            ))}
-                        </Masonry>
-                    </div>
+                    {/* <h2>{category.title[router.locale ?? 'fr']}</h2> */}
+                    <CategoriesSlider>
+                        {categories.map((c) => (
+                            <Link href={`/menu/${c.slug}`} key={c._id}>
+                                <CategoriesSliderItem
+                                    active={router.asPath == `/menu/${c.slug}` ? true : false}
+                                >
+                                    {c.title[router.locale ?? 'fr']}
+                                </CategoriesSliderItem>
+                            </Link>
+                        ))}
+                    </CategoriesSlider>
+                    <ProductsGrid>
+                        {category?.products.map((p) => (
+                            <MenuProduct
+                                key={p._id}
+                                product={p}
+                                onAddToCart={(formData) => addToCart(formData)}
+                            />
+                        ))}
+                    </ProductsGrid>
                 </div>
             </WhiteSection>
         </>
@@ -123,6 +129,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, query }) 
     return {
         props: {
             ...(await serverSideTranslations(locale!, ['common', 'menu'])),
+            categories: JSON.parse(JSON.stringify(await Category.find({ archived: false }))),
             category: JSON.parse(JSON.stringify(category)),
         },
     };

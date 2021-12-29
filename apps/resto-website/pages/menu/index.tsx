@@ -43,12 +43,14 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
                         </Link>
                     ))}
                 </CategoriesGrid>
+
                 <div
                     css={css`
                         display: flex;
                         align-items: center;
                         justify-content: center;
                         flex-wrap: wrap;
+                        margin-top: 20px;
                     `}
                 >
                     <a

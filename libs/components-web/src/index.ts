@@ -10,7 +10,10 @@ export * from './GlobalStyles';
 export * from './components/button/Button';
 /** Menu */
 export * from './components/menu/categories/CategoriesGrid';
+export * from './components/menu/categories/CategoriesSlider';
+export * from './components/menu/categories/CategoriesSliderItem';
 export * from './components/menu/categories/CategoryTile';
+export * from './components/menu/products/ProductsGrid';
 export * from './components/menu/products/ProductTile';
 export * from './components/menu/specialties/SpecialtiesGrid';
 export * from './components/menu/specialties/Specialty';

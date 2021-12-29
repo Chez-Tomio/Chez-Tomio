@@ -5,6 +5,7 @@ export type ButtonSize = 'small' | 'medium' | 'large';
 export interface ButtonProps {
     primary?: boolean;
     size?: ButtonSize;
+    noMargin?: boolean;
     onClick?: () => void;
 }
 
@@ -27,7 +28,7 @@ export const Button = styled.button<ButtonProps>`
     font-size: 1rem;
     padding: ${(props) => paddings[props.size ?? 'medium']};
     border: ${(props) => (props.primary ? '' : '2px solid #fff')};
-    margin: 10px 20px;
+    margin: ${(props) => (props.noMargin ? '0' : '10px 20px')};
     outline: none;
     display: flex;
     align-items: center;

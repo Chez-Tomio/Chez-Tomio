@@ -9,6 +9,7 @@ import { PhoneNumberUtil } from 'google-libphonenumber';
 import { round } from 'lodash';
 import getConfig from 'next/config';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -291,7 +292,22 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                                 {t('items')}
                             </h4>
                         </div>
-                        {productArray.length === 0 && <p>{t('cartEmpty')}</p>}
+                        {productArray.length === 0 && (
+                            <div>
+                                <p>{t('cartEmpty')}</p>
+                                <Link href="/menu">
+                                    <Button
+                                        primary={true}
+                                        noMargin={true}
+                                        css={css`
+                                            margin: 0;
+                                        `}
+                                    >
+                                        {t('continueShopping')}
+                                    </Button>
+                                </Link>
+                            </div>
+                        )}
                         {productArray.map((p) => (
                             <div
                                 key={p.id}

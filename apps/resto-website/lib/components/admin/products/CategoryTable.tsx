@@ -9,7 +9,7 @@ import { CategoriesForm } from './CategoriesForm';
 import { ProductRow } from './ProductRow';
 import { ProductsForm } from './ProductsForm';
 
-interface CategoryProps {
+interface CategoryTileProps {
     category: ISerializedCategoryWithProducts;
     onUpdateCategory: (newCategory: ISerializedCategoryWithProducts) => void | Promise<void>;
     onDeleteCategory: (product: ISerializedCategoryWithProducts) => void | Promise<void>;
@@ -21,7 +21,7 @@ interface CategoryProps {
     onDeleteProduct: (product: ISerializedProduct) => void | Promise<void>;
 }
 
-export const CategoryTable: React.FC<CategoryProps> = ({
+export const CategoryTable: React.FC<CategoryTileProps> = ({
     category,
     onUpdateCategory,
     onDeleteCategory,

@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React from 'react';
 
-import { ProductProps, ProductTile } from './ProductTile';
+import { ProductTileProps, ProductTile } from './ProductTile';
 
 export default {
     title: 'Components/Menu/Products/Product',
@@ -11,7 +11,7 @@ export default {
     },
 } as Meta;
 
-export const Template: Story<ProductProps> = (args) => (
+export const Template: Story<ProductTileProps> = (args) => (
     <>
         <div style={{ height: 20 }}></div>
         <ProductTile {...args}>Product</ProductTile>

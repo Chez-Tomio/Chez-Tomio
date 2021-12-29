@@ -38,7 +38,7 @@ const ProductsFormSchema = Yup.object().shape({
 });
 
 export interface ProductsFormProps {
-    initialValues: Omit<ISerializedProduct, '_id' | keyof DocumentTimestamps>;
+    initialValues: Omit<ISerializedProduct, '_id' | 'slug' | keyof DocumentTimestamps>;
     onSubmitProduct: (newProduct: ISerializedProduct) => void;
 }
 
@@ -54,6 +54,7 @@ export const ProductsForm: React.FC<ProductsFormProps> = ({
             onSubmit={(values, { setSubmitting }) => {
                 onSubmitProduct({
                     _id: undefined as unknown,
+                    slug: undefined as unknown,
                     createdAt: undefined as unknown,
                     updatedAt: undefined as unknown,
                     ...values,

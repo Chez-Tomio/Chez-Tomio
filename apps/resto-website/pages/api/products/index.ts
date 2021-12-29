@@ -1,7 +1,10 @@
 import mongoose from 'mongoose';
 
+import { uploadImage } from '../../../lib/api/minio';
 import { apiEndpointWrapper, sendError } from '../../../lib/api/utils';
 import { Category, Product } from '../../../lib/database/mongo';
+
+export const config = { api: { bodyParser: { sizeLimit: '10mb' } } };
 
 export default apiEndpointWrapper(
     async (req, res) => {
@@ -26,8 +29,11 @@ export default apiEndpointWrapper(
                     );
                     if (!category) return sendError(res, 404);
 
+                    if (product.image) {
+                        product.image = await uploadImage(product._id, product.image, 'products');
+                    }
+                    console.log(product);
                     await product.save();
-
                     return res.send(product);
                 } catch (e) {
                     if (

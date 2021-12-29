@@ -3,11 +3,11 @@
 import { css, jsx } from '@emotion/react';
 import React from 'react';
 
-export interface CategoryProps {
+export interface CategoryTileProps {
     imageUrl: string;
 }
 
-export const CategoryTile: React.FC<CategoryProps> = ({ children, imageUrl }) => (
+export const CategoryTile: React.FC<CategoryTileProps> = ({ children, imageUrl }) => (
     <div
         css={css`
             font-family: 'Montserrat', sans-serif;
@@ -18,7 +18,7 @@ export const CategoryTile: React.FC<CategoryProps> = ({ children, imageUrl }) =>
             flex-direction: column;
             border-radius: 20px;
             /* width: 100%; */
-            height: 250px;
+            height: 200px;
             cursor: pointer;
             transition: all 0.5s;
             color: white;

@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React from 'react';
 
-import { CategoryProps, CategoryTile } from './CategoryTile';
+import { CategoryTile, CategoryTileProps } from './CategoryTile';
 
 export default {
     title: 'Components/Menu/Categories/Category',
@@ -11,7 +11,7 @@ export default {
     },
 } as Meta;
 
-export const Template: Story<CategoryProps> = (args) => (
+export const Template: Story<CategoryTileProps> = (args) => (
     <CategoryTile {...args}>Category</CategoryTile>
 );
 Template.args = {
