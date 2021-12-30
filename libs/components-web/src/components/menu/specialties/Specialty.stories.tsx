@@ -1,10 +1,10 @@
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React from 'react';
 
-import { Specialty, SpecialtyProps } from './Specialty';
+import { Specialty, SpecialtyProps } from './SpecialtyTile';
 
 export default {
-    title: 'Components/Menu/Specialties/Specialty',
+    title: 'Components/Menu/Specialties/SpecialtyTile',
     component: Specialty,
     parameters: {
         backgrounds: { default: 'white' },

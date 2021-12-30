@@ -16,7 +16,7 @@ export * from './components/menu/categories/CategoryTile';
 export * from './components/menu/products/ProductsGrid';
 export * from './components/menu/products/ProductTile';
 export * from './components/menu/specialties/SpecialtiesGrid';
-export * from './components/menu/specialties/Specialty';
+export * from './components/menu/specialties/SpecialtyTile';
 /** Nav */
 export * from './components/nav/Nav';
 export * from './components/nav/NavItem';

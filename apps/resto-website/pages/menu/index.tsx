@@ -55,6 +55,7 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
                 >
                     <a
                         target="_blank"
+                        rel="noreferrer"
                         href="/menu-principal.pdf"
                         css={css`
                             text-decoration: none;
@@ -75,6 +76,7 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
                     </a>
                     <a
                         target="_blank"
+                        rel="noreferrer"
                         href="/sushi-list.pdf"
                         css={css`
                             text-decoration: none;

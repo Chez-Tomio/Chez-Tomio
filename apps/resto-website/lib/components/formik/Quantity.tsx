@@ -26,7 +26,7 @@ export const Quantity: React.FC<FieldProps> = ({ field, form }) => {
                     border: 1px #f0f0f0 solid;
                     padding: 5px;
                     min-width: 50px;
-                    appearance: textfield;
+                    /* appearance: textfield; */
                 }
                 .button {
                     cursor: pointer;

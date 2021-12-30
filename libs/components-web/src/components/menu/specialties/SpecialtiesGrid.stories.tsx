@@ -2,7 +2,7 @@ import { Meta, Story } from '@storybook/react/types-6-0';
 import React from 'react';
 
 import { SpecialtiesGrid } from './SpecialtiesGrid';
-import { Specialty } from './Specialty';
+import { Specialty } from './SpecialtyTile';
 
 export default {
     title: 'Components/Menu/Specialties/SpecialtiesGrid',

@@ -20,7 +20,6 @@ const productTileStyles = css`
     color: black;
     overflow: hidden;
     box-shadow: -5px -5px 15px rgba(255, 255, 255, 0.1), 5px 5px 15px rgba(0, 0, 0, 0.1);
-    z-index: 2;
     position: relative;
     background-color: white;
     margin-bottom: 0px;

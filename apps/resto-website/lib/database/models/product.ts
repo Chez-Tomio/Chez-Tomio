@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import { LeanDocument, Model, model, models, Schema, Types } from 'mongoose';
-import slug from 'slug';
 
 import { Document, DocumentTimestamps } from '../utils';
 import { ILocalizedString, LocalizedStringSchema } from '../utils';
@@ -31,7 +30,6 @@ const BuyablePartialSchema = {
  */
 type IProduct = Omit<IBuyable, 'price'> & {
     basePrice: number;
-    slug: string;
     isSpecialty: boolean;
     image?: string;
     archived: boolean;
@@ -57,14 +55,6 @@ export const ProductSchema = new Schema(
         basePrice: {
             type: Number,
             required: true,
-        },
-        slug: {
-            type: String,
-            unique: true,
-            default() {
-                const product = this as Omit<IProduct, 'slug'>;
-                return slug(product.title.fr);
-            },
         },
         isSpecialty: {
             type: Boolean,

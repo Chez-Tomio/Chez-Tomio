@@ -318,14 +318,14 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                                     border-top: #f0f0f0 solid 2px;
                                 `}
                             >
-                                <div>
+                                {/* <div>
                                     <img
                                         src={p.image}
                                         css={css`
                                             height: 100px;
                                         `}
                                     />
-                                </div>
+                                </div> */}
                                 <div
                                     css={css`
                                         display: flex;

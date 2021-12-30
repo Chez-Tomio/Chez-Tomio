@@ -1,6 +1,5 @@
 import { isMongoId } from 'class-validator';
 import mongoose from 'mongoose';
-import slug from 'slug';
 
 import { deleteFile, uploadImage } from '../../../lib/api/minio';
 import { apiEndpointWrapper, sendError } from '../../../lib/api/utils';
@@ -26,7 +25,7 @@ export default apiEndpointWrapper(
 
                     const product = await Product.findByIdAndUpdate(
                         productId,
-                        { $set: req.body, slug: slug(req.body.title.fr) },
+                        { $set: req.body },
                         { new: true },
                     );
                     if (!product) return sendError(res, 404);

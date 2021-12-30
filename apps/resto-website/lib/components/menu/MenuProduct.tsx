@@ -15,11 +15,25 @@ import { ExtraFieldCount } from './ExtraFieldCount';
 
 const { globalConfig } = getConfig().publicRuntimeConfig;
 
+function useScroll() {
+    const [scrollTop, setScrollTop] = useState(0);
+    const [scrollBottom, setScrollBottom] = useState(0);
+    const updateScroll = (e) => {
+        const element = e.target;
+        const contentScrollHeight = element.scrollHeight - element.offsetHeight;
+        setScrollTop(element.scrollTop);
+        setScrollBottom(element.scrollTop - contentScrollHeight);
+        console.log(element.scrollTop - contentScrollHeight);
+    };
+    return [scrollTop, scrollBottom, { onScroll: updateScroll, onresize: updateScroll }];
+}
+
 export const MenuProduct: React.FC<{
     product: ISerializedProduct;
     onAddToCart: (formData) => void;
 }> = ({ product, onAddToCart }) => {
     const [productOptions, setProductOptions] = useState(false);
+    const [scrollTop, scrollBottom, scrollProps] = useScroll();
     const router = useRouter();
 
     function addToCart(formData) {
@@ -35,7 +49,6 @@ export const MenuProduct: React.FC<{
                 title={product.title[router.locale ?? 'fr']}
                 description={product.description[router.locale ?? 'fr']}
                 price={product.basePrice}
-                canBeBought={globalConfig.isStoreEnabled}
                 onClickAdd={() => {
                     setProductOptions(true);
                 }}
@@ -49,160 +62,88 @@ export const MenuProduct: React.FC<{
                     css={css`
                         display: flex;
                         flex-direction: column;
-                        align-items: center;
-                        justify-content: center;
-                        min-height: 100%;
+                        height: 100%;
                     `}
                 >
-                    <h3
+                    <div
                         css={css`
-                            margin-bottom: 20px;
+                            padding: 10px;
+                            box-shadow: ${scrollTop > 0
+                                ? 'rgba(0, 0, 0, 0.2) 0px calc(1px) 15px'
+                                : 'none'};
+                            mix-blend-mode: multiply;
+                            display: flex;
+                            align-items: center;
                         `}
                     >
-                        {product.title[router.locale ?? 'fr']}
-                    </h3>
-                    <Formik
-                        initialValues={{
-                            id: product._id,
-                            count: 1,
-                            extras: [] as ExtraDTO[],
-                        }}
-                        // validationSchema={ProductsFormSchema}
-                        onSubmit={(values, { setSubmitting }) => {
-                            values.extras = values.extras.filter((e) => e.count >= 1);
-                            if (isNaN(values.count)) values.count = 1;
-                            addToCart(values);
-                            setSubmitting(false);
-                        }}
+                        <svg
+                            className="close"
+                            viewBox="0 0 16 16"
+                            css={css`
+                                height: 40px;
+                                cursor: pointer;
+                            `}
+                            onClick={() => setProductOptions(false)}
+                        >
+                            <path
+                                fill="currentColor"
+                                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+                            />
+                        </svg>
+                    </div>
+
+                    <div
+                        {...scrollProps}
+                        css={css`
+                            flex: 1;
+                            overflow-y: auto;
+                            transition: box-shadow 0.3s;
+                        `}
                     >
-                        {({ values, isSubmitting, errors }) => (
-                            <Form
+                        <div
+                            css={css`
+                                margin-bottom: 20px;
+                                display: flex;
+                                padding: 20px;
+                            `}
+                        >
+                            <div
                                 css={css`
-                                    display: flex;
-                                    flex-direction: column;
-                                    color: black;
-                                    width: 100%;
-                                    align-items: center;
-                                    justify-content: center;
-                                    .item {
-                                        padding: 5px;
-                                        display: flex;
-                                        flex-direction: column;
-                                        text-align: left;
-                                        width: 40%;
-                                        min-width: 150px;
-                                        max-width: 250px;
-                                        * {
-                                            width: 100%;
-                                        }
-                                        label {
-                                            font-size: 0.9rem;
-                                        }
-                                        .error {
-                                            color: red;
-                                            font-size: 0.7rem;
-                                            margin-bottom: 15px;
-                                        }
-                                    }
+                                    flex: 1;
                                 `}
                             >
-                                <div className="item">
-                                    <div
-                                        css={css`
-                                            display: flex;
-                                            align-items: center;
-                                            justify-content: center;
-                                        `}
-                                    >
-                                        <label
-                                            htmlFor="count"
-                                            css={css`
-                                                margin-right: 20px;
-                                            `}
-                                        >
-                                            Quantity
-                                        </label>
-                                        <Field name="count" component={Quantity} />
-                                    </div>
-
-                                    <ErrorMessage name="count" component="span" className="error" />
-                                </div>
-
-                                {product.extras.length > 0 && (
-                                    <>
-                                        <hr />
-                                        <h4
-                                            css={css`
-                                                margin: 0;
-                                            `}
-                                        >
-                                            Extras
-                                        </h4>
-                                        <small
-                                            css={css`
-                                                color: gray;
-                                                margin-bottom: 20px;
-                                            `}
-                                        >
-                                            Maximum 3 per extra
-                                        </small>
-                                        {product.extras.map((e, i) => (
-                                            <div className="item" key={e._id}>
-                                                <Field
-                                                    name={`extras[${i}]`}
-                                                    component={ExtraFieldCount}
-                                                    {...{
-                                                        extra: e,
-                                                    }}
-                                                />
-
-                                                <ErrorMessage
-                                                    name={`extras[${i}]`}
-                                                    component="span"
-                                                    className="error"
-                                                />
-                                            </div>
-                                        ))}
-                                    </>
-                                )}
-
-                                <hr />
-
-                                <h4
+                                <h3>{product.title[router.locale ?? 'fr']}</h3>
+                                <span>{product.description[router.locale ?? 'fr']}</span>
+                            </div>
+                            {product.image && (
+                                <div
                                     css={css`
-                                        margin: 0;
+                                        height: 150px;
+                                        width: 150px;
+                                        margin-left: 20px;
+                                        background-image: url(${product.image});
+                                        background-size: cover;
+                                        background-position: center;
+                                        border-radius: 10px;
                                     `}
-                                >
-                                    Price: $
-                                    <b>
-                                        {(isNaN(values.count) ? 1 : values.count) *
-                                            (product.basePrice +
-                                                values.extras.reduce(
-                                                    (acc, curr: ExtraDTO) =>
-                                                        acc +
-                                                        (product.extras.find(
-                                                            (e) => e._id === curr.id,
-                                                        )?.price ?? 0) *
-                                                            (isNaN(curr.count) ? 0 : curr.count),
-                                                    0,
-                                                ))}
-                                    </b>
-                                </h4>
-                                <small
-                                    css={css`
-                                        color: gray;
-                                        margin-bottom: 20px;
-                                    `}
-                                >
-                                    Tax not included
-                                </small>
+                                ></div>
+                            )}
+                        </div>
+                    </div>
 
-                                <Button type="submit" primary={true}>
-                                    Add to Cart
-                                </Button>
-                            </Form>
-                        )}
-                    </Formik>
+                    <div
+                        css={css`
+                            padding: 10px;
+                            box-shadow: ${scrollBottom < 0
+                                ? 'rgba(0, 0, 0, 0.2) 0px calc(1px) 15px'
+                                : 'none'};
+                            mix-blend-mode: multiply;
+                            display: flex;
+                            align-items: center;
+                        `}
+                    >
+                        <Button primary={true}>Add to cart - ${product.basePrice}</Button>
+                    </div>
                 </div>
             </Popup>
         </div>

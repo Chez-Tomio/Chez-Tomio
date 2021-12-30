@@ -36,9 +36,20 @@ function scroll(wrapper: HTMLDivElement, scrollBy: number) {
 
 export const CategoriesSlider: React.FC = ({ children }) => {
     const categoriesWrapper = React.useRef<HTMLDivElement>(null);
+    const [overflow, setOverflow] = React.useState(
+        categoriesWrapper.current && isOverflown(categoriesWrapper.current),
+    );
 
     useEffect(() => {
         smoothscroll.polyfill();
+        if (categoriesWrapper.current) {
+            setOverflow(isOverflown(categoriesWrapper.current));
+        }
+        window.onresize = () => {
+            if (categoriesWrapper.current) {
+                setOverflow(isOverflown(categoriesWrapper.current));
+            }
+        };
     }, []);
 
     return (
@@ -46,8 +57,7 @@ export const CategoriesSlider: React.FC = ({ children }) => {
             css={css`
                 ${categoriesSliderStyles}
                 svg {
-                    display: ${categoriesWrapper.current &&
-                    (isOverflown(categoriesWrapper.current) ? 'block' : 'none')};
+                    display: ${overflow ? 'block' : 'none'};
                 }
             `}
         >

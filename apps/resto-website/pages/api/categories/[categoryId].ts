@@ -31,7 +31,7 @@ export default apiEndpointWrapper(
                     );
                     if (!category) return sendError(res, 404);
 
-                    category.image = await uploadImage(category.slug, category.image, 'categories');
+                    category.image = await uploadImage(category._id, category.image, 'categories');
                     return res.json(category);
                 } catch (e) {
                     console.log(e);

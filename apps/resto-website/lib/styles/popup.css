@@ -3,18 +3,25 @@
 @media (min-width: 1300px) {
     .popup-content {
         margin: 40px auto !important;
-        width: 50%;
+        width: 40%;
     }
 }
 
 @media (max-width: 1300px) {
     .popup-content {
         margin: 40px auto !important;
-        width: 60%;
+        width: 50%;
     }
 }
 
 @media (max-width: 900px) {
+    .popup-content {
+        margin: 40px auto !important;
+        width: 70%;
+    }
+}
+
+@media (max-width: 600px) {
     .popup-content {
         margin: 40px 5% !important;
         width: 100%;
@@ -23,10 +30,9 @@
 
 .popup-content {
     background: white;
-    padding: 20px;
     border-radius: 20px;
     color: black;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 [role='tooltip'].popup-content {

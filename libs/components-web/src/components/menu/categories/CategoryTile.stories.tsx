@@ -4,7 +4,7 @@ import React from 'react';
 import { CategoryTile, CategoryTileProps } from './CategoryTile';
 
 export default {
-    title: 'Components/Menu/Categories/Category',
+    title: 'Components/Menu/Categories/CategoryTile',
     component: CategoryTile,
     parameters: {
         backgrounds: { default: 'white' },

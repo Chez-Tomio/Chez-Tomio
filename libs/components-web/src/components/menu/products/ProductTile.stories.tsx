@@ -1,10 +1,10 @@
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React from 'react';
 
-import { ProductTileProps, ProductTile } from './ProductTile';
+import { ProductTile, ProductTileProps } from './ProductTile';
 
 export default {
-    title: 'Components/Menu/Products/Product',
+    title: 'Components/Menu/Products/ProductTile',
     component: ProductTile,
     parameters: {
         backgrounds: { default: 'white' },
