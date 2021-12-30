@@ -57,7 +57,7 @@
                 <ErrorMessage name="title.en" component="span" className="error" />
             </div>
 
-            <div className="item">
+            {/* <div className="item">
                 <div
                     css={css`
                         display: flex;
@@ -77,7 +77,7 @@
                 </div>
 
                 <ErrorMessage name="count" component="span" className="error" />
-            </div>
+            </div> */}
 
             {product.extras.length > 0 && (
                 <>
@@ -119,7 +119,7 @@
 
             <hr />
 
-            <h4
+            {/* <h4
                 css={css`
                     margin: 0;
                 `}
@@ -136,19 +136,19 @@
                                 0,
                             ))}
                 </b>
-            </h4>
-            <small
+            </h4> */}
+            {/* <small
                 css={css`
-                    color: gray;
+                    color: #cccccc;
                     margin-bottom: 20px;
                 `}
             >
                 Tax not included
-            </small>
+            </small> */}
 
-            <Button type="submit" primary={true}>
+            {/* <Button type="submit" primary={true}>
                 Add to Cart
-            </Button>
+            </Button> */}
         </Form>
     )}
 </Formik>;

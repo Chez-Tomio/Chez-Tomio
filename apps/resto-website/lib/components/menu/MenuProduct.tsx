@@ -2,10 +2,10 @@
 /** @jsx jsx */
 import { Button, ProductTile } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { ErrorMessage, Field, Form, Formik, useFormik } from 'formik';
 import getConfig from 'next/config';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Popup from 'reactjs-popup';
 
 import { ExtraDTO } from '../../api/dto/checkout';
@@ -15,31 +15,47 @@ import { ExtraFieldCount } from './ExtraFieldCount';
 
 const { globalConfig } = getConfig().publicRuntimeConfig;
 
-function useScroll() {
-    const [scrollTop, setScrollTop] = useState(0);
-    const [scrollBottom, setScrollBottom] = useState(0);
-    const updateScroll = (e) => {
-        const element = e.target;
-        const contentScrollHeight = element.scrollHeight - element.offsetHeight;
-        setScrollTop(element.scrollTop);
-        setScrollBottom(element.scrollTop - contentScrollHeight);
-        console.log(element.scrollTop - contentScrollHeight);
-    };
-    return [scrollTop, scrollBottom, { onScroll: updateScroll, onresize: updateScroll }];
-}
-
 export const MenuProduct: React.FC<{
     product: ISerializedProduct;
     onAddToCart: (formData) => void;
 }> = ({ product, onAddToCart }) => {
     const [productOptions, setProductOptions] = useState(false);
-    const [scrollTop, scrollBottom, scrollProps] = useScroll();
+
+    const [scrollTop, setScrollTop] = useState(0);
+    const [scrollBottom, setScrollBottom] = useState(0);
+    const scrollableContent = React.useRef<HTMLDivElement>(null);
+
     const router = useRouter();
+
+    function updateScroll(element) {
+        setScrollTop(element.scrollTop);
+        setScrollBottom(element.scrollTop - element.scrollHeight + element.offsetHeight);
+    }
+
+    useEffect(() => {
+        if (scrollableContent.current) {
+            updateScroll(scrollableContent.current);
+            window.onresize = () => {
+                updateScroll(scrollableContent.current);
+            };
+        }
+    }, [scrollableContent]);
 
     function addToCart(formData) {
         setProductOptions(false);
         onAddToCart(formData);
     }
+
+    const formik = useFormik({
+        initialValues: {
+            quantity: 1,
+            specialInstructions: '',
+        },
+
+        onSubmit: (values) => {
+            alert(JSON.stringify(values, null, 2));
+        },
+    });
 
     return (
         <div>
@@ -53,11 +69,7 @@ export const MenuProduct: React.FC<{
                     setProductOptions(true);
                 }}
             />
-            <Popup
-                open={productOptions}
-                closeOnDocumentClick
-                onClose={() => setProductOptions(false)}
-            >
+            <Popup open={productOptions} onClose={() => setProductOptions(false)}>
                 <div
                     css={css`
                         display: flex;
@@ -66,8 +78,10 @@ export const MenuProduct: React.FC<{
                     `}
                 >
                     <div
+                        className="header"
                         css={css`
                             padding: 10px;
+                            transition: box-shadow 0.3s;
                             box-shadow: ${scrollTop > 0
                                 ? 'rgba(0, 0, 0, 0.2) 0px calc(1px) 15px'
                                 : 'none'};
@@ -93,18 +107,19 @@ export const MenuProduct: React.FC<{
                     </div>
 
                     <div
-                        {...scrollProps}
+                        className="content"
+                        ref={scrollableContent}
+                        onScroll={(e) => updateScroll(e.target)}
                         css={css`
                             flex: 1;
                             overflow-y: auto;
-                            transition: box-shadow 0.3s;
+                            padding: 20px;
                         `}
                     >
                         <div
                             css={css`
                                 margin-bottom: 20px;
                                 display: flex;
-                                padding: 20px;
                             `}
                         >
                             <div
@@ -129,19 +144,98 @@ export const MenuProduct: React.FC<{
                                 ></div>
                             )}
                         </div>
+
+                        {product.extras.length > 0 && (
+                            <div
+                                css={css`
+                                    display: flex;
+                                    flex-direction: column;
+                                    margin-bottom: 20px;
+                                `}
+                            >
+                                <span
+                                    css={css`
+                                        margin: 0;
+                                        font-weight: 600;
+                                        font-size: 1.1rem;
+                                    `}
+                                >
+                                    Extras
+                                </span>
+                                <small
+                                    css={css`
+                                        margin-bottom: 10px;
+                                    `}
+                                >
+                                    Maximum 3 per extra
+                                </small>
+                                {product.extras.map((e, i) => (
+                                    <div
+                                        key={e._id}
+                                        css={css`
+                                            display: flex;
+                                            align-items: center;
+                                        `}
+                                    >
+                                        <Quantity
+                                            getQuantity={(q) => {
+                                                console.log(q);
+                                            }}
+                                            minimumQuantity={0}
+                                        ></Quantity>
+                                        <span
+                                            css={css`
+                                                font-weight: 500;
+                                                margin-left: 20px;
+                                            `}
+                                        >
+                                            {e.title[router.locale ?? 'fr']}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        <div
+                            className="field"
+                            css={css`
+                                padding: 20px;
+                            `}
+                        >
+                            <textarea
+                                name="instructions"
+                                placeholder="Special instructions"
+                                maxLength={500}
+                                rows={5}
+                                autoFocus={false}
+                                css={css`
+                                    width: 100%;
+                                    resize: vertical;
+                                    overflow: auto;
+                                `}
+                            ></textarea>
+                        </div>
                     </div>
 
                     <div
+                        className="footer"
                         css={css`
                             padding: 10px;
+                            transition: box-shadow 0.3s;
                             box-shadow: ${scrollBottom < 0
                                 ? 'rgba(0, 0, 0, 0.2) 0px calc(1px) 15px'
                                 : 'none'};
                             mix-blend-mode: multiply;
                             display: flex;
                             align-items: center;
+                            justify-content: flex-end;
                         `}
                     >
+                        <Quantity
+                            getQuantity={(q) => {
+                                console.log(q);
+                            }}
+                        ></Quantity>
                         <Button primary={true}>Add to cart - ${product.basePrice}</Button>
                     </div>
                 </div>

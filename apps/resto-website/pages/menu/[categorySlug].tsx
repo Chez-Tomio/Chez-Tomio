@@ -84,6 +84,8 @@ export default function Menu({
                 <div
                     css={css`
                         width: 100%;
+                        display: flex;
+                        flex-direction: column;
                     `}
                 >
                     {/* <h2>{category.title[router.locale ?? 'fr']}</h2> */}
@@ -107,6 +109,14 @@ export default function Menu({
                             />
                         ))}
                     </ProductsGrid>
+                    <small
+                        css={css`
+                            margin-top: 20px;
+                            text-align: left;
+                        `}
+                    >
+                        Taxes not included
+                    </small>
                 </div>
             </WhiteSection>
         </>

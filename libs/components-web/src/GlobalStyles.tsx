@@ -57,6 +57,29 @@ export const GlobalStyles = () => (
                 margin: 10px 0;
             }
 
+            small {
+                font-size: 0.8rem;
+                color: #a6a6a6;
+            }
+
+            .field {
+                border-radius: 10px;
+                background-color: #f7f7f7;
+                color: black;
+                padding: 5px;
+                &:focus-within {
+                    box-shadow: black 0px 0px 0px 2px;
+                }
+                textarea,
+                input {
+                    font-family: inherit;
+                    font-size: inherit;
+                    border: none;
+                    background-color: inherit;
+                    outline: none;
+                }
+            }
+
             /* Extra large screens, TV */
             @media (min-width: 1201px) {
             }
