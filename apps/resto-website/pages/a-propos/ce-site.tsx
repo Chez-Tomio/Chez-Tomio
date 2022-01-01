@@ -12,7 +12,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 
 import packageJsonComponentsWeb from '../../../../libs/components-web/package.json';
-import { NextImageSection } from '../../lib/components/NextImageSection';
+import { NextImageSection } from '../../lib/components/common/NextImageSection';
 import packageJsonRestoWebsite from '../../package.json';
 
 const { aboutConfig } = getConfig().publicRuntimeConfig.pagesConfig;

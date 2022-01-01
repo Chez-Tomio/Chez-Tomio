@@ -11,7 +11,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 
-import { NextImageSection } from '../../lib/components/NextImageSection';
+import { NextImageSection } from '../../lib/components/common/NextImageSection';
 import { Category, connectToDatabase, ISerializedCategory } from '../../lib/database/mongo';
 
 const { menuConfig } = getConfig().publicRuntimeConfig.pagesConfig;
@@ -56,7 +56,7 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
                     <a
                         target="_blank"
                         rel="noreferrer"
-                        href="/menu-principal.pdf"
+                        href="https://storage.cheztomio.com/chez-tomio/menu-restaurant.pdf"
                         css={css`
                             text-decoration: none;
                         `}
@@ -77,7 +77,7 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
                     <a
                         target="_blank"
                         rel="noreferrer"
-                        href="/sushi-list.pdf"
+                        href="https://storage.cheztomio.com/chez-tomio/sushi-list.pdf"
                         css={css`
                             text-decoration: none;
                         `}

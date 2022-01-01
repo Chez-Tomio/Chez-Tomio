@@ -1,13 +1,14 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
-import Link from 'next/link';
 import React from 'react';
 
-export const CartIcon: React.FC<{ href: string; cartItemCount: number }> = ({
-    href,
-    cartItemCount,
-}) => (
+export interface NavCartButtonProps {
+    href: string;
+    cartItemCount: number;
+}
+
+export const NavCartButton: React.FC<NavCartButtonProps> = ({ href, cartItemCount }) => (
     <div
         css={css`
             display: flex;

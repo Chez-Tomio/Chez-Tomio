@@ -21,9 +21,9 @@ import {
     GlobalDispatchContext,
     GlobalStateContext,
     SET_CART_ITEMS,
-} from '../../lib/components/GlobalState';
+} from '../../lib/components/common/GlobalState';
+import { NextImageSection } from '../../lib/components/common/NextImageSection';
 import { MenuProduct } from '../../lib/components/menu/MenuProduct';
-import { NextImageSection } from '../../lib/components/NextImageSection';
 import {
     Category,
     connectToDatabase,
@@ -115,7 +115,7 @@ export default function Menu({
                             text-align: left;
                         `}
                     >
-                        Taxes not included
+                        Taxes en sus
                     </small>
                 </div>
             </WhiteSection>

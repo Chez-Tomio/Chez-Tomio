@@ -5,12 +5,14 @@ import React, { useEffect, useState } from 'react';
 
 export interface QuantityProps {
     getQuantity: (quantity: number) => void;
+    form?: string;
     minimumQuantity?: number;
     maximumQuantity?: number;
 }
 
 export const Quantity: React.FC<QuantityProps> = ({
     getQuantity,
+    form,
     minimumQuantity = 1,
     maximumQuantity,
 }) => {
@@ -28,7 +30,7 @@ export const Quantity: React.FC<QuantityProps> = ({
                 justify-content: center;
                 max-width: 100px;
                 .field {
-                    margin: 5px;
+                    margin: 0 5px;
                     min-width: 50px;
 
                     input {
@@ -44,6 +46,7 @@ export const Quantity: React.FC<QuantityProps> = ({
                     min-width: 20px;
                     min-height: 20px;
                     transition: 0.2s;
+                    color: black;
                 }
             `}
         >
@@ -69,6 +72,7 @@ export const Quantity: React.FC<QuantityProps> = ({
             </svg>
             <div className="field">
                 <input
+                    form={form}
                     type="number"
                     min={minimumQuantity}
                     max={maximumQuantity}
@@ -104,6 +108,10 @@ export const Quantity: React.FC<QuantityProps> = ({
                 onClick={() => {
                     if (maximumQuantity) {
                         if (quantity >= minimumQuantity && quantity < maximumQuantity) {
+                            setQuantity((q) => q + 1);
+                        }
+                    } else {
+                        if (quantity >= minimumQuantity) {
                             setQuantity((q) => q + 1);
                         }
                     }

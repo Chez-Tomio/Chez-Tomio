@@ -4,6 +4,7 @@ import '../lib/styles/popup.css';
 
 import {
     Button,
+    CartIcon,
     Footer,
     GlobalStyles,
     Header,
@@ -22,9 +23,8 @@ import { appWithTranslation, useTranslation } from 'next-i18next';
 import React, { useEffect, useReducer, useState } from 'react';
 import { ToastProvider } from 'react-toast-notifications';
 
-import { CartIcon } from '../lib/components/CartIcon';
-import GlobalState, { reducer, SET_CART_ITEMS } from '../lib/components/GlobalState';
-import { NextImageSection } from '../lib/components/NextImageSection';
+import GlobalState, { reducer, SET_CART_ITEMS } from '../lib/components/common/GlobalState';
+import { NextImageSection } from '../lib/components/common/NextImageSection';
 
 const { globalConfig } = getConfig().publicRuntimeConfig;
 

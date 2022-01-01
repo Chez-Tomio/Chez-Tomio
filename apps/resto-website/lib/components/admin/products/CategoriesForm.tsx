@@ -31,89 +31,96 @@ export const CategoriesForm: React.FC<CategoriesFormProps> = ({
     onSubmitCategory,
 }) => {
     return (
-        <Formik
-            initialValues={initialValues}
-            validationSchema={CategoriesFormSchema}
-            onSubmit={(values, { setSubmitting }) => {
-                onSubmitCategory({
-                    products: [],
-                    _id: undefined as unknown,
-                    slug: undefined as unknown,
-                    createdAt: undefined as unknown,
-                    updatedAt: undefined as unknown,
-                    ...values,
-                } as ISerializedCategoryWithProducts);
-                setSubmitting(false);
-            }}
+        <div
+            css={css`
+                height: 100%;
+                overflow-y: auto;
+            `}
         >
-            {({ values, isSubmitting }) => (
-                <Form
-                    css={css`
-                        display: flex;
-                        flex-direction: column;
-                        color: black;
-                        .item {
-                            padding: 5px;
+            <Formik
+                initialValues={initialValues}
+                validationSchema={CategoriesFormSchema}
+                onSubmit={(values, { setSubmitting }) => {
+                    onSubmitCategory({
+                        products: [],
+                        _id: undefined as unknown,
+                        slug: undefined as unknown,
+                        createdAt: undefined as unknown,
+                        updatedAt: undefined as unknown,
+                        ...values,
+                    } as ISerializedCategoryWithProducts);
+                    setSubmitting(false);
+                }}
+            >
+                {({ values, isSubmitting }) => (
+                    <Form
+                        css={css`
                             display: flex;
                             flex-direction: column;
-                            text-align: left;
-                            * {
-                                width: 100%;
+                            color: black;
+                            .item {
+                                padding: 5px;
+                                display: flex;
+                                flex-direction: column;
+                                text-align: left;
+                                * {
+                                    width: 100%;
+                                }
+                                label {
+                                    font-size: 0.9rem;
+                                }
+                                .error {
+                                    color: red;
+                                    font-size: 0.7rem;
+                                    margin-bottom: 15px;
+                                }
                             }
-                            label {
-                                font-size: 0.9rem;
-                            }
-                            .error {
-                                color: red;
-                                font-size: 0.7rem;
-                                margin-bottom: 15px;
-                            }
-                        }
-                    `}
-                >
-                    <h3>{`Editing ${values.title.fr}`}</h3>
-                    <div className="item">
-                        <label htmlFor="title">Title</label>
-                        <Field name="title.fr" placeholder="Title French" />
-                        <ErrorMessage name="title.fr" component="span" className="error" />
-                        <Field name="title.en" placeholder="Title English" />
-                        <ErrorMessage name="title.en" component="span" className="error" />
-                    </div>
-
-                    <div className="item">
-                        <label htmlFor="image">Image</label>
-                        <Field name="image" component={ImageUpload} />
-                        <ErrorMessage name="image" component="span" className="error" />
-                    </div>
-
-                    <div className="item">
-                        <label htmlFor="archived">Archived</label>
-                        <Field
-                            name="archived"
-                            type="checkbox"
-                            css={css`
-                                width: fit-content !important;
-                            `}
-                        />
-                        <ErrorMessage name="archived" component="span" className="error" />
-                    </div>
-
-                    <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        css={css`
-                            height: 50px;
-                            cursor: pointer;
-                            font-size: 1.5rem;
-                            background-color: #0b5fe6;
-                            color: white;
-                            margin-bottom: 20px;
                         `}
                     >
-                        Save
-                    </button>
-                </Form>
-            )}
-        </Formik>
+                        <h3>{`Editing ${values.title.fr}`}</h3>
+                        <div className="item">
+                            <label htmlFor="title">Title</label>
+                            <Field name="title.fr" placeholder="Title French" />
+                            <ErrorMessage name="title.fr" component="span" className="error" />
+                            <Field name="title.en" placeholder="Title English" />
+                            <ErrorMessage name="title.en" component="span" className="error" />
+                        </div>
+
+                        <div className="item">
+                            <label htmlFor="image">Image</label>
+                            <Field name="image" component={ImageUpload} />
+                            <ErrorMessage name="image" component="span" className="error" />
+                        </div>
+
+                        <div className="item">
+                            <label htmlFor="archived">Archived</label>
+                            <Field
+                                name="archived"
+                                type="checkbox"
+                                css={css`
+                                    width: fit-content !important;
+                                `}
+                            />
+                            <ErrorMessage name="archived" component="span" className="error" />
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            css={css`
+                                height: 50px;
+                                cursor: pointer;
+                                font-size: 1.5rem;
+                                background-color: #0b5fe6;
+                                color: white;
+                                margin-bottom: 20px;
+                            `}
+                        >
+                            Save
+                        </button>
+                    </Form>
+                )}
+            </Formik>
+        </div>
     );
 };

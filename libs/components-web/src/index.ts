@@ -8,6 +8,8 @@ export * from './GlobalStyles';
  */
 /** Button */
 export * from './components/button/Button';
+/** Cart */
+export * from './components/cart/CartProduct';
 /** Menu */
 export * from './components/menu/categories/CategoriesGrid';
 export * from './components/menu/categories/CategoriesSlider';
@@ -21,6 +23,8 @@ export * from './components/menu/specialties/SpecialtyTile';
 export * from './components/nav/Nav';
 export * from './components/nav/NavItem';
 export * from './components/nav/NavWrapper';
+/** Quantity */
+export * from './components/quantity/Quantity';
 
 /**
  * Layouts

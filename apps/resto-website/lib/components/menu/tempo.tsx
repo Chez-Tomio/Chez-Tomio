@@ -1,3 +1,5 @@
+import { ExtraDTO } from '../../api/dto/checkout';
+
 <Formik
     initialValues={{
         id: product._id,
@@ -43,7 +45,7 @@
                 }
             `}
         >
-            <div className="item">
+            {/* <div className="item">
                 <label htmlFor="instructions">Special instructions</label>
                 <Field
                     name="instructions"
@@ -55,7 +57,7 @@
                     `}
                 />
                 <ErrorMessage name="title.en" component="span" className="error" />
-            </div>
+            </div> */}
 
             {/* <div className="item">
                 <div
@@ -79,7 +81,7 @@
                 <ErrorMessage name="count" component="span" className="error" />
             </div> */}
 
-            {product.extras.length > 0 && (
+            {/* {product.extras.length > 0 && (
                 <>
                     <hr />
                     <h4
@@ -115,9 +117,7 @@
                         </div>
                     ))}
                 </>
-            )}
-
-            <hr />
+            )} */}
 
             {/* <h4
                 css={css`
@@ -137,14 +137,6 @@
                             ))}
                 </b>
             </h4> */}
-            {/* <small
-                css={css`
-                    color: #cccccc;
-                    margin-bottom: 20px;
-                `}
-            >
-                Tax not included
-            </small> */}
 
             {/* <Button type="submit" primary={true}>
                 Add to Cart

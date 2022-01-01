@@ -1,8 +1,8 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { Button, ProductTile } from '@chez-tomio/components-web';
+import { Button, ProductTile, Quantity } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
-import { ErrorMessage, Field, Form, Formik, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import getConfig from 'next/config';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -10,8 +10,6 @@ import Popup from 'reactjs-popup';
 
 import { ExtraDTO } from '../../api/dto/checkout';
 import { ISerializedProduct } from '../../database/mongo';
-import { Quantity } from '../formik/Quantity';
-import { ExtraFieldCount } from './ExtraFieldCount';
 
 const { globalConfig } = getConfig().publicRuntimeConfig;
 
@@ -53,12 +51,16 @@ export const MenuProduct: React.FC<{
 
     const formik = useFormik({
         initialValues: {
-            quantity: 1,
-            specialInstructions: '',
+            id: product._id,
+            count: 1,
+            instructions: '',
+            extras: [] as ExtraDTO[],
         },
-
-        onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
+        onSubmit: (values, { setSubmitting }) => {
+            values.extras = values.extras.filter((e) => e.count >= 1);
+            if (isNaN(values.count)) values.count = 1;
+            addToCart(values);
+            setSubmitting(false);
         },
     });
 
@@ -121,106 +123,155 @@ export const MenuProduct: React.FC<{
                             padding: 20px;
                         `}
                     >
-                        <div
+                        <form
+                            id="product-form"
+                            onSubmit={formik.handleSubmit}
                             css={css`
-                                margin-bottom: 20px;
-                                display: flex;
-                            `}
-                        >
-                            <div
-                                css={css`
-                                    flex: 1;
-                                `}
-                            >
-                                <h3>{product.title[router.locale ?? 'fr']}</h3>
-                                <span>{product.description[router.locale ?? 'fr']}</span>
-                            </div>
-                            {product.image && (
-                                <div
-                                    css={css`
-                                        height: 150px;
-                                        width: 150px;
-                                        margin-left: 20px;
-                                        background-image: url(${product.image});
-                                        background-size: cover;
-                                        background-position: center;
-                                        border-radius: 10px;
-                                    `}
-                                ></div>
-                            )}
-                        </div>
-
-                        {product.extras.length > 0 && (
-                            <div
-                                css={css`
+                                .item {
+                                    padding: 5px;
                                     display: flex;
                                     flex-direction: column;
-                                    margin-bottom: 20px;
-                                `}
-                            >
-                                <span
-                                    css={css`
-                                        margin: 0;
-                                        font-weight: 600;
-                                        font-size: 1.1rem;
-                                    `}
-                                >
-                                    Extras
-                                </span>
-                                <small
-                                    css={css`
-                                        margin-bottom: 10px;
-                                    `}
-                                >
-                                    Maximum 3 per extra
-                                </small>
-                                {product.extras.map((e, i) => (
-                                    <div
-                                        key={e._id}
-                                        css={css`
-                                            display: flex;
-                                            align-items: center;
-                                        `}
-                                    >
-                                        <Quantity
-                                            getQuantity={(q) => {
-                                                console.log(q);
-                                            }}
-                                            minimumQuantity={0}
-                                            maximumQuantity={3}
-                                        ></Quantity>
-                                        <span
-                                            css={css`
-                                                font-weight: 500;
-                                                margin-left: 20px;
-                                            `}
-                                        >
-                                            {`${e.title[router.locale ?? 'fr']} ($ ${e.price})`}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-
-                        <div
-                            className="field"
-                            css={css`
-                                padding: 20px;
+                                    text-align: left;
+                                    width: 40%;
+                                    min-width: 150px;
+                                    max-width: 250px;
+                                    * {
+                                        width: 100%;
+                                    }
+                                    label {
+                                        font-size: 0.9rem;
+                                    }
+                                    .error {
+                                        color: red;
+                                        font-size: 0.7rem;
+                                        margin-bottom: 15px;
+                                    }
+                                }
                             `}
                         >
-                            <textarea
-                                name="instructions"
-                                placeholder="Special instructions"
-                                maxLength={500}
-                                rows={5}
-                                autoFocus={false}
+                            <div
                                 css={css`
-                                    width: 100%;
-                                    resize: vertical;
-                                    overflow: auto;
+                                    margin-bottom: 20px;
+                                    display: flex;
                                 `}
-                            ></textarea>
-                        </div>
+                            >
+                                <div
+                                    css={css`
+                                        flex: 1;
+                                    `}
+                                >
+                                    <h3>{product.title[router.locale ?? 'fr']}</h3>
+                                    <span>{product.description[router.locale ?? 'fr']}</span>
+                                </div>
+                                {product.image && (
+                                    <div
+                                        css={css`
+                                            height: 150px;
+                                            width: 150px;
+                                            margin-left: 20px;
+                                            background-image: url(${product.image});
+                                            background-size: cover;
+                                            background-position: center;
+                                            border-radius: 10px;
+                                        `}
+                                    />
+                                )}
+                            </div>
+
+                            {product.extras.length > 0 && (
+                                <div
+                                    css={css`
+                                        display: flex;
+                                        flex-direction: column;
+                                        margin-bottom: 20px;
+                                    `}
+                                >
+                                    <span
+                                        css={css`
+                                            margin: 0;
+                                            font-weight: 600;
+                                            font-size: 1.1rem;
+                                        `}
+                                    >
+                                        Extras
+                                    </span>
+                                    <small
+                                        css={css`
+                                            margin-bottom: 10px;
+                                        `}
+                                    >
+                                        Maximum 3 per extra
+                                    </small>
+                                    {product.extras.map((e, i) => {
+                                        const [extraQuantity, setExtraQuantity] = useState(0);
+                                        return (
+                                            <div
+                                                key={e._id}
+                                                css={css`
+                                                    display: flex;
+                                                    align-items: center;
+                                                    margin-bottom: 10px;
+                                                `}
+                                            >
+                                                <Quantity
+                                                    getQuantity={(q) => {
+                                                        setExtraQuantity(q);
+                                                        formik.values.extras[i] = {
+                                                            id: e._id,
+                                                            count: q,
+                                                        };
+                                                    }}
+                                                    minimumQuantity={0}
+                                                    maximumQuantity={3}
+                                                ></Quantity>
+                                                <span
+                                                    css={css`
+                                                        font-weight: 500;
+                                                        margin-left: 20px;
+                                                    `}
+                                                >
+                                                    {`${e.title[router.locale ?? 'fr']} ($${
+                                                        e.price
+                                                    })`}
+                                                    {extraQuantity > 0 && (
+                                                        <span
+                                                            css={css`
+                                                                color: #0ec663;
+                                                                margin-left: 10px;
+                                                                font-size: 0.9rem;
+                                                            `}
+                                                        >
+                                                            + ${extraQuantity * e.price}
+                                                        </span>
+                                                    )}
+                                                </span>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
+
+                            <div
+                                className="field"
+                                css={css`
+                                    padding: 20px;
+                                `}
+                            >
+                                <textarea
+                                    name="instructions"
+                                    placeholder="Special instructions"
+                                    maxLength={500}
+                                    rows={5}
+                                    css={css`
+                                        width: 100%;
+                                        resize: vertical;
+                                        overflow: auto;
+                                    `}
+                                    onChange={formik.handleChange}
+                                    value={formik.values.instructions}
+                                ></textarea>
+                            </div>
+                        </form>
                     </div>
 
                     <div
@@ -238,11 +289,26 @@ export const MenuProduct: React.FC<{
                         `}
                     >
                         <Quantity
+                            form="product-form"
                             getQuantity={(q) => {
-                                console.log(q);
+                                formik.values.count = q;
                             }}
                         ></Quantity>
-                        <Button primary={true}>Add to cart - ${product.basePrice}</Button>
+                        <Button primary={true} form="product-form" type="submit">
+                            Add to cart - $
+                            {(
+                                formik.values.count *
+                                (product.basePrice +
+                                    formik.values.extras.reduce(
+                                        (acc, extra: ExtraDTO) =>
+                                            acc +
+                                            (product.extras.find((e) => e._id === extra.id)
+                                                ?.price ?? 0) *
+                                                extra.count,
+                                        0,
+                                    ))
+                            ).toFixed(2)}
+                        </Button>
                     </div>
                 </div>
             </Popup>

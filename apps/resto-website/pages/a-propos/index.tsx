@@ -13,7 +13,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 
-import { NextImageSection } from '../../lib/components/NextImageSection';
+import { NextImageSection } from '../../lib/components/common/NextImageSection';
 
 const { aboutConfig } = getConfig().publicRuntimeConfig.pagesConfig;
 

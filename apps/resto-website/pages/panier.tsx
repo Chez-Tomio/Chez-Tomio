@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 
-import { Button, WhiteSection } from '@chez-tomio/components-web';
+import { Button, CartProduct, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
@@ -22,8 +22,8 @@ import {
     GlobalDispatchContext,
     GlobalStateContext,
     SET_CART_ITEMS,
-} from '../lib/components/GlobalState';
-import { NextImageSection } from '../lib/components/NextImageSection';
+} from '../lib/components/common/GlobalState';
+import { NextImageSection } from '../lib/components/common/NextImageSection';
 import { connectToDatabase, ISerializedProduct, Product } from '../lib/database/mongo';
 import { getTotalProductPrice } from '../lib/utils/client';
 import { requiresStoreToBeEnabled } from '../lib/utils/server';
@@ -309,106 +309,26 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                             </div>
                         )}
                         {productArray.map((p) => (
-                            <div
+                            <CartProduct
                                 key={p.id}
-                                className="cart-product"
-                                css={css`
-                                    display: flex;
-                                    padding: 20px;
-                                    border-top: #f0f0f0 solid 2px;
-                                `}
-                            >
-                                {/* <div>
-                                    <img
-                                        src={p.image}
-                                        css={css`
-                                            height: 100px;
-                                        `}
-                                    />
-                                </div> */}
-                                <div
-                                    css={css`
-                                        display: flex;
-                                        flex-direction: column;
-                                        margin-left: 10px;
-                                        flex: 1;
-                                    `}
-                                >
-                                    <div
-                                        css={css`
-                                            display: flex;
-                                        `}
-                                    >
-                                        <h4
-                                            css={css`
-                                                font-weight: bold;
-                                                margin: 0;
-                                            `}
-                                        >
-                                            {p.title[router.locale ?? 'fr']}{' '}
-                                            {p.extras.length > 0 && (
-                                                <>
-                                                    {' '}
-                                                    (
-                                                    {p.extras
-                                                        .map(
-                                                            (e) =>
-                                                                `${
-                                                                    e.title[router.locale ?? 'fr']
-                                                                } x${e.count}`,
-                                                        )
-                                                        .join(', ')}
-                                                    )
-                                                </>
-                                            )}
-                                        </h4>
-                                        <h4
-                                            css={css`
-                                                margin: 0;
-                                                margin-left: auto;
-                                            `}
-                                        >
-                                            ${getTotalProductPrice(p)}
-                                        </h4>
-                                    </div>
-                                    <p
-                                        css={css`
-                                            margin: 0;
-                                            margin-bottom: 10px;
-                                            color: gray;
-                                        `}
-                                    >
-                                        {p.count} &times; ${getTotalProductPrice(p) / p.count}
-                                    </p>
-                                    <div>
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="currentColor"
-                                            viewBox="0 0 16 16"
-                                            onClick={() => removeProduct(p.id)}
-                                            css={css`
-                                                height: 25px;
-                                                color: #ed1b24;
-                                                cursor: pointer;
-                                                transition: 0.2s;
-                                                &:hover {
-                                                    transform: translateY(-3px);
-                                                }
-                                            `}
-                                        >
-                                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
+                                title={p.title[router.locale ?? 'fr']}
+                                image={p.image}
+                                quantity={p.count}
+                                price={getTotalProductPrice(p)}
+                                extras={p.extras
+                                    .map((e) => `${e.title[router.locale ?? 'fr']} x ${e.count}`)
+                                    .join(', ')}
+                                remove={() => removeProduct(p.id)}
+                            ></CartProduct>
                         ))}
                     </div>
+
                     <div className="cart-total">
                         <div
                             css={css`
                                 display: flex;
                                 flex-direction: column;
-                                background-color: #f0f0f0;
+                                background-color: #f7f7f7;
                                 padding: 20px;
                                 border-radius: 20px;
                             `}

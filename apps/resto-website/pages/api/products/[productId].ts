@@ -2,7 +2,7 @@ import { isMongoId } from 'class-validator';
 import mongoose from 'mongoose';
 
 import { deleteFile, uploadImage } from '../../../lib/api/minio';
-import { apiEndpointWrapper, sendError } from '../../../lib/api/utils';
+import { apiEndpointWrapper, isBase64, sendError } from '../../../lib/api/utils';
 import { Category, Product } from '../../../lib/database/mongo';
 
 export const config = { api: { bodyParser: { sizeLimit: '10mb' } } };
@@ -16,11 +16,13 @@ export default apiEndpointWrapper(
             case 'PATCH': {
                 try {
                     if (req.body.image) {
-                        req.body.image = await uploadImage(
-                            req.body._id,
-                            req.body.image,
-                            'products',
-                        );
+                        if (isBase64(req.body.image)) {
+                            req.body.image = await uploadImage(
+                                req.body._id,
+                                req.body.image,
+                                'products',
+                            );
+                        }
                     }
 
                     const product = await Product.findByIdAndUpdate(

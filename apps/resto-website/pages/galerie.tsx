@@ -10,7 +10,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 
-import { NextImageSection } from '../lib/components/NextImageSection';
+import { NextImageSection } from '../lib/components/common/NextImageSection';
 
 const { galeryConfig } = getConfig().publicRuntimeConfig.pagesConfig;
 
