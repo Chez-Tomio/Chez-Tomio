@@ -187,6 +187,7 @@ export const MenuProduct: React.FC<{
                                                 console.log(q);
                                             }}
                                             minimumQuantity={0}
+                                            maximumQuantity={3}
                                         ></Quantity>
                                         <span
                                             css={css`
@@ -194,7 +195,7 @@ export const MenuProduct: React.FC<{
                                                 margin-left: 20px;
                                             `}
                                         >
-                                            {e.title[router.locale ?? 'fr']}
+                                            {`${e.title[router.locale ?? 'fr']} ($ ${e.price})`}
                                         </span>
                                     </div>
                                 ))}
