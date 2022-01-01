@@ -35,11 +35,16 @@ export const MenuProduct: React.FC<{
     useEffect(() => {
         if (scrollableContent.current) {
             updateScroll(scrollableContent.current);
-            window.onresize = () => {
-                updateScroll(scrollableContent.current);
-            };
         }
-    }, [scrollableContent]);
+    }, [productOptions]);
+
+    useEffect(() => {
+        window.addEventListener('resize', () => {
+            if (scrollableContent.current) {
+                updateScroll(scrollableContent.current);
+            }
+        });
+    }, []);
 
     function addToCart(formData) {
         setProductOptions(false);
