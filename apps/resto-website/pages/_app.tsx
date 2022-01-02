@@ -4,12 +4,12 @@ import '../lib/styles/popup.css';
 
 import {
     Button,
-    CartIcon,
     Footer,
     GlobalStyles,
     Header,
     HeaderSpace,
     Nav,
+    NavCartButton,
     NavItem,
     NavWrapper,
 } from '@chez-tomio/components-web';
@@ -23,7 +23,8 @@ import { appWithTranslation, useTranslation } from 'next-i18next';
 import React, { useEffect, useReducer, useState } from 'react';
 import { ToastProvider } from 'react-toast-notifications';
 
-import GlobalState, { reducer, SET_CART_ITEMS } from '../lib/components/common/GlobalState';
+import { updateCartWithLocalStorage } from '../lib/cart';
+import GlobalState, { reducer, SET_CART_PRODUCTS } from '../lib/components/common/GlobalState';
 import { NextImageSection } from '../lib/components/common/NextImageSection';
 
 const { globalConfig } = getConfig().publicRuntimeConfig;
@@ -68,11 +69,7 @@ function App({ Component: Page, pageProps }: AppProps) {
     }, [state]);
 
     useEffect(() => {
-        const localStorageProducts = localStorage.getItem('cartProducts');
-        if (localStorageProducts) {
-            const data = JSON.parse(localStorageProducts);
-            dispatch({ type: SET_CART_ITEMS, payload: data });
-        }
+        updateCartWithLocalStorage();
     }, []);
 
     return (
@@ -123,7 +120,20 @@ function App({ Component: Page, pageProps }: AppProps) {
                                 </Nav>
 
                                 {globalConfig.isStoreEnabled && (
-                                    <CartIcon href="/panier" cartItemCount={cartItemCount} />
+                                    <div
+                                        css={css`
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            margin-left: 15px;
+                                        `}
+                                    >
+                                        <Link href="/panier">
+                                            <div>
+                                                <NavCartButton cartItemCount={cartItemCount} />
+                                            </div>
+                                        </Link>
+                                    </div>
                                 )}
                             </Header>
 

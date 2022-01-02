@@ -4,7 +4,7 @@ import React from 'react';
 export const GlobalStateContext = React.createContext(null as any);
 export const GlobalDispatchContext = React.createContext(null as any);
 
-export const SET_CART_ITEMS = 'SET_CART_ITEMS';
+export const SET_CART_PRODUCTS = 'SET_CART_PRODUCTS';
 
 /**
  * Global state reducer
@@ -12,7 +12,7 @@ export const SET_CART_ITEMS = 'SET_CART_ITEMS';
 export const reducer = (state, action) => {
     const { type, payload } = action;
     switch (type) {
-        case SET_CART_ITEMS: {
+        case SET_CART_PRODUCTS: {
             return {
                 ...state,
                 cartItems: payload,

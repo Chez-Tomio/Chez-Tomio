@@ -21,11 +21,11 @@ import { CheckoutDTO, ProductDTO, ProductDTOWithMetadata } from '../lib/api/dto/
 import {
     GlobalDispatchContext,
     GlobalStateContext,
-    SET_CART_ITEMS,
+    SET_CART_PRODUCTS,
 } from '../lib/components/common/GlobalState';
 import { NextImageSection } from '../lib/components/common/NextImageSection';
 import { connectToDatabase, ISerializedProduct, Product } from '../lib/database/mongo';
-import { getTotalProductPrice } from '../lib/utils/client';
+import { getTotalProductPrice } from '../lib/utils/clients';
 import { requiresStoreToBeEnabled } from '../lib/utils/server';
 
 const { globalConfig } = getConfig().publicRuntimeConfig;
@@ -58,7 +58,9 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
     const dispatch = useContext(GlobalDispatchContext);
 
     useEffect(() => {
-        // const localStorageProducts = localStorage.getItem('cartProducts');
+        const localStorageProducts = localStorage.getItem('cartProducts');
+
+        console.log(localStorageProducts);
         const data = globalState.cartItems
             .map((productDTO: ProductDTO) => {
                 const product = allProducts.find((p) => p._id === productDTO.id);
@@ -69,6 +71,8 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                 return productDTO;
             })
             .filter((p: ProductDTO | undefined) => p !== undefined);
+
+        console.log(globalState.cartItems);
         setProductDTOArray(data);
 
         // const data = (globalState.cartItems ? JSON.parse(globalState.cartItems) : [])
@@ -146,7 +150,7 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
             (e) => e.id !== id,
         );
         // setProductDTOArray(productDTOArrayWithoutRemovedProduct);
-        dispatch({ type: SET_CART_ITEMS, payload: productDTOArrayWithoutRemovedProduct });
+        dispatch({ type: SET_CART_PRODUCTS, payload: productDTOArrayWithoutRemovedProduct });
         localStorage.setItem('cartProducts', JSON.stringify(productDTOArrayWithoutRemovedProduct));
     }
 
@@ -158,6 +162,8 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                 contactPhoneNumber,
                 products: productDTOArray,
             };
+
+            console.log(JSON.stringify(checkoutDTO));
 
             const response = await fetch('/api/checkout', {
                 method: 'POST',

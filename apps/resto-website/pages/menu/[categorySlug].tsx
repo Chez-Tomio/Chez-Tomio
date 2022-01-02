@@ -14,14 +14,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { ProductDTO } from '../../lib/api/dto/checkout';
-import {
-    GlobalDispatchContext,
-    GlobalStateContext,
-    SET_CART_ITEMS,
-} from '../../lib/components/common/GlobalState';
+import { addToCart } from '../../lib/cart';
 import { NextImageSection } from '../../lib/components/common/NextImageSection';
 import { MenuProduct } from '../../lib/components/menu/MenuProduct';
 import {
@@ -42,32 +37,6 @@ export default function Menu({
 }) {
     const { t } = useTranslation('menu');
     const router = useRouter();
-
-    const globalState = useContext(GlobalStateContext);
-    const dispatch = useContext(GlobalDispatchContext);
-
-    function addToCart(data: ProductDTO) {
-        const productsArray: ProductDTO[] = globalState.cartItems;
-
-        console.log(productsArray);
-
-        // If product is already in cart just add more to count
-        // let productIsInCart = false;
-        // productsArray.forEach((p, i) => {
-        //     if (p.id === data.id) {
-        //         productIsInCart = true;
-        //         p.count += data.count;
-        //     }
-        // });
-        // if (!productIsInCart) {
-        //     productsArray.push(data);
-        // }
-
-        productsArray.push(data);
-
-        dispatch({ type: SET_CART_ITEMS, payload: productsArray });
-        localStorage.setItem('cartProducts', JSON.stringify(productsArray));
-    }
 
     return (
         <>

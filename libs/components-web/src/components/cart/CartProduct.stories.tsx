@@ -4,7 +4,7 @@ import React from 'react';
 import { CartProduct, CartProductProps } from './CartProduct';
 
 export default {
-    title: 'Components/CartProduct',
+    title: 'Components/Cart/CartProduct',
     component: CartProduct,
     parameters: {
         backgrounds: { default: 'white' },
