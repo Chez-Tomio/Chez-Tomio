@@ -10,6 +10,7 @@ import Popup from 'reactjs-popup';
 
 import { ExtraDTO } from '../../api/dto/checkout';
 import { ISerializedProduct } from '../../database/mongo';
+import { toPrice } from '../../utils/clients';
 
 const { globalConfig } = getConfig().publicRuntimeConfig;
 
@@ -71,7 +72,7 @@ export const MenuProduct: React.FC<{
                 imageUrl={product.image ?? ''}
                 title={product.title[router.locale ?? 'fr']}
                 description={product.description[router.locale ?? 'fr']}
-                price={product.basePrice}
+                price={toPrice(product.basePrice)}
                 onClickAdd={() => {
                     setProductOptions(true);
                 }}
@@ -230,18 +231,18 @@ export const MenuProduct: React.FC<{
                                                         margin-left: 20px;
                                                     `}
                                                 >
-                                                    {`${e.title[router.locale ?? 'fr']} ($${
-                                                        e.price
-                                                    })`}
+                                                    {`${e.title[router.locale ?? 'fr']} (${toPrice(
+                                                        e.price,
+                                                    )})`}
                                                     {extraQuantity > 0 && (
                                                         <span
                                                             css={css`
                                                                 color: #0ec663;
-                                                                margin-left: 10px;
+                                                                margin-left: 12px;
                                                                 font-size: 0.9rem;
                                                             `}
                                                         >
-                                                            + ${extraQuantity * e.price}
+                                                            + {toPrice(extraQuantity * e.price)}
                                                         </span>
                                                     )}
                                                 </span>
@@ -295,19 +296,20 @@ export const MenuProduct: React.FC<{
                             }}
                         ></Quantity>
                         <Button primary={true} form="product-form" type="submit">
-                            Add to cart - $
-                            {(
-                                formik.values.count *
-                                (product.basePrice +
-                                    formik.values.extras.reduce(
-                                        (acc, extra: ExtraDTO) =>
-                                            acc +
-                                            (product.extras.find((e) => e._id === extra.id)
-                                                ?.price ?? 0) *
-                                                extra.count,
-                                        0,
-                                    ))
-                            ).toFixed(2)}
+                            Add to cart -
+                            {' ' +
+                                toPrice(
+                                    formik.values.count *
+                                        (product.basePrice +
+                                            formik.values.extras.reduce(
+                                                (acc, extra: ExtraDTO) =>
+                                                    acc +
+                                                    (product.extras.find((e) => e._id === extra.id)
+                                                        ?.price ?? 0) *
+                                                        extra.count,
+                                                0,
+                                            )),
+                                )}
                         </Button>
                     </div>
                 </div>

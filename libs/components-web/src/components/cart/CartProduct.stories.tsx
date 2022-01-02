@@ -16,7 +16,7 @@ Template.args = {
     title: "Product's title",
     image: 'sample-image.jpg',
     quantity: 2,
-    price: 5.2,
+    price: '$5.20',
     extras: 'Extra x 2.00',
     remove: () => console.log('Product removed'),
 };

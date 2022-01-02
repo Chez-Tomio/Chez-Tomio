@@ -7,7 +7,7 @@ export interface ProductTileProps {
     imageUrl: string;
     title: string;
     description?: string;
-    price: number;
+    price: string;
     onClickAdd: () => void;
 }
 
@@ -74,7 +74,7 @@ export const ProductTile: React.FC<ProductTileProps> = ({
         <div className="content">
             <span className="title">{title}</span>
             {description && <span className="description">{description}</span>}
-            <span className="price">${price.toFixed(2)}</span>
+            <span className="price">{price}</span>
         </div>
         {imageUrl && (
             <div

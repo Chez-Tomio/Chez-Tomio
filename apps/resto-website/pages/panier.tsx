@@ -18,14 +18,10 @@ import Popup from 'reactjs-popup';
 import * as Yup from 'yup';
 
 import { CheckoutDTO, ProductDTO, ProductDTOWithMetadata } from '../lib/api/dto/checkout';
-import {
-    GlobalDispatchContext,
-    GlobalStateContext,
-    SET_CART_PRODUCTS,
-} from '../lib/components/common/GlobalState';
+// import {} from '../lib/components/common/GlobalStateProvider';
 import { NextImageSection } from '../lib/components/common/NextImageSection';
 import { connectToDatabase, ISerializedProduct, Product } from '../lib/database/mongo';
-import { getTotalProductPrice } from '../lib/utils/clients';
+import { getTotalProductPrice, toPrice } from '../lib/utils/clients';
 import { requiresStoreToBeEnabled } from '../lib/utils/server';
 
 const { globalConfig } = getConfig().publicRuntimeConfig;
@@ -54,105 +50,105 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
     const [phoneNumberPopup, setPhoneNumberPopup] = useState(false);
     const [stripePromise, setStripePromise] = useState<Promise<Stripe | null>>();
 
-    const globalState = useContext(GlobalStateContext);
-    const dispatch = useContext(GlobalDispatchContext);
+    // const globalState = useContext(GlobalStateContext);
+    // const dispatch = useContext(GlobalDispatchContext);
 
-    useEffect(() => {
-        const localStorageProducts = localStorage.getItem('cartProducts');
+    // useEffect(() => {
+    //     // const localStorageProducts = localStorage.getItem('cartProducts');
 
-        console.log(localStorageProducts);
-        const data = globalState.cartItems
-            .map((productDTO: ProductDTO) => {
-                const product = allProducts.find((p) => p._id === productDTO.id);
-                if (!product) return undefined;
-                productDTO.extras = productDTO.extras.filter((extraDTO) =>
-                    product.extras.find((e) => e._id === extraDTO.id),
-                );
-                return productDTO;
-            })
-            .filter((p: ProductDTO | undefined) => p !== undefined);
+    //     // console.log(localStorageProducts);
+    //     const data = globalState.cartItems
+    //         .map((productDTO: ProductDTO) => {
+    //             const product = allProducts.find((p) => p._id === productDTO.id);
+    //             if (!product) return undefined;
+    //             productDTO.extras = productDTO.extras.filter((extraDTO) =>
+    //                 product.extras.find((e) => e._id === extraDTO.id),
+    //             );
+    //             return productDTO;
+    //         })
+    //         .filter((p: ProductDTO | undefined) => p !== undefined);
 
-        console.log(globalState.cartItems);
-        setProductDTOArray(data);
+    //     console.log(globalState.cartItems);
+    //     setProductDTOArray(data);
 
-        // const data = (globalState.cartItems ? JSON.parse(globalState.cartItems) : [])
-        //     .map((productDTO: ProductDTO) => {
-        //         const product = allProducts.find((p) => p._id === productDTO.id);
-        //         if (!product) return undefined;
-        //         productDTO.extras = productDTO.extras.filter((extraDTO) =>
-        //             product.extras.find((e) => e._id === extraDTO.id),
-        //         );
-        //         return productDTO;
-        //     })
-        //     .filter((p: ProductDTO | undefined) => p !== undefined);
-        // setProductDTOArray(data);
+    //     // const data = (globalState.cartItems ? JSON.parse(globalState.cartItems) : [])
+    //     //     .map((productDTO: ProductDTO) => {
+    //     //         const product = allProducts.find((p) => p._id === productDTO.id);
+    //     //         if (!product) return undefined;
+    //     //         productDTO.extras = productDTO.extras.filter((extraDTO) =>
+    //     //             product.extras.find((e) => e._id === extraDTO.id),
+    //     //         );
+    //     //         return productDTO;
+    //     //     })
+    //     //     .filter((p: ProductDTO | undefined) => p !== undefined);
+    //     // setProductDTOArray(data);
 
-        // Start loading Stripe
-        setStripePromise(loadStripe(globalConfig.stripePublicKey));
-    }, []);
+    //     // Start loading Stripe
+    //     setStripePromise(loadStripe(globalConfig.stripePublicKey));
+    // }, []);
 
-    useEffect(() => {
-        // Set productsCount
-        let count = 0;
-        productDTOArray.forEach((p) => {
-            count += p.count;
-        });
-        setProductCount(count);
+    // useEffect(() => {
+    //     // Set productsCount
+    //     let count = 0;
+    //     productDTOArray.forEach((p) => {
+    //         count += p.count;
+    //     });
+    //     setProductCount(count);
 
-        setProductArray(
-            globalState.cartItems
-                .map((productDTO) => {
-                    const product = allProducts.find(
-                        (productMetadata) => productMetadata._id === productDTO.id,
-                    ) as ProductDTOWithMetadata | undefined;
-                    if (!product) return undefined;
-                    product.extras = product.extras
-                        .map((extraMetadata: ProductDTOWithMetadata['extras'][number]) => ({
-                            ...extraMetadata,
-                            count: productDTO.extras.find(
-                                (extraDTO) => extraDTO.id === extraMetadata._id,
-                            )?.count,
-                        }))
-                        .filter(
-                            (e): e is ProductDTOWithMetadata['extras'][number] =>
-                                e.count !== undefined,
-                        );
-                    product.count = productDTO.count;
-                    product.id = productDTO.id;
-                    return product;
-                })
-                .filter((p): p is ProductDTOWithMetadata => p !== undefined),
-        );
-    }, [globalState.cartItems]);
+    //     setProductArray(
+    //         globalState.cartItems
+    //             .map((productDTO) => {
+    //                 const product = allProducts.find(
+    //                     (productMetadata) => productMetadata._id === productDTO.id,
+    //                 ) as ProductDTOWithMetadata | undefined;
+    //                 if (!product) return undefined;
+    //                 product.extras = product.extras
+    //                     .map((extraMetadata: ProductDTOWithMetadata['extras'][number]) => ({
+    //                         ...extraMetadata,
+    //                         count: productDTO.extras.find(
+    //                             (extraDTO) => extraDTO.id === extraMetadata._id,
+    //                         )?.count,
+    //                     }))
+    //                     .filter(
+    //                         (e): e is ProductDTOWithMetadata['extras'][number] =>
+    //                             e.count !== undefined,
+    //                     );
+    //                 product.count = productDTO.count;
+    //                 product.id = productDTO.id;
+    //                 return product;
+    //             })
+    //             .filter((p): p is ProductDTOWithMetadata => p !== undefined),
+    //     );
+    // }, [globalState.cartItems]);
 
-    useEffect(() => {
-        setSubtotal(productArray.reduce((acc, curr) => acc + getTotalProductPrice(curr), 0));
-        setTaxes(
-            productArray.reduce(
-                (acc, curr) =>
-                    acc +
-                    curr.count *
-                        (round(curr.basePrice * (globalConfig.taxRate / 100), 2) +
-                            curr.extras.reduce(
-                                (acc, curr) =>
-                                    acc +
-                                    curr.count *
-                                        round(curr.price * (globalConfig.taxRate / 100), 2),
-                                0,
-                            )),
-                0,
-            ),
-        );
-    }, [productArray]);
+    // useEffect(() => {
+    //     setSubtotal(productArray.reduce((acc, curr) => acc + getTotalProductPrice(curr), 0));
+    //     setTaxes(
+    //         productArray.reduce(
+    //             (acc, curr) =>
+    //                 acc +
+    //                 curr.count *
+    //                     (round(curr.basePrice * (globalConfig.taxRate / 100), 2) +
+    //                         curr.extras.reduce(
+    //                             (acc, curr) =>
+    //                                 acc +
+    //                                 curr.count *
+    //                                     round(curr.price * (globalConfig.taxRate / 100), 2),
+    //                             0,
+    //                         )),
+    //             0,
+    //         ),
+    //     );
+    // }, [productArray]);
 
-    function removeProduct(id: string) {
-        const productDTOArrayWithoutRemovedProduct: ProductDTO[] = globalState.cartItems.filter(
-            (e) => e.id !== id,
-        );
-        // setProductDTOArray(productDTOArrayWithoutRemovedProduct);
-        dispatch({ type: SET_CART_PRODUCTS, payload: productDTOArrayWithoutRemovedProduct });
-        localStorage.setItem('cartProducts', JSON.stringify(productDTOArrayWithoutRemovedProduct));
-    }
+    // function removeProduct(id: string) {
+    //     const productDTOArrayWithoutRemovedProduct: ProductDTO[] = globalState.cartItems.filter(
+    //         (e) => e.id !== id,
+    //     );
+    //     // setProductDTOArray(productDTOArrayWithoutRemovedProduct);
+    //     dispatch({ type: SET_CART_PRODUCTS, payload: productDTOArrayWithoutRemovedProduct });
+    //     localStorage.setItem('cartProducts', JSON.stringify(productDTOArrayWithoutRemovedProduct));
+    // }
 
     async function checkout(contactPhoneNumber: string) {
         try {
@@ -320,7 +316,7 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                                 title={p.title[router.locale ?? 'fr']}
                                 image={p.image}
                                 quantity={p.count}
-                                price={getTotalProductPrice(p)}
+                                price={toPrice(getTotalProductPrice(p))}
                                 extras={p.extras
                                     .map((e) => `${e.title[router.locale ?? 'fr']} x ${e.count}`)
                                     .join(', ')}
@@ -340,8 +336,10 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                             `}
                         >
                             <h3>{t('orderSummary')}</h3>
-                            <h4>{t('subtotal')}</h4>${subtotal}
-                            <h4>{t('taxes')} (TPS &#38; TVQ)</h4>${taxes}
+                            <h4>{t('subtotal')}</h4>
+                            {toPrice(subtotal)}
+                            <h4>{t('taxes')} (TPS &#38; TVQ)</h4>
+                            {toPrice(taxes)}
                             <h4
                                 css={css`
                                     font-weight: bold;
@@ -349,7 +347,7 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                             >
                                 {t('total')}
                             </h4>
-                            ${taxes + subtotal}
+                            {toPrice(taxes + subtotal)}
                             <Button
                                 primary={true}
                                 disabled={subtotal <= 0}

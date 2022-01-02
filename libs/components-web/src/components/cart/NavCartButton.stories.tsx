@@ -13,5 +13,5 @@ export const Template: Story<NavCartButtonProps> = (args) => (
     <NavCartButton {...args}></NavCartButton>
 );
 Template.args = {
-    cartItemCount: 2,
+    cartProductsCount: 2,
 };

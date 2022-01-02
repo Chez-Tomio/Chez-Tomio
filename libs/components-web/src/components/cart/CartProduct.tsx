@@ -7,7 +7,7 @@ export interface CartProductProps {
     title: string;
     image?: string;
     quantity: number;
-    price: number;
+    price: string;
     extras?: string;
     remove: () => void;
 }
@@ -104,7 +104,7 @@ export const CartProduct: React.FC<CartProductProps> = ({
                     "Instructions"
                 </span>
 
-                <span>$ {price.toFixed(2)}</span>
+                <span>{price}</span>
             </div>
 
             <div>

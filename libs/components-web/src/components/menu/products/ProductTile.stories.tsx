@@ -21,7 +21,7 @@ Template.args = {
     imageUrl: '/sample-image.jpg',
     title: 'Title',
     description: 'Description',
-    price: 2.35,
+    price: '$2.35',
     onClickAdd: () => {
         console.log('Added product');
     },
