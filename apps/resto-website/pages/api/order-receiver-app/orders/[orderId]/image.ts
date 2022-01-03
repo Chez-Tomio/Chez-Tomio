@@ -1,7 +1,7 @@
 import { isMongoId } from 'class-validator';
 import endent from 'endent';
-import * as textToImage from 'text-to-image';
 
+// import * as textToImage from 'text-to-image';
 import {
     apiEndpointWrapper,
     isRequesterOrderReceiverApp,
@@ -36,12 +36,12 @@ export default apiEndpointWrapper(async (req, res) => {
     ${new Date().toLocaleString()}
     `;
 
-    const base64Image = await textToImage.generate(text, {
-        maxWidth: 576,
-        fontFamily: 'Arial',
-        fontSize: 36,
-        lineHeight: 40,
-    });
+    // const base64Image = await textToImage.generate(text, {
+    //     maxWidth: 576,
+    //     fontFamily: 'Arial',
+    //     fontSize: 36,
+    //     lineHeight: 40,
+    // });
 
-    return res.send(base64Image);
+    // return res.send(base64Image);
 });
