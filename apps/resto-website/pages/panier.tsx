@@ -141,14 +141,15 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
     //     );
     // }, [productArray]);
 
-    // function removeProduct(id: string) {
-    //     const productDTOArrayWithoutRemovedProduct: ProductDTO[] = globalState.cartItems.filter(
-    //         (e) => e.id !== id,
-    //     );
-    //     // setProductDTOArray(productDTOArrayWithoutRemovedProduct);
-    //     dispatch({ type: SET_CART_PRODUCTS, payload: productDTOArrayWithoutRemovedProduct });
-    //     localStorage.setItem('cartProducts', JSON.stringify(productDTOArrayWithoutRemovedProduct));
-    // }
+    function removeProduct(id: string) {
+        // const productDTOArrayWithoutRemovedProduct: ProductDTO[] = globalState.cartItems.filter(
+        //     (e) => e.id !== id,
+        // );
+        // // setProductDTOArray(productDTOArrayWithoutRemovedProduct);
+        // dispatch({ type: SET_CART_PRODUCTS, payload: productDTOArrayWithoutRemovedProduct });
+        // localStorage.setItem('cartProducts', JSON.stringify(productDTOArrayWithoutRemovedProduct));
+        console.log('remove product');
+    }
 
     async function checkout(contactPhoneNumber: string) {
         try {
