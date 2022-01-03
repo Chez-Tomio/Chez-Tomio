@@ -17,49 +17,49 @@ export const Template: Story = (args) => (
         <ProductTile
             imageUrl="/sample-image.jpg"
             title="Product"
-            price={2}
+            price="$2.00"
             onClickAdd={() => console.log('Ok')}
         ></ProductTile>
         <ProductTile
             imageUrl="/sample-image.jpg"
             title="Product"
-            price={2}
+            price="$2.00"
             onClickAdd={() => console.log('Ok')}
         ></ProductTile>
         <ProductTile
             imageUrl="/sample-image.jpg"
             title="Product"
-            price={2}
+            price="$2.00"
             onClickAdd={() => console.log('Ok')}
         ></ProductTile>
         <ProductTile
             imageUrl="/sample-image.jpg"
             title="Product"
-            price={2}
+            price="$2.00"
             onClickAdd={() => console.log('Ok')}
         ></ProductTile>
         <ProductTile
             imageUrl="/sample-image.jpg"
             title="Product"
-            price={2}
+            price="$2.00"
             onClickAdd={() => console.log('Ok')}
         ></ProductTile>
         <ProductTile
             imageUrl="/sample-image.jpg"
             title="Product"
-            price={2}
+            price="$2.00"
             onClickAdd={() => console.log('Ok')}
         ></ProductTile>
         <ProductTile
             imageUrl="/sample-image.jpg"
             title="Product"
-            price={2}
+            price="$2.00"
             onClickAdd={() => console.log('Ok')}
         ></ProductTile>
         <ProductTile
             imageUrl="/sample-image.jpg"
             title="Product"
-            price={2}
+            price="$2.00"
             onClickAdd={() => console.log('Ok')}
         ></ProductTile>
     </ProductsGrid>
