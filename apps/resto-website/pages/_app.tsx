@@ -16,6 +16,7 @@ import {
 import { css, jsx } from '@emotion/react';
 import { AppProps } from 'next/app';
 import getConfig from 'next/config';
+import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Provider } from 'next-auth/client';
@@ -102,6 +103,36 @@ function App({ Component: Page, pageProps }: AppProps) {
                             flex-direction: column;
                         `}
                     >
+                        <Head>
+                            <meta name="theme-color" content="#000" />
+                            <meta
+                                name="description"
+                                content="Chez Tomio vous offre une cuisine réinventée de type fusion asiatique. Nos produits sont frais, de haute qualité et surtout à un prix très abordable. Restaurant - Camion de rue - Traiteur"
+                            ></meta>
+                            {/* Open Graph */}
+                            <meta property="og:type" content="website" />
+                            <meta property="og:title" content="Chez Tomio" />
+                            <meta
+                                property="og:description"
+                                content="Chez Tomio vous offre une cuisine réinventée de type fusion asiatique. Nos produits sont frais, de haute qualité et surtout à un prix très abordable. Restaurant - Camion de rue - Traiteur"
+                            />
+                            <meta
+                                property="og:image"
+                                content="https://storage.cheztomio.com/chez-tomio/banner.jpg"
+                            />
+                            <meta property="og:url" content="https://cheztomio.com" />
+                            <meta property="og:site_name" content="Chez Tomio" />
+                            {/* Twitter */}
+                            <meta name="twitter:title" content="Chez Tomio" />
+                            <meta
+                                name="twitter:description"
+                                content="Chez Tomio vous offre une cuisine réinventée de type fusion asiatique. Nos produits sont frais, de haute qualité et surtout à un prix très abordable. Restaurant - Camion de rue - Traiteur"
+                            />
+                            <meta
+                                name="twitter:image"
+                                content="https://storage.cheztomio.com/chez-tomio/banner.jpg"
+                            />
+                        </Head>
                         <Header backgroundFull={pageProps.headerBackgroundFull}>
                             <Link href="/">
                                 <img
