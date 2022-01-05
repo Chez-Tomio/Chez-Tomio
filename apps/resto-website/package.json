@@ -19,6 +19,9 @@
         "endent": "^2.0.1",
         "formik": "^2.2.6",
         "google-libphonenumber": "^3.2.19",
+        "imagemin-mozjpeg": "^9.0.0",
+        "imagemin-optipng": "^8.0.0",
+        "imagemin-svgo": "^9.0.0",
         "lodash": "^4.17.21",
         "minio": "^7.0.25",
         "mongo-sanitize": "^1.1.0",
@@ -26,6 +29,7 @@
         "next": "10.0.7",
         "next-auth": "^3.13.3",
         "next-i18next": "^8.0.6",
+        "next-optimized-images": "^2.6.2",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-paginate": "^7.1.2",
@@ -35,6 +39,7 @@
         "safe-compare": "^1.1.4",
         "slug": "^4.0.3",
         "stripe": "^8.142.0",
+        "webp-loader": "^0.6.0",
         "yup": "^0.32.9"
     },
     "devDependencies": {

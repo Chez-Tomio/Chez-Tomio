@@ -79,7 +79,8 @@ export default function Home({ specialities }: { specialities: ISerializedProduc
                         `}
                     >
                         <img
-                            src={homeConfig.ourRestaurantImage}
+                            src={homeConfig.ourRestaurantImage + '?webp'}
+                            type="image/webp"
                             alt=""
                             css={css`
                                 width: 100%;

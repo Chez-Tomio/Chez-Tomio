@@ -21,7 +21,7 @@ const heights: { [k in ImageSectionSize]: string } = {
 export const ImageSection: React.FC<ImageSectionProps> = ({
     children,
     imageUrl,
-    opacity,
+    opacity = 0.65,
     size,
 }) => {
     return (
@@ -35,7 +35,7 @@ export const ImageSection: React.FC<ImageSectionProps> = ({
                 flex-direction: column;
                 text-align: center;
                 max-height: 100vh;
-                background: rgba(0, 0, 0, ${opacity ?? 0.65}) url(${imageUrl});
+                background: rgba(0, 0, 0, ${opacity}) url(${imageUrl});
                 background-blend-mode: darken;
                 background-repeat: no-repeat;
                 background-position: center center;
