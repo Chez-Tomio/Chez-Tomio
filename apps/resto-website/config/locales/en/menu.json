@@ -1,6 +1,8 @@
 {
     "pageName": "Menu",
 
+    "orderDelivery": "Order for Delivery",
+
     "seeKitchenMenu": "View restaurant menu",
     "seeSushiList": "View sushi list"
 }

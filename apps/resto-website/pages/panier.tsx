@@ -18,9 +18,9 @@ import Popup from 'reactjs-popup';
 import * as Yup from 'yup';
 
 import { CheckoutDTO, ProductDTO, ProductDTOWithMetadata } from '../lib/api/dto/checkout';
-// import {} from '../lib/components/common/GlobalStateProvider';
 import { NextImageSection } from '../lib/components/common/NextImageSection';
 import { connectToDatabase, ISerializedProduct, Product } from '../lib/database/mongo';
+import { GlobalDispatchContext, GlobalStateContext, SET_CART_PRODUCTS } from '../lib/GlobalState';
 import { getTotalProductPrice, toPrice } from '../lib/utils/clients';
 import { requiresStoreToBeEnabled } from '../lib/utils/server';
 
@@ -50,105 +50,86 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
     const [phoneNumberPopup, setPhoneNumberPopup] = useState(false);
     const [stripePromise, setStripePromise] = useState<Promise<Stripe | null>>();
 
-    // const globalState = useContext(GlobalStateContext);
-    // const dispatch = useContext(GlobalDispatchContext);
+    const globalState = useContext(GlobalStateContext);
+    const dispatch = useContext(GlobalDispatchContext);
 
-    // useEffect(() => {
-    //     // const localStorageProducts = localStorage.getItem('cartProducts');
+    useEffect(() => {
+        // Load Stripe
+        setStripePromise(loadStripe(globalConfig.stripePublicKey));
+    }, []);
 
-    //     // console.log(localStorageProducts);
-    //     const data = globalState.cartItems
-    //         .map((productDTO: ProductDTO) => {
-    //             const product = allProducts.find((p) => p._id === productDTO.id);
-    //             if (!product) return undefined;
-    //             productDTO.extras = productDTO.extras.filter((extraDTO) =>
-    //                 product.extras.find((e) => e._id === extraDTO.id),
-    //             );
-    //             return productDTO;
-    //         })
-    //         .filter((p: ProductDTO | undefined) => p !== undefined);
+    useEffect(() => {
+        const productsInState = globalState.cartProducts
+            .map((productDTO: ProductDTO) => {
+                const product = allProducts.find(
+                    (productMetadata) => productMetadata._id === productDTO.id,
+                ) as ProductDTOWithMetadata | undefined;
+                if (!product) return undefined;
+                product.extras = product.extras
+                    .map((extraMetadata: ProductDTOWithMetadata['extras'][number]) => ({
+                        ...extraMetadata,
+                        count: productDTO.extras.find(
+                            (extraDTO) => extraDTO.id === extraMetadata._id,
+                        )?.count,
+                    }))
+                    .filter(
+                        (e): e is ProductDTOWithMetadata['extras'][number] => e.count !== undefined,
+                    );
+                product.count = productDTO.count;
+                product.id = productDTO.id;
+                return product;
+            })
+            .filter((p): p is ProductDTOWithMetadata => p !== undefined);
 
-    //     console.log(globalState.cartItems);
-    //     setProductDTOArray(data);
+        setProductArray(productsInState);
 
-    //     // const data = (globalState.cartItems ? JSON.parse(globalState.cartItems) : [])
-    //     //     .map((productDTO: ProductDTO) => {
-    //     //         const product = allProducts.find((p) => p._id === productDTO.id);
-    //     //         if (!product) return undefined;
-    //     //         productDTO.extras = productDTO.extras.filter((extraDTO) =>
-    //     //             product.extras.find((e) => e._id === extraDTO.id),
-    //     //         );
-    //     //         return productDTO;
-    //     //     })
-    //     //     .filter((p: ProductDTO | undefined) => p !== undefined);
-    //     // setProductDTOArray(data);
+        const productDTOInState = globalState.cartProducts
+            .map((productDTO: ProductDTO) => {
+                const product = allProducts.find((p) => p._id === productDTO.id);
+                if (!product) return undefined;
+                productDTO.extras = productDTO.extras.filter((extraDTO) =>
+                    product.extras.find((e) => e._id === extraDTO.id),
+                );
+                return productDTO;
+            })
+            .filter((p: ProductDTO | undefined) => p !== undefined);
+        setProductDTOArray(productDTOInState);
 
-    //     // Start loading Stripe
-    //     setStripePromise(loadStripe(globalConfig.stripePublicKey));
-    // }, []);
+        // Set productsCount
+        let count = 0;
+        globalState.cartProducts.forEach((p) => {
+            count += p.count;
+        });
+        setProductCount(count);
+    }, [globalState.cartProducts]);
 
-    // useEffect(() => {
-    //     // Set productsCount
-    //     let count = 0;
-    //     productDTOArray.forEach((p) => {
-    //         count += p.count;
-    //     });
-    //     setProductCount(count);
-
-    //     setProductArray(
-    //         globalState.cartItems
-    //             .map((productDTO) => {
-    //                 const product = allProducts.find(
-    //                     (productMetadata) => productMetadata._id === productDTO.id,
-    //                 ) as ProductDTOWithMetadata | undefined;
-    //                 if (!product) return undefined;
-    //                 product.extras = product.extras
-    //                     .map((extraMetadata: ProductDTOWithMetadata['extras'][number]) => ({
-    //                         ...extraMetadata,
-    //                         count: productDTO.extras.find(
-    //                             (extraDTO) => extraDTO.id === extraMetadata._id,
-    //                         )?.count,
-    //                     }))
-    //                     .filter(
-    //                         (e): e is ProductDTOWithMetadata['extras'][number] =>
-    //                             e.count !== undefined,
-    //                     );
-    //                 product.count = productDTO.count;
-    //                 product.id = productDTO.id;
-    //                 return product;
-    //             })
-    //             .filter((p): p is ProductDTOWithMetadata => p !== undefined),
-    //     );
-    // }, [globalState.cartItems]);
-
-    // useEffect(() => {
-    //     setSubtotal(productArray.reduce((acc, curr) => acc + getTotalProductPrice(curr), 0));
-    //     setTaxes(
-    //         productArray.reduce(
-    //             (acc, curr) =>
-    //                 acc +
-    //                 curr.count *
-    //                     (round(curr.basePrice * (globalConfig.taxRate / 100), 2) +
-    //                         curr.extras.reduce(
-    //                             (acc, curr) =>
-    //                                 acc +
-    //                                 curr.count *
-    //                                     round(curr.price * (globalConfig.taxRate / 100), 2),
-    //                             0,
-    //                         )),
-    //             0,
-    //         ),
-    //     );
-    // }, [productArray]);
+    useEffect(() => {
+        setSubtotal(productArray.reduce((acc, curr) => acc + getTotalProductPrice(curr), 0));
+        setTaxes(
+            productArray.reduce(
+                (acc, curr) =>
+                    acc +
+                    curr.count *
+                        (round(curr.basePrice * (globalConfig.taxRate / 100), 2) +
+                            curr.extras.reduce(
+                                (acc, curr) =>
+                                    acc +
+                                    curr.count *
+                                        round(curr.price * (globalConfig.taxRate / 100), 2),
+                                0,
+                            )),
+                0,
+            ),
+        );
+    }, [productArray]);
 
     function removeProduct(id: string) {
-        // const productDTOArrayWithoutRemovedProduct: ProductDTO[] = globalState.cartItems.filter(
-        //     (e) => e.id !== id,
-        // );
-        // // setProductDTOArray(productDTOArrayWithoutRemovedProduct);
-        // dispatch({ type: SET_CART_PRODUCTS, payload: productDTOArrayWithoutRemovedProduct });
-        // localStorage.setItem('cartProducts', JSON.stringify(productDTOArrayWithoutRemovedProduct));
-        console.log('remove product');
+        const productDTOArrayWithoutRemovedProduct: ProductDTO[] = globalState.cartProducts.filter(
+            (e) => e.id !== id,
+        );
+        // setProductDTOArray(productDTOArrayWithoutRemovedProduct);
+        dispatch({ type: SET_CART_PRODUCTS, payload: productDTOArrayWithoutRemovedProduct });
+        localStorage.setItem('cartProducts', JSON.stringify(productDTOArrayWithoutRemovedProduct));
     }
 
     async function checkout(contactPhoneNumber: string) {
@@ -256,9 +237,10 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                 <div
                     css={css`
                         display: flex;
+                        justify-content: center;
                         width: 100%;
                         .cart-total {
-                            width: 25%;
+                            width: 20%;
                         }
                         @media (max-width: 1000px) {
                             flex-direction: column;
@@ -275,6 +257,7 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                             flex-direction: column;
                             flex: 1;
                             padding: 20px;
+                            max-width: 700px;
                         `}
                     >
                         <div

@@ -14,6 +14,7 @@ import React from 'react';
 import { NextImageSection } from '../../lib/components/common/NextImageSection';
 import { Category, connectToDatabase, ISerializedCategory } from '../../lib/database/mongo';
 
+const { globalConfig } = getConfig().publicRuntimeConfig;
 const { menuConfig } = getConfig().publicRuntimeConfig.pagesConfig;
 
 export default function Menu({ categories }: { categories: ISerializedCategory[] }) {
@@ -32,17 +33,46 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
             </NextImageSection>
 
             <WhiteSection>
-                <CategoriesGrid>
-                    {categories.map((c) => (
-                        <Link href={`/menu/${c.slug}`} key={c._id}>
-                            <div>
-                                <CategoryTile imageUrl={c.image}>
-                                    {c.title[router.locale ?? 'fr']}
-                                </CategoryTile>
-                            </div>
-                        </Link>
-                    ))}
-                </CategoriesGrid>
+                <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href="https://www.locologin.com/api/fb/508dz"
+                    css={css`
+                        text-decoration: none;
+                    `}
+                >
+                    <Button primary={true}>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            className="bi bi-bag-fill"
+                            viewBox="0 0 16 16"
+                        >
+                            <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z" />
+                        </svg>
+                        {t('orderDelivery')}
+                    </Button>
+                </a>
+
+                {globalConfig.isStoreEnabled && (
+                    <>
+                        <hr />
+
+                        <CategoriesGrid>
+                            {categories.map((c) => (
+                                <Link href={`/menu/${c.slug}`} key={c._id}>
+                                    <div>
+                                        <CategoryTile imageUrl={c.image}>
+                                            {c.title[router.locale ?? 'fr']}
+                                        </CategoryTile>
+                                    </div>
+                                </Link>
+                            ))}
+                        </CategoriesGrid>
+                    </>
+                )}
+
+                <hr />
 
                 <div
                     css={css`
@@ -50,7 +80,6 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
                         align-items: center;
                         justify-content: center;
                         flex-wrap: wrap;
-                        margin-top: 20px;
                     `}
                 >
                     <a

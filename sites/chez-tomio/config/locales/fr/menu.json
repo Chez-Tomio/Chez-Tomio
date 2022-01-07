@@ -1,6 +1,8 @@
 {
     "pageName": "Menu",
 
+    "orderDelivery": "Commander pour livraison",
+
     "seeKitchenMenu": "Voir le menu du restaurant",
     "seeSushiList": "Voir la liste des sushis à la carte"
 }

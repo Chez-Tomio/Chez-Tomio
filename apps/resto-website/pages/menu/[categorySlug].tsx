@@ -25,6 +25,11 @@ import {
     ISerializedCategory,
     ISerializedCategoryWithProducts,
 } from '../../lib/database/mongo';
+import {
+    GlobalDispatchContext,
+    GlobalStateContext,
+    SET_CART_PRODUCTS,
+} from '../../lib/GlobalState';
 
 const { menuConfig } = getConfig().publicRuntimeConfig.pagesConfig;
 
@@ -38,14 +43,14 @@ export default function Menu({
     const { t } = useTranslation('menu');
     const router = useRouter();
 
-    // const { globalState, setGlobalState } = useGlobalState();
-
-    // const { globalState, globalDispatch } = useContext(GlobalStateContext);
-    // const globalDispatch = useContext(GlobalDispatchContext);
+    const globalState = useContext(GlobalStateContext);
+    const dispatch = useContext(GlobalDispatchContext);
 
     function addToCart(data: ProductDTO) {
-        // const productsArray: ProductDTO[] = state.cartItems as ProductDTO[];
-        // TODO: Check if there are diffrent options
+        const productsArray: ProductDTO[] = globalState.cartProducts;
+
+        console.log(productsArray);
+
         // If product is already in cart just add more to count
         // let productIsInCart = false;
         // productsArray.forEach((p, i) => {
@@ -57,14 +62,12 @@ export default function Menu({
         // if (!productIsInCart) {
         //     productsArray.push(data);
         // }
-        // productsArray.push(data);
-        // setGlobalState((prev) => {
-        //     return { cartItems: [...(prev.cartItems ?? []), data] };
-        // });
-        // globalDispatch({ type: SET_CART_PRODUCTS, payload: productsArray });
-        // localStorage.setItem('cartProducts', JSON.stringify(productsArray));
-    }
 
+        productsArray.push(data);
+
+        dispatch({ type: SET_CART_PRODUCTS, payload: productsArray });
+        localStorage.setItem('cartProducts', JSON.stringify(productsArray));
+    }
     return (
         <>
             <Head>
@@ -84,7 +87,6 @@ export default function Menu({
                         flex-direction: column;
                     `}
                 >
-                    {/* <h2>{category.title[router.locale ?? 'fr']}</h2> */}
                     <CategoriesSlider>
                         {categories.map((c) => (
                             <Link href={`/menu/${c.slug}`} key={c._id}>
