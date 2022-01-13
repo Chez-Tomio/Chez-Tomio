@@ -1,18 +1,31 @@
 {
-    "extends": "../../tsconfig.base.json",
-    "compilerOptions": {
-        "target": "es5",
-        "lib": ["dom", "dom.iterable", "esnext"],
-        "allowJs": true,
-        "skipLibCheck": true,
-        "noEmit": true,
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        "jsx": "preserve",
-        "strict": false,
-        "strictNullChecks": true,
-        "experimentalDecorators": true
-    },
-    "include": ["next-env.d.ts", "images.d.ts", "mongoose.d.ts", "**/*.ts", "**/*.tsx"],
-    "exclude": ["node_modules"]
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "strict": false,
+    "strictNullChecks": true,
+    "experimentalDecorators": true,
+    "incremental": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "images.d.ts",
+    "mongoose.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -1,13 +1,4 @@
 {
     "plugins": [["@babel/plugin-proposal-decorators", { "legacy": true }]],
-    "presets": [
-        [
-            "next/babel",
-            {
-                "class-properties": {
-                    "loose": true
-                }
-            }
-        ]
-    ]
+    "presets": [["next/babel"]]
 }

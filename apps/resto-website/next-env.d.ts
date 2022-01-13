@@ -1,19 +1,5 @@
 /// <reference types="next" />
-/// <reference types="next/types/global" />
+/// <reference types="next/image-types/global" />
 
-declare global {
-    namespace NodeJS {
-        interface ProcessEnv {
-            MONGO_URI: string;
-            SITE_BASE_URL: string;
-            ORDER_RECEIVER_APP_TOKEN: string;
-            STRIPE_PRIVATE_KEY: string;
-            STRIPE_ENDPOINT_SECRET: string;
-            COGNITO_CLIENT_ID: string;
-            COGNITO_CLIENT_SECRET: string;
-            COGNITO_DOMAIN: string;
-        }
-    }
-}
-
-export {};
+// NOTE: This file should not be edited
+// see https://nextjs.org/docs/basic-features/typescript for more information.
