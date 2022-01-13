@@ -4,7 +4,7 @@ import { apiEvents } from '../../../lib/api/events';
 import { apiEndpointWrapper, getRawBody, sendError } from '../../../lib/api/utils';
 import { Order } from '../../../lib/database/mongo';
 
-const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY, {
+const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY ?? '', {
     apiVersion: '2020-08-27',
 });
 
@@ -19,7 +19,11 @@ export default apiEndpointWrapper(async (req, res) => {
     let event: Stripe.Event;
 
     try {
-        event = stripe.webhooks.constructEvent(payload, sig, process.env.STRIPE_ENDPOINT_SECRET);
+        event = stripe.webhooks.constructEvent(
+            payload,
+            sig,
+            process.env.STRIPE_ENDPOINT_SECRET ?? '',
+        );
     } catch (e) {
         return sendError(res, 403);
     }

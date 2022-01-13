@@ -5,7 +5,7 @@ import { connect, connection } from 'mongoose';
  */
 export async function connectToDatabase() {
     if ([0, 3].includes(connection.readyState))
-        await connect(process.env.MONGO_URI, {
+        await connect(process.env.MONGO_URI ?? '', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useFindAndModify: false,

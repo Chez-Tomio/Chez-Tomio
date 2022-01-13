@@ -12,7 +12,7 @@ import { localizedStringToString } from '../../lib/database/utils';
 import { Unboxed } from '../../lib/types';
 import { emptyStringToUndefined } from '../../lib/utils/common';
 
-const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY, {
+const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY ?? '', {
     apiVersion: '2020-08-27',
 });
 
