@@ -3,6 +3,7 @@ export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID;
 // https://developers.google.com/analytics/devguides/collection/gtagjs/pages
 export const pageview = (url) => {
     (window as any).gtag('config', GA_TRACKING_ID, {
+        cookie_flags: 'max-age=7200;secure;samesite=none',
         page_path: url,
     });
 };

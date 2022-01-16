@@ -267,7 +267,9 @@ function App({ Component: Page, pageProps }: AppProps) {
                                 )}
 
                                 <Footer
-                                    leftText={`Copyright © 2022 ${globalConfig.app.restoName}`}
+                                    leftText={`Copyright © ${new Date().getFullYear()} ${
+                                        globalConfig.app.restoName
+                                    }`}
                                     rightText={t('rightsReserved')}
                                 />
                             </main>
