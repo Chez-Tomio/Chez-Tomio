@@ -6,7 +6,12 @@
         "project": "./tsconfig.*?.json"
     },
     "plugins": ["prettier", "@typescript-eslint", "simple-import-sort"],
-    "extends": ["plugin:@typescript-eslint/recommended", "prettier", "plugin:prettier/recommended"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "prettier",
+        "plugin:prettier/recommended"
+    ],
     "env": {
         "node": true
     },
