@@ -33,7 +33,7 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
             </NextImageSection>
 
             <WhiteSection>
-                <a
+                {/* <a
                     target="_blank"
                     rel="noreferrer"
                     href="https://www.locologin.com/api/fb/508dz"
@@ -52,7 +52,24 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
                         </svg>
                         {t('orderDelivery')}
                     </Button>
-                </a>
+                </a> */}
+
+                <p>
+                    Après de nombreux commentaires donnés par nos clients, nous travaillons pour
+                    mettre en place la commande en ligne directement sur notre site Web. Pendant ce
+                    temps, nous vous invitons à commander via les autres applications de livraison
+                    comme Doordash, UberEats ou Skip. Vous pouvez également nous appeler pour placer
+                    une commande pour venir chercher. Nous sommes sincèrement désolés pour
+                    l'inconvénient. Merci de votre compréhension.
+                </p>
+
+                <p>
+                    After some feedback given by our customers, we are working to set up online
+                    ordering directly on our website. During this time, we invite you to order
+                    through the other delivery applications like Doordash, UberEats or Skip. You can
+                    also call us to place an order for pick up. We are sincerely sorry for the
+                    inconvenience. Thank you for your understanding.
+                </p>
 
                 {globalConfig.isStoreEnabled && (
                     <>

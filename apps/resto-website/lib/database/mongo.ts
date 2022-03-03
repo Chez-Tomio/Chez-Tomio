@@ -4,12 +4,13 @@ import { connect, connection } from 'mongoose';
  * Connect to the mongoDB database
  */
 export async function connectToDatabase() {
-    if ([0, 3].includes(connection.readyState))
+    if ([0, 3].includes(connection.readyState)) {
         await connect(process.env.MONGO_URI ?? '', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useFindAndModify: false,
         });
+    }
 }
 
 /**
