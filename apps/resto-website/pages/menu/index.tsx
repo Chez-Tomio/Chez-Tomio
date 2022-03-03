@@ -36,7 +36,7 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
                 {/* <a
                     target="_blank"
                     rel="noreferrer"
-                    href="https://www.locologin.com/api/fb/508dz"
+                    href="https://order.online/business/chez-tomio-990106"
                     css={css`
                         text-decoration: none;
                     `}
