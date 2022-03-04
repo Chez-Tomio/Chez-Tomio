@@ -33,10 +33,10 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
             </NextImageSection>
 
             <WhiteSection>
-                {/* <a
+                <a
                     target="_blank"
                     rel="noreferrer"
-                    href="https://order.online/business/chez-tomio-990106"
+                    href="https://www.locologin.com/api/fb/508dz"
                     css={css`
                         text-decoration: none;
                     `}
@@ -52,9 +52,9 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
                         </svg>
                         {t('orderDelivery')}
                     </Button>
-                </a> */}
+                </a>
 
-                <p>
+                {/* <p>
                     Après de nombreux commentaires donnés par nos clients, nous travaillons pour
                     mettre en place la commande en ligne directement sur notre site Web. Pendant ce
                     temps, nous vous invitons à commander via les autres applications de livraison
@@ -69,7 +69,7 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
                     through the other delivery applications like Doordash, UberEats or Skip. You can
                     also call us to place an order for pick up. We are sincerely sorry for the
                     inconvenience. Thank you for your understanding.
-                </p>
+                </p> */}
 
                 {globalConfig.isStoreEnabled && (
                     <>
