@@ -33,7 +33,7 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
             </NextImageSection>
 
             <WhiteSection>
-                <a
+                {/* <a
                     target="_blank"
                     rel="noreferrer"
                     href="https://www.locologin.com/api/fb/508dz"
@@ -52,24 +52,87 @@ export default function Menu({ categories }: { categories: ISerializedCategory[]
                         </svg>
                         {t('orderDelivery')}
                     </Button>
+                </a> */}
+
+                <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href="https://www.ubereats.com/ca/store/chez-tomio/kzVPVMzpXy67IuSe_uPipA"
+                    css={css`
+                        text-decoration: none;
+                    `}
+                >
+                    <Button primary={true}>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            className="bi bi-bag-fill"
+                            viewBox="0 0 16 16"
+                        >
+                            <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z" />
+                        </svg>
+                        UberEats
+                    </Button>
                 </a>
 
-                {/* <p>
+                <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href="https://www.doordash.com/store/chez-tomio-montr%C3%A9al-2495867/"
+                    css={css`
+                        text-decoration: none;
+                    `}
+                >
+                    <Button primary={true}>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            className="bi bi-bag-fill"
+                            viewBox="0 0 16 16"
+                        >
+                            <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z" />
+                        </svg>
+                        Doordash
+                    </Button>
+                </a>
+
+                <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href="https://www.skipthedishes.com/f0674faf-ac60-44e7-97fb-2cc05b1c0a83"
+                    css={css`
+                        text-decoration: none;
+                    `}
+                >
+                    <Button primary={true}>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            className="bi bi-bag-fill"
+                            viewBox="0 0 16 16"
+                        >
+                            <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z" />
+                        </svg>
+                        SkipTheDishes
+                    </Button>
+                </a>
+
+                <p>
                     Après de nombreux commentaires donnés par nos clients, nous travaillons pour
                     mettre en place la commande en ligne directement sur notre site Web. Pendant ce
                     temps, nous vous invitons à commander via les autres applications de livraison
-                    comme Doordash, UberEats ou Skip. Vous pouvez également nous appeler pour placer
-                    une commande pour venir chercher. Nous sommes sincèrement désolés pour
-                    l'inconvénient. Merci de votre compréhension.
+                    comme Doordash, UberEats ou SkipTheDishes. Vous pouvez également nous appeler
+                    pour placer une commande pour venir chercher. Nous sommes sincèrement désolés
+                    pour l'inconvénient. Merci de votre compréhension.
                 </p>
 
                 <p>
                     After some feedback given by our customers, we are working to set up online
                     ordering directly on our website. During this time, we invite you to order
-                    through the other delivery applications like Doordash, UberEats or Skip. You can
-                    also call us to place an order for pick up. We are sincerely sorry for the
-                    inconvenience. Thank you for your understanding.
-                </p> */}
+                    through the other delivery applications like Doordash, UberEats or
+                    SkipTheDishes. You can also call us to place an order for pick up. We are
+                    sincerely sorry for the inconvenience. Thank you for your understanding.
+                </p>
 
                 {globalConfig.isStoreEnabled && (
                     <>
