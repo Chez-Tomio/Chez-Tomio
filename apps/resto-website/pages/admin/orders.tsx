@@ -144,10 +144,14 @@ export default function AdminOrders() {
 export const getServerSideProps: GetServerSideProps = async ({ locale, req, res }) => {
     await connectToDatabase();
 
-    if (!(await isAdmin(req))) {
-        res.statusCode = 403;
-        res.end(STATUS_CODES[res.statusCode]);
-        return { props: {} };
+    if (!(await isAdmin(req, res))) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: '/login',
+            },
+            props: {},
+        };
     }
 
     return {

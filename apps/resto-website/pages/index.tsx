@@ -38,10 +38,10 @@ export default function Home({ specialities }: { specialities: ISerializedProduc
                         flex-wrap: wrap;
                     `}
                 >
-                    <Link href="/menu">
+                    <Link href="/menu" passHref>
                         <Button primary={true}>{t('seeMenu')}</Button>
                     </Link>
-                    <Link href="/contact">
+                    <Link href="/contact" passHref>
                         <Button>{t('contactUs')}</Button>
                     </Link>
                 </div>

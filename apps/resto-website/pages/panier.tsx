@@ -3,8 +3,6 @@
 
 import { Button, CartProduct, WhiteSection } from '@chez-tomio/components-web';
 import { css, jsx } from '@emotion/react';
-import { loadStripe, Stripe } from '@stripe/stripe-js';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { PhoneNumberUtil } from 'google-libphonenumber';
 import { round } from 'lodash';
 import getConfig from 'next/config';
@@ -14,10 +12,9 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React, { useContext, useEffect, useState } from 'react';
-import Popup from 'reactjs-popup';
 import * as Yup from 'yup';
 
-import { CheckoutDTO, ProductDTO, ProductDTOWithMetadata } from '../lib/api/dto/checkout';
+import { ProductDTO, ProductDTOWithMetadata } from '../lib/api/dto/checkout';
 import { NextImageSection } from '../lib/components/common/NextImageSection';
 import { connectToDatabase, ISerializedProduct, Product } from '../lib/database/mongo';
 import { GlobalDispatchContext, GlobalStateContext, SET_CART_PRODUCTS } from '../lib/GlobalState';
@@ -46,17 +43,11 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
     const [productArray, setProductArray] = useState<ProductDTOWithMetadata[]>([]);
     const [productCount, setProductCount] = useState(0);
     const [subtotal, setSubtotal] = useState(0);
-    const [taxes, setTaxes] = useState(0);
-    const [phoneNumberPopup, setPhoneNumberPopup] = useState(false);
-    const [stripePromise, setStripePromise] = useState<Promise<Stripe | null>>();
+    const [tps, setTps] = useState(0);
+    const [tvq, setTvq] = useState(0);
 
     const globalState = useContext(GlobalStateContext);
     const dispatch = useContext(GlobalDispatchContext);
-
-    useEffect(() => {
-        // Load Stripe
-        setStripePromise(loadStripe(globalConfig.stripePublicKey));
-    }, []);
 
     useEffect(() => {
         const productsInState = globalState.cartProducts
@@ -105,17 +96,33 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
 
     useEffect(() => {
         setSubtotal(productArray.reduce((acc, curr) => acc + getTotalProductPrice(curr), 0));
-        setTaxes(
+        setTps(
             productArray.reduce(
                 (acc, curr) =>
                     acc +
                     curr.count *
-                        (round(curr.basePrice * (globalConfig.taxRate / 100), 2) +
+                        (round(curr.basePrice * (globalConfig.tpsRate / 100), 2) +
                             curr.extras.reduce(
                                 (acc, curr) =>
                                     acc +
                                     curr.count *
-                                        round(curr.price * (globalConfig.taxRate / 100), 2),
+                                        round(curr.price * (globalConfig.tpsRate / 100), 2),
+                                0,
+                            )),
+                0,
+            ),
+        );
+        setTvq(
+            productArray.reduce(
+                (acc, curr) =>
+                    acc +
+                    curr.count *
+                        (round(curr.basePrice * (globalConfig.tvqRate / 100), 2) +
+                            curr.extras.reduce(
+                                (acc, curr) =>
+                                    acc +
+                                    curr.count *
+                                        round(curr.price * (globalConfig.tvqRate / 100), 2),
                                 0,
                             )),
                 0,
@@ -132,102 +139,12 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
         localStorage.setItem('cartProducts', JSON.stringify(productDTOArrayWithoutRemovedProduct));
     }
 
-    async function checkout(contactPhoneNumber: string) {
-        try {
-            const stripe = await stripePromise;
-            if (!stripe) throw 'Stripe could not be loaded';
-            const checkoutDTO: CheckoutDTO = {
-                contactPhoneNumber,
-                products: productDTOArray,
-            };
-
-            console.log(JSON.stringify(checkoutDTO));
-
-            const response = await fetch('/api/checkout', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(checkoutDTO),
-            });
-
-            if (!response.ok) throw await response.json();
-
-            const { sessionId }: { sessionId: string } = await response.json();
-
-            const { error } = await stripe.redirectToCheckout({ sessionId });
-            if (error) throw error;
-        } catch (error) {
-            alert('An error occured while trying to redirect to checkout');
-            console.error(error);
-        }
-    }
-
     return (
         <>
             <Head>
                 <title>{t('pageName')} - Chez Tomio</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
-            <Popup
-                open={phoneNumberPopup}
-                closeOnDocumentClick
-                onClose={() => setPhoneNumberPopup(false)}
-            >
-                <Formik
-                    initialValues={{ tel: '' }}
-                    validationSchema={Yup.object().shape({
-                        // @ts-expect-error yup
-                        tel: Yup.string().phone('Invalid phone number').required('Required'),
-                    })}
-                    onSubmit={(values, { setSubmitting }) => {
-                        setSubmitting(false);
-                        checkout(values.tel);
-                    }}
-                >
-                    {({ values, isSubmitting, errors }) => (
-                        <Form
-                            css={css`
-                                display: flex;
-                                flex-direction: column;
-                                color: black;
-                                align-items: center;
-                                justify-content: center;
-                                height: 100%;
-                                .item {
-                                    padding: 5px;
-                                    display: flex;
-                                    flex-direction: column;
-                                    text-align: left;
-                                    * {
-                                        width: 100%;
-                                    }
-                                    label {
-                                        font-size: 0.9rem;
-                                    }
-                                    .error {
-                                        color: red;
-                                        font-size: 0.7rem;
-                                        margin-bottom: 15px;
-                                    }
-                                }
-                            `}
-                        >
-                            <div className="item">
-                                <h3>Phone Number</h3>
-                                <Field name="tel" type="tel" />
-                                <ErrorMessage name="tel" component="span" className="error" />
-                            </div>
-
-                            <Button type="submit" primary={true} disabled={isSubmitting}>
-                                Next
-                            </Button>
-                        </Form>
-                    )}
-                </Formik>
-            </Popup>
 
             <NextImageSection imageUrl={cartConfig.topBannerImage} size="half">
                 <h1>{t('pageName')}</h1>
@@ -237,15 +154,16 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                 <div
                     css={css`
                         display: flex;
-                        justify-content: center;
                         width: 100%;
                         .cart-total {
-                            width: 20%;
+                            width: 30%;
+                            margin-left: 30px;
                         }
                         @media (max-width: 1000px) {
                             flex-direction: column;
                             .cart-total {
                                 width: 100%;
+                                margin-left: 0;
                             }
                         }
                     `}
@@ -257,7 +175,6 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                             flex-direction: column;
                             flex: 1;
                             padding: 20px;
-                            max-width: 700px;
                         `}
                     >
                         <div
@@ -281,7 +198,7 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                         {productArray.length === 0 && (
                             <div>
                                 <p>{t('cartEmpty')}</p>
-                                <Link href="/menu">
+                                <Link href="/menu" passHref>
                                     <Button
                                         primary={true}
                                         noMargin={true}
@@ -309,36 +226,60 @@ export default function Cart({ allProducts }: { allProducts: ISerializedProduct[
                         ))}
                     </div>
 
-                    <div className="cart-total">
-                        <div
-                            css={css`
+                    <div
+                        className="cart-total"
+                        css={css`
+                            display: flex;
+                            flex-direction: column;
+                            padding: 20px;
+                            min-width: 350px;
+                            .summaryItem {
                                 display: flex;
-                                flex-direction: column;
-                                background-color: #f7f7f7;
-                                padding: 20px;
-                                border-radius: 20px;
+                                padding: 5px 0;
+                                *:first-of-type {
+                                    flex: 1;
+                                }
+                            }
+                        `}
+                    >
+                        <h3
+                            css={css`
+                                margin-bottom: 20px;
                             `}
                         >
-                            <h3>{t('orderSummary')}</h3>
-                            <h4>{t('subtotal')}</h4>
-                            {toPrice(subtotal)}
-                            <h4>{t('taxes')} (TPS &#38; TVQ)</h4>
-                            {toPrice(taxes)}
-                            <h4
-                                css={css`
-                                    font-weight: bold;
-                                `}
-                            >
-                                {t('total')}
-                            </h4>
-                            {toPrice(taxes + subtotal)}
-                            <Button
-                                primary={true}
-                                disabled={subtotal <= 0}
-                                onClick={setPhoneNumberPopup.bind(undefined, true)}
-                            >
-                                {t('checkout')}
-                            </Button>
+                            {t('orderSummary')}
+                        </h3>
+                        <div className="summaryItem">
+                            <span>{t('subtotal')}</span>
+                            <span>{toPrice(subtotal)}</span>
+                        </div>
+                        <div className="summaryItem">
+                            <span>TPS (5%)</span>
+                            <span>{toPrice(tps)}</span>
+                        </div>
+                        <div className="summaryItem">
+                            <span>TVQ (9.975%)</span>
+                            <span>{toPrice(tvq)}</span>
+                        </div>
+                        <hr />
+                        <div className="summaryItem">
+                            <span>{t('total')}</span>
+                            <span>{toPrice(tps + tvq + subtotal)}</span>
+                        </div>
+                        <div
+                            css={css`
+                                margin-top: 20px;
+                                width: 100%;
+                                button {
+                                    width: fill-available;
+                                }
+                            `}
+                        >
+                            <Link href="/checkout" passHref>
+                                <Button primary={true} disabled={subtotal <= 0}>
+                                    {t('checkout')}
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                 </div>

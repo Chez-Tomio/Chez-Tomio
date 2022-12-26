@@ -27,7 +27,6 @@ export const GlobalStyles = () => (
             }
 
             hr {
-                width: 80%;
                 border: none;
                 height: 2px;
                 background-color: #f0f0f0;
@@ -48,7 +47,7 @@ export const GlobalStyles = () => (
 
             h3 {
                 font-weight: 800;
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
 
             h4 {

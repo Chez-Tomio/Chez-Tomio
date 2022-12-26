@@ -68,6 +68,7 @@ export default function Menu({
         dispatch({ type: SET_CART_PRODUCTS, payload: productsArray });
         localStorage.setItem('cartProducts', JSON.stringify(productsArray));
     }
+
     return (
         <>
             <Head>

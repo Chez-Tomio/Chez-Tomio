@@ -1,5 +1,5 @@
 module.exports = {
-    welcomeImage: '/sample-image.jpg',
-    ourRestaurantImage: '/sample-image-2.jpg',
+    welcomeImage: '/foodtruck.png',
+    ourRestaurantImage: '/restaurant.jpg',
     specialtyImage: '/sample-image.jpg',
 };

@@ -18,4 +18,13 @@ module.exports = {
 
         return config;
     },
+    async redirects() {
+        return [
+            {
+                source: '/login',
+                destination: '/api/auth/signin',
+                permanent: true,
+            },
+        ];
+    },
 };

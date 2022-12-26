@@ -234,7 +234,7 @@ export default function AboutUs() {
                         margin-top: 50px;
                     `}
                 >
-                    <Link href="/a-propos/ce-site">
+                    <Link href="/a-propos/ce-site" passHref>
                         <Button primary={true}>{t('aboutThisSite')}</Button>
                     </Link>
                 </div>

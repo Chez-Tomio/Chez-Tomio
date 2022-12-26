@@ -20,7 +20,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
-import { Provider } from 'next-auth/client';
+import { SessionProvider } from 'next-auth/react';
 import { appWithTranslation, useTranslation } from 'next-i18next';
 import React, { useEffect, useReducer, useState } from 'react';
 import { ToastProvider } from 'react-toast-notifications';
@@ -109,7 +109,7 @@ function App({ Component: Page, pageProps }: AppProps) {
           `,
                 }}
             />
-            <Provider session={pageProps.session}>
+            <SessionProvider session={pageProps.session}>
                 <ToastProvider>
                     <GlobalState initialState={state} dispatch={dispatch}>
                         <GlobalStyles />
@@ -196,7 +196,7 @@ function App({ Component: Page, pageProps }: AppProps) {
                                                 margin-left: 15px;
                                             `}
                                         >
-                                            <Link href="/panier">
+                                            <Link href="/panier" passHref>
                                                 <div>
                                                     <NavCartButton
                                                         cartProductsCount={cartProductsCount}
@@ -213,7 +213,7 @@ function App({ Component: Page, pageProps }: AppProps) {
                                     <NextImageSection imageUrl={globalConfig.app.bottomBannerImage}>
                                         <h2>{t('eatWithUs')}</h2>
                                         <h4>{t('eatWithUsDescription')}</h4>
-                                        <Link href="/contact">
+                                        <Link href="/contact" passHref>
                                             <Button primary={true}>{t('contactUs')}</Button>
                                         </Link>
                                         <div
@@ -276,7 +276,7 @@ function App({ Component: Page, pageProps }: AppProps) {
                         </NavWrapper>
                     </GlobalState>
                 </ToastProvider>
-            </Provider>
+            </SessionProvider>
         </>
     );
 }

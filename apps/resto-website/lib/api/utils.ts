@@ -1,11 +1,13 @@
 import { ValidationError } from 'class-validator';
-import { IncomingMessage, STATUS_CODES } from 'http';
+import { IncomingMessage, OutgoingMessage, ServerResponse, STATUS_CODES } from 'http';
 import sanitize from 'mongo-sanitize';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import getConfig from 'next/config';
-import { getSession } from 'next-auth/client';
+import { NextApiRequestCookies } from 'next/dist/server/api-utils';
+import { unstable_getServerSession } from 'next-auth/next';
 import safeCompare from 'safe-compare';
 
+import { authOptions } from '../../pages/api/auth/[...nextauth]';
 import { connectToDatabase } from '../database/mongo';
 
 const { globalConfig } = getConfig().publicRuntimeConfig;
@@ -13,36 +15,43 @@ const { globalConfig } = getConfig().publicRuntimeConfig;
 /**
  * Api endpoint wrapper
  */
-export const apiEndpointWrapper = (
-    endpoint: NextApiHandler,
-    {
-        requiresStoreToBeEnabled = false,
-        requiresAdmin = false,
-    }: Partial<{ requiresStoreToBeEnabled: boolean; requiresAdmin: boolean }> = {},
-): NextApiHandler => async (req, res) => {
-    if (
-        (requiresStoreToBeEnabled && !globalConfig.isStoreEnabled) ||
-        (requiresAdmin && !(await isAdmin(req)))
-    )
-        return sendError(res, 403);
+export const apiEndpointWrapper =
+    (
+        endpoint: NextApiHandler,
+        {
+            requiresStoreToBeEnabled = false,
+            requiresAdmin = false,
+        }: Partial<{ requiresStoreToBeEnabled: boolean; requiresAdmin: boolean }> = {},
+    ): NextApiHandler =>
+    async (req, res) => {
+        if (
+            (requiresStoreToBeEnabled && !globalConfig.isStoreEnabled) ||
+            (requiresAdmin && !(await isAdmin(req, res)))
+        )
+            return sendError(res, 403);
 
-    try {
-        sanitize(req.body);
-        await connectToDatabase();
-        return await endpoint(req, res);
-    } catch (error) {
-        console.error(error);
-        return sendError(res, 500);
-    }
-};
+        try {
+            sanitize(req.body);
+            await connectToDatabase();
+            return await endpoint(req, res);
+        } catch (error) {
+            console.error(error);
+            return sendError(res, 500);
+        }
+    };
 
 /**
  * Returns true if user is admin
  * @param req
  * @returns {boolean}
  */
-export const isAdmin = async (req: IncomingMessage): Promise<boolean> => {
-    const session = await getSession({ req });
+export const isAdmin = async (
+    req: IncomingMessage & {
+        cookies: NextApiRequestCookies;
+    },
+    res: ServerResponse,
+): Promise<boolean> => {
+    const session = await unstable_getServerSession(req, res, authOptions);
     if (!session?.user) return false;
     return true;
 };

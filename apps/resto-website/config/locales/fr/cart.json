@@ -8,7 +8,7 @@
 
     "orderSummary": "Votre commande",
     "subtotal": "Sous-total",
-    "taxes": "Taxes",
+    "tax": "Taxe",
     "total": "Total",
     "checkout": "Payer"
 }

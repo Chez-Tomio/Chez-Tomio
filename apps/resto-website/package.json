@@ -12,6 +12,7 @@
     "dependencies": {
         "@chez-tomio/components-web": "*",
         "@emotion/react": "^11.4.1",
+        "@next-auth/mongodb-adapter": "^1.1.1",
         "@stripe/stripe-js": "^1.14.0",
         "@svgr/webpack": "^5.5.0",
         "class-transformer": "^0.4.0",
@@ -24,14 +25,16 @@
         "mongo-sanitize": "^1.1.0",
         "mongoose": "5.12.3",
         "next": "12.0.8",
-        "next-auth": "3.13.3",
+        "next-auth": "4.13.0",
         "next-i18next": "^8.0.6",
+        "nodemailer": "^6.8.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-paginate": "^7.1.2",
         "react-toast-notifications": "^2.4.3",
         "react-vertical-timeline-component": "^3.3.3",
         "reactjs-popup": "^2.0.4",
+        "reflect-metadata": "^0.1.13",
         "safe-compare": "^1.1.4",
         "slug": "^4.0.3",
         "stripe": "^8.142.0",
@@ -56,6 +59,6 @@
         "typescript": "^4.5.4"
     },
     "peerOptionalDependencies": {
-        "mongodb": "^3.6.5"
+        "mongodb": "^4.10.0"
     }
 }

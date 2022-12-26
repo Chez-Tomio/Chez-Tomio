@@ -8,7 +8,7 @@
 
     "orderSummary": "Order Summary",
     "subtotal": "Subtotal",
-    "taxes": "Taxes",
+    "tax": "Tax",
     "total": "Total",
     "checkout": "Checkout"
 }
