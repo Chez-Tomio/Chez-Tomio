@@ -118,8 +118,9 @@ export default function Options({ allProducts }: { allProducts: ISerializedProdu
                         email: Yup.string().email('Invalid email').required('Required'),
                     })}
                     onSubmit={(values, { setSubmitting }) => {
+                        console.log(JSON.stringify(values));
                         setSubmitting(false);
-                        checkout(values.tel);
+                        // checkout(values.tel);
                     }}
                 >
                     {({ values, isSubmitting, errors }) => (
@@ -181,46 +182,87 @@ export default function Options({ allProducts }: { allProducts: ISerializedProdu
                                         input[type='radio'] {
                                             display: none;
                                         }
-                                        input[type='radio']:checked {
-                                            background-color: red;
-                                        }
                                         label {
+                                            height: 180px;
+                                            border: 6px solid #ed1b24;
+                                            margin: 10px;
+                                            border-radius: 15px;
+                                            color: #ed1b24;
+                                            transition: 0.3s;
                                             display: flex;
                                             flex-direction: column;
                                             align-items: center;
                                             justify-content: center;
-                                            padding: 10px;
-                                            height: 100px;
-                                            width: 100px;
-                                            &:select {
-                                                border: 1px solid black;
+                                            svg {
+                                                height: 60px;
+                                                margin-bottom: 20px;
                                             }
+                                            span {
+                                                font-size: 1.2rem;
+                                                font-weight: 500;
+                                                text-align: center;
+                                            }
+                                        }
+                                        input[type='radio']:checked + label {
+                                            background-color: #ed1b24;
+                                            color: #ffffff;
+                                            box-shadow: 0 15px 45px rgb(237, 27, 36, 0.2);
                                         }
                                     `}
                                 >
-                                    <Field type="radio" name="orderType" />
-                                    <label>
+                                    <Field
+                                        render={({ field, form: { isSubmitting } }) => (
+                                            <input
+                                                {...field}
+                                                value="delivery"
+                                                type="radio"
+                                                name="orderType"
+                                                id="delivery"
+                                                disabled={isSubmitting}
+                                            />
+                                        )}
+                                    />
+                                    <label htmlFor="delivery">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 512 512"
+                                            fill="currentColor"
                                         >
                                             {/* <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --> */}
                                             <path d="M135.2 117.4L109.1 192H402.9l-26.1-74.6C372.3 104.6 360.2 96 346.6 96H165.4c-13.6 0-25.7 8.6-30.2 21.4zM39.6 196.8L74.8 96.3C88.3 57.8 124.6 32 165.4 32H346.6c40.8 0 77.1 25.8 90.6 64.3l35.2 100.5c23.2 9.6 39.6 32.5 39.6 59.2V400v48c0 17.7-14.3 32-32 32H448c-17.7 0-32-14.3-32-32V400H96v48c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V400 256c0-26.7 16.4-49.6 39.6-59.2zM128 288c0-17.7-14.3-32-32-32s-32 14.3-32 32s14.3 32 32 32s32-14.3 32-32zm288 32c17.7 0 32-14.3 32-32s-14.3-32-32-32s-32 14.3-32 32s14.3 32 32 32z" />
                                         </svg>
-                                        Delivery
+                                        <span>Delivery</span>
                                     </label>
-                                    <Field type="radio" name="orderType" />
-                                    <label>
+                                    <Field
+                                        render={({ field, form: { isSubmitting } }) => (
+                                            <input
+                                                {...field}
+                                                value="pickup"
+                                                type="radio"
+                                                name="orderType"
+                                                id="pickup"
+                                                disabled={isSubmitting}
+                                            />
+                                        )}
+                                    />
+                                    <label htmlFor="pickup">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 448 512"
+                                            fill="currentColor"
                                         >
                                             {/* <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --> */}
                                             <path d="M160 112c0-35.3 28.7-64 64-64s64 28.7 64 64v48H160V112zm-48 48H48c-26.5 0-48 21.5-48 48V416c0 53 43 96 96 96H352c53 0 96-43 96-96V208c0-26.5-21.5-48-48-48H336V112C336 50.1 285.9 0 224 0S112 50.1 112 112v48zm24 96c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24zm200-24c0 13.3-10.7 24-24 24s-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24z" />
                                         </svg>
-                                        Pickup
+                                        <span>Pickup</span>
                                     </label>
                                 </div>
+                            </div>
+
+                            <div className="item" id="address">
+                                <h4>Address</h4>
+                                <Field name="address" type="address" />
+                                <ErrorMessage name="address" component="span" className="error" />
                             </div>
 
                             <div className="item">
